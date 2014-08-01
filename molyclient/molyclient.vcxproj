@@ -11,10 +11,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{EAB5DA4C-66F3-4E4A-821A-B5111862E2DB}</ProjectGuid>
+    <ProjectGuid>{F2FC7319-152A-41F1-8FF4-226F5F698910}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>Sundis</RootNamespace>
-    <ProjectName>molyserver</ProjectName>
+    <RootNamespace>molyclient</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -76,13 +75,7 @@
     <None Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\%40SrcCode\Sundis\Server.c" />
-    <ClCompile Include="Sundis.c" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="..\..\%40SrcCode\Sundis\Dictonary.h" />
-    <ClInclude Include="..\..\%40SrcCode\Sundis\Hashmap.h" />
-    <ClInclude Include="..\..\%40SrcCode\Sundis\Server.h" />
+    <ClCompile Include="molyclient.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

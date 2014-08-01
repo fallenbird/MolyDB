@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="..\..\..\%40SrcCode\MolyDB\molyserver\Server.c">
+      <Filter>Server</Filter>
+    </ClCompile>
+    <ClCompile Include="molyserver.c">
+      <Filter>Main</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\%40SrcCode\MolyDB\molyserver\Dictonary.h">
+      <Filter>DataEngin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\%40SrcCode\MolyDB\molyserver\Hashmap.h">
+      <Filter>DataEngin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\%40SrcCode\MolyDB\molyserver\Server.h">
+      <Filter>Server</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="DataEngin">
+      <UniqueIdentifier>{e11d7792-5059-4c2a-8528-ce7e2e8218ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Log">
+      <UniqueIdentifier>{395543f5-bff9-4b8d-a792-7eb5f4f31b7e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Server">
+      <UniqueIdentifier>{ee031c2e-0602-46fc-85c1-5ff5e55e2846}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Config">
+      <UniqueIdentifier>{f84d794d-6606-449c-b9a9-1da01572db88}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="PubSub">
+      <UniqueIdentifier>{0d0a457b-73e3-40b2-b616-bb11f33f52af}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Event">
+      <UniqueIdentifier>{19219090-bfe2-4967-a766-ba3bb9eb28e1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Main">
+      <UniqueIdentifier>{6329c427-522e-40fc-b516-d94cccf30caf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Replication">
+      <UniqueIdentifier>{60432339-e1cd-465e-b358-f83e88b901a0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Persistence">
+      <UniqueIdentifier>{77c9e5ac-3cbf-4efa-9fd6-08e82744dd21}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
