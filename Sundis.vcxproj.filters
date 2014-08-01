@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Config">
+      <UniqueIdentifier>{a794ea7c-6424-432b-802a-182489d27a2e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DataEngine">
+      <UniqueIdentifier>{989fb5a4-53bb-4fab-98ab-39ad46ebda2c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Event">
+      <UniqueIdentifier>{3f71635e-4ac0-4191-bf65-04e1da3df692}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Main">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Log">
+      <UniqueIdentifier>{6c2bbe91-5fc0-4b80-8369-5e72b9dcf13a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Replication">
+      <UniqueIdentifier>{86c74f4a-f383-4d58-ad1f-8b5a436b64b4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="PubSub">
+      <UniqueIdentifier>{92b11861-e537-4fb9-bec4-73938e1638e4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Cluster">
+      <UniqueIdentifier>{3a126d3d-db7e-4a37-8a23-afb94f539a2c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Mem">
+      <UniqueIdentifier>{4879ff01-1682-4f20-83f7-f1187a716d79}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="persistence">
+      <UniqueIdentifier>{9b19e339-6bba-4e4b-b4d9-763dfac5a236}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Server">
+      <UniqueIdentifier>{da8ffcbf-670d-471e-bbeb-2cc3f3ef2d7f}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Sundis.c">
+      <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\%40SrcCode\Sundis\Server.c">
+      <Filter>Server</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\%40SrcCode\Sundis\Server.h">
+      <Filter>Server</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\%40SrcCode\Sundis\Hashmap.h">
+      <Filter>DataEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\%40SrcCode\Sundis\Dictonary.h">
+      <Filter>DataEngine</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
