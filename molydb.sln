@@ -5,20 +5,33 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "molyclient", "molyclient\mo
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "molyserver", "molyserver\molyserver.vcxproj", "{EAB5DA4C-66F3-4E4A-821A-B5111862E2DB}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Network", "Network\Network.vcxproj", "{8451455F-A33B-4B9C-847A-8D86FB97D4D6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
 		Release|Win32 = Release|Win32
+		Template|Win32 = Template|Win32
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{F2FC7319-152A-41F1-8FF4-226F5F698910}.Debug|Win32.ActiveCfg = Debug|Win32
 		{F2FC7319-152A-41F1-8FF4-226F5F698910}.Debug|Win32.Build.0 = Debug|Win32
 		{F2FC7319-152A-41F1-8FF4-226F5F698910}.Release|Win32.ActiveCfg = Release|Win32
 		{F2FC7319-152A-41F1-8FF4-226F5F698910}.Release|Win32.Build.0 = Release|Win32
+		{F2FC7319-152A-41F1-8FF4-226F5F698910}.Template|Win32.ActiveCfg = Release|Win32
+		{F2FC7319-152A-41F1-8FF4-226F5F698910}.Template|Win32.Build.0 = Release|Win32
 		{EAB5DA4C-66F3-4E4A-821A-B5111862E2DB}.Debug|Win32.ActiveCfg = Debug|Win32
 		{EAB5DA4C-66F3-4E4A-821A-B5111862E2DB}.Debug|Win32.Build.0 = Debug|Win32
 		{EAB5DA4C-66F3-4E4A-821A-B5111862E2DB}.Release|Win32.ActiveCfg = Release|Win32
 		{EAB5DA4C-66F3-4E4A-821A-B5111862E2DB}.Release|Win32.Build.0 = Release|Win32
+		{EAB5DA4C-66F3-4E4A-821A-B5111862E2DB}.Template|Win32.ActiveCfg = Release|Win32
+		{EAB5DA4C-66F3-4E4A-821A-B5111862E2DB}.Template|Win32.Build.0 = Release|Win32
+		{8451455F-A33B-4B9C-847A-8D86FB97D4D6}.Debug|Win32.ActiveCfg = Debug|Win32
+		{8451455F-A33B-4B9C-847A-8D86FB97D4D6}.Debug|Win32.Build.0 = Debug|Win32
+		{8451455F-A33B-4B9C-847A-8D86FB97D4D6}.Release|Win32.ActiveCfg = Release|Win32
+		{8451455F-A33B-4B9C-847A-8D86FB97D4D6}.Release|Win32.Build.0 = Release|Win32
+		{8451455F-A33B-4B9C-847A-8D86FB97D4D6}.Template|Win32.ActiveCfg = Template|Win32
+		{8451455F-A33B-4B9C-847A-8D86FB97D4D6}.Template|Win32.Build.0 = Template|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
