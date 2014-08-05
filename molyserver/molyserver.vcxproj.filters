@@ -1,11 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="..\..\..\%40SrcCode\MolyDB\molyserver\Server.c">
-      <Filter>Server</Filter>
-    </ClCompile>
-    <ClCompile Include="molyserver.c">
+    <ClCompile Include="molyserver.cpp">
       <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="Server.cpp">
+      <Filter>Server</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -20,6 +20,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\%40SrcCode\MolyDB\molyserver\NetIntface.h">
       <Filter>Event</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\%40SrcCode\MolyDB\molyserver\ClientAgent.h">
+      <Filter>ClintAgent</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -52,6 +55,9 @@
     </Filter>
     <Filter Include="Persistence">
       <UniqueIdentifier>{77c9e5ac-3cbf-4efa-9fd6-08e82744dd21}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ClintAgent">
+      <UniqueIdentifier>{0ad324de-07db-40cf-bc72-df27180eef7e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

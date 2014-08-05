@@ -1,0 +1,7 @@
+
+
+class ClientAgent
+{
+public:
+private:
+};

@@ -1,7 +1,7 @@
 // Sundis.cpp : Defines the entry point for the console application.
 //
 #include "./Server.h"
-
+#include "NetIntface.h"
 
 
 enum eRunningSta
@@ -35,6 +35,8 @@ int main(int argc, char* argv[])
 {
 	// --init server
 	InitServer();
+	NetInterface::GetInstancePtr()->initInterface( "127.0.0.1", 3690 );
+
 
 	// --main loop
 	while( 1 )
