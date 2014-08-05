@@ -50,6 +50,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\Network;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -82,6 +83,7 @@
   <ItemGroup>
     <ClInclude Include="..\..\..\%40SrcCode\MolyDB\molyserver\Dictonary.h" />
     <ClInclude Include="..\..\..\%40SrcCode\MolyDB\molyserver\Hashmap.h" />
+    <ClInclude Include="..\..\..\%40SrcCode\MolyDB\molyserver\NetIntface.h" />
     <ClInclude Include="..\..\..\%40SrcCode\MolyDB\molyserver\Server.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

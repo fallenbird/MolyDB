@@ -18,6 +18,9 @@
     <ClInclude Include="..\..\..\%40SrcCode\MolyDB\molyserver\Server.h">
       <Filter>Server</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\%40SrcCode\MolyDB\molyserver\NetIntface.h">
+      <Filter>Event</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
