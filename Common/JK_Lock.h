@@ -1,4 +1,8 @@
 
+#ifndef _JK_LOCK_97066A3D_H_
+#define _JK_LOCK_97066A3D_H_
+
+
 #ifdef WIN32
 #include <Windows.h>
 #else
@@ -53,3 +57,7 @@ private:
 #endif
 
 };
+
+
+
+#endif

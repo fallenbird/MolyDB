@@ -1,3 +1,7 @@
+
+#ifndef _JK_SINGLETON_ED22DC7F_H_
+#define _JK_SINGLETON_ED22DC7F_H_
+
 #include "JK_Lock.h"
 #include <assert.h>
 
@@ -41,3 +45,6 @@ private:
 };
 
 template< typename T > T* JK_Singleton<T>::m_pInstance = NULL;
+
+
+#endif

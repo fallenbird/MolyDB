@@ -55,7 +55,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <OutputFile>..\_Bin\$(TargetName)$(TargetExt)</OutputFile>
+      <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
       <AdditionalLibraryDirectories>..\_Bin;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
@@ -79,15 +79,18 @@
     <None Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Server.cpp" />
+    <ClCompile Include="..\..\..\%40SrcCode\MolyDB\molyserver\ConfigManager.cpp" />
+    <ClCompile Include="..\..\..\%40SrcCode\MolyDB\molyserver\MainLogic.cpp" />
+    <ClCompile Include="..\..\..\%40SrcCode\MolyDB\molyserver\NetIntface.cpp" />
     <ClCompile Include="molyserver.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\%40SrcCode\MolyDB\molyserver\ClientAgent.h" />
+    <ClInclude Include="..\..\..\%40SrcCode\MolyDB\molyserver\ConfigManager.h" />
     <ClInclude Include="..\..\..\%40SrcCode\MolyDB\molyserver\Dictonary.h" />
     <ClInclude Include="..\..\..\%40SrcCode\MolyDB\molyserver\Hashmap.h" />
+    <ClInclude Include="..\..\..\%40SrcCode\MolyDB\molyserver\molyserver.h" />
     <ClInclude Include="..\..\..\%40SrcCode\MolyDB\molyserver\NetIntface.h" />
-    <ClInclude Include="..\..\..\%40SrcCode\MolyDB\molyserver\Server.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

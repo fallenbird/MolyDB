@@ -60,6 +60,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\%40SrcCode\MolyDB\Common\JK_Array.h" />
+    <ClInclude Include="..\..\..\%40SrcCode\MolyDB\Common\JK_Hashmap.h" />
+    <ClInclude Include="..\..\..\%40SrcCode\MolyDB\Common\JK_MemMgr.h" />
     <ClInclude Include="JK_Lock.h" />
     <ClInclude Include="..\..\..\%40SrcCode\MolyDB\Common\JK_Singleton.h" />
   </ItemGroup>

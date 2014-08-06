@@ -124,7 +124,6 @@ copy $(OutDir)Network.lib ..\GBin\</Command>
     <ClInclude Include="NetBase.h" />
     <ClInclude Include="NetworkObject.h" />
     <ClInclude Include="RecvBuffer.h" />
-    <ClInclude Include="Sample.h" />
     <ClInclude Include="SendBuffer.h" />
     <ClInclude Include="Session.h" />
     <ClInclude Include="SessionList.h" />

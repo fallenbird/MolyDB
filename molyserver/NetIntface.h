@@ -26,9 +26,6 @@ protected:
 //-------------------------------------------------------------------------------------------------
 // Callback Functions
 //-------------------------------------------------------------------------------------------------
-NetworkObject* CreateAcceptedObject() {	return new client; }
-void DestroyAcceptedObject( NetworkObject *pNetworkObject ) { delete pNetworkObject; }
-void DestroyConnectedObject( NetworkObject *pNetworkObject ) {delete pNetworkObject; }
 
 
 const DWORD CLIENT_IOHANDLER_KEY = 0;
@@ -37,11 +34,13 @@ class NetInterface : public JK_Singleton<NetInterface>
 {
 
 public:
-	NetInterface()
-	{
-
-	};
+	NetInterface();
 	~NetInterface();
+
+private:
+	static NetworkObject* CreateAcceptedObject();
+	static void DestroyAcceptedObject( NetworkObject *pNetworkObject );
+	static void DestroyConnectedObject( NetworkObject *pNetworkObject );
 
 public:
 	int initInterface( char* szIP, unsigned short usPort )

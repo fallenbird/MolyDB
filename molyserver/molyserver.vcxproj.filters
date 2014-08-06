@@ -2,10 +2,16 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="molyserver.cpp">
+      <Filter>Server</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\%40SrcCode\MolyDB\molyserver\MainLogic.cpp">
       <Filter>Main</Filter>
     </ClCompile>
-    <ClCompile Include="Server.cpp">
-      <Filter>Server</Filter>
+    <ClCompile Include="..\..\..\%40SrcCode\MolyDB\molyserver\NetIntface.cpp">
+      <Filter>Event</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\%40SrcCode\MolyDB\molyserver\ConfigManager.cpp">
+      <Filter>Config</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -15,14 +21,17 @@
     <ClInclude Include="..\..\..\%40SrcCode\MolyDB\molyserver\Hashmap.h">
       <Filter>DataEngin</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\%40SrcCode\MolyDB\molyserver\Server.h">
-      <Filter>Server</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\%40SrcCode\MolyDB\molyserver\NetIntface.h">
       <Filter>Event</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\%40SrcCode\MolyDB\molyserver\ClientAgent.h">
       <Filter>ClintAgent</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\%40SrcCode\MolyDB\molyserver\molyserver.h">
+      <Filter>Server</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\%40SrcCode\MolyDB\molyserver\ConfigManager.h">
+      <Filter>Config</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

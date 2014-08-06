@@ -1,50 +1,38 @@
-// Sundis.cpp : Defines the entry point for the console application.
-//
-#include "./Server.h"
-#include "NetIntface.h"
+#include "molyserver.h"
 
 
-enum eRunningSta
+int MolyServer::GetState()
 {
-	ers_NONE = 0,
-	ers_INIT = 1,
-	ers_RUNNING = 2,
-	ers_STOP = 3,
-};
-
-
-typedef struct 
-{
-
-	char*	ServerlIP;
-	int		Serverport;
-}ServerInfo;
-
-
-_ServerInof g_SundisServer;
-
-
-void InitServer()
-{
-	g_SundisServer._serverIP = "127.0.0.1";
-	g_SundisServer._serverPort = 3690;
-	g_SundisServer._runningSta = ers_NONE;
+	return m_runningSta;
 }
 
-int main(int argc, char* argv[])
+void MolyServer::InitServer()
 {
-	// --init server
-	InitServer();
-	NetInterface::GetInstancePtr()->initInterface( "127.0.0.1", 3690 );
+	m_serverIP = "127.0.0.1";;
+	m_serverPort = 3690;
 
+	// --init config
+	ConfigManager::GetInstance().LoadConfig( "config.ini" );
 
-	// --main loop
-	while( 1 )
-	{
-		if( ers_RUNNING != g_SundisServer._runningSta)
-		{
-			break;
-		}
-	}
-	return 0;
+	// --init net interface
+	NetInterface::GetInstance().initInterface( "127.0.0.1", 3690 );
+	m_runningSta = ers_NONE;
 }
+
+
+
+void MolyServer::RunServer()
+{
+	// --run net interface
+	NetInterface::GetInstance().RunInterface();
+
+}
+
+
+void MolyServer::StopServer()
+{
+	m_runningSta = ers_STOP;
+}
+
+
+ 
