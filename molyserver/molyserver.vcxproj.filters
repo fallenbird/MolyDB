@@ -35,9 +35,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="ReadMe.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <Filter Include="DataEngin">
       <UniqueIdentifier>{e11d7792-5059-4c2a-8528-ce7e2e8218ac}</UniqueIdentifier>
     </Filter>

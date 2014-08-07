@@ -9,6 +9,7 @@ int main(int argc, char* argv[])
 	MolyServer molySvr;
 	molySvr.InitServer();
 
+
 	// --main loop
 	while( true )
 	{

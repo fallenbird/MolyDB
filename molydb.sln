@@ -9,6 +9,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Network", "Network\Network.
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Common", "Common\Common.vcxproj", "{D7D3AB5B-319E-4853-A351-0C950A70F59C}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Resource", "Resource\Resource.vcxproj", "{7E698B20-8E78-44ED-B37B-9DC5FCA90C5C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -40,6 +42,12 @@ Global
 		{D7D3AB5B-319E-4853-A351-0C950A70F59C}.Release|Win32.Build.0 = Release|Win32
 		{D7D3AB5B-319E-4853-A351-0C950A70F59C}.Template|Win32.ActiveCfg = Release|Win32
 		{D7D3AB5B-319E-4853-A351-0C950A70F59C}.Template|Win32.Build.0 = Release|Win32
+		{7E698B20-8E78-44ED-B37B-9DC5FCA90C5C}.Debug|Win32.ActiveCfg = Debug|Win32
+		{7E698B20-8E78-44ED-B37B-9DC5FCA90C5C}.Debug|Win32.Build.0 = Debug|Win32
+		{7E698B20-8E78-44ED-B37B-9DC5FCA90C5C}.Release|Win32.ActiveCfg = Release|Win32
+		{7E698B20-8E78-44ED-B37B-9DC5FCA90C5C}.Release|Win32.Build.0 = Release|Win32
+		{7E698B20-8E78-44ED-B37B-9DC5FCA90C5C}.Template|Win32.ActiveCfg = Release|Win32
+		{7E698B20-8E78-44ED-B37B-9DC5FCA90C5C}.Template|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
