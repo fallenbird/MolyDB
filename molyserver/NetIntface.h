@@ -5,11 +5,6 @@
 #include "JK_Singleton.h"
 
 
-#ifdef _DEBUG
-#pragma comment( lib, "Network_d.lib" )
-#else
-#pragma comment( lib, "Network.lib" )
-#endif
 
 //-------------------------------------------------------------------------------------------------
 // User Class

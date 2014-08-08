@@ -26,5 +26,11 @@
     <ClInclude Include="..\..\..\%40SrcCode\MolyDB\Common\JK_Array.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\%40SrcCode\MolyDB\Common\JK_Dictionary.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\%40SrcCode\MolyDB\Common\JK_Assert.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

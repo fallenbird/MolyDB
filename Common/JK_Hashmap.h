@@ -4,7 +4,7 @@
 
 #include "JK_Lock.h"
 #include "JK_MemMgr.h"
-#include <assert.h>
+#include "JK_Assert.h"
 
 
 class HashEntity
@@ -30,6 +30,8 @@ public:
 
 //extern unsigned int dict_hash_function_seed;
 
+#define lock_if_necessary() if( m_bThread ){m_lock.Lock();}else{}
+#define unlock_if_necessary() if( m_bThread ){m_lock.Unlock();}else{}
 
 //template< typename T, bool bThread = false >
 //class __declspec(dllexport) JK_Hashmap
@@ -40,29 +42,40 @@ private:
 	HashEntity**	m_table;
 	unsigned long	m_lSize;
 	unsigned long	m_lUsed;
+	bool			m_bThread;
+	JK_Lock			m_lock;
 
 public:
+	JK_Hashmap( bool bThread = false  )
+	{
+		m_bThread = bThread;
+	}
 
 	bool Init( unsigned long lMaxSize )
 	{
 		m_lSize = lMaxSize;
 		m_lUsed = 0;
-		m_table = (HashEntity**)JKMalloc( sizeof(HashEntity*)*lMaxSize );
+		lock_if_necessary();
+		m_table = (HashEntity**)JK_MALLOC( sizeof(HashEntity*)*lMaxSize );
 		if( m_table )
 		{
 			memset( m_table, 0, sizeof(HashEntity*)*lMaxSize );
+			unlock_if_necessary();
 			return true;
 		}
-		return true;
+		unlock_if_necessary();
+		return false;
 	}
 
 
-	bool Realse()
+	bool Release()
 	{
+		lock_if_necessary();
 		for( unsigned long i = 0; i < m_lSize; ++i )
 		{
 			ReleaseEntity( m_table[i] );
 		}
+		unlock_if_necessary();
 		m_lSize = 0;
 		m_lUsed = 0;
 		m_table = NULL;
@@ -83,8 +96,10 @@ public:
 		}
 		unsigned int hashidx = HashFunction( (unsigned char*)key, strlen( (char*)key ) );
 		hashidx %= m_lSize;
+		lock_if_necessary();
 		HashEntity** ppEntity= &m_table[hashidx];
 		HashEntity* pEntity = GetEntity( m_table[hashidx],  key );
+		unlock_if_necessary();
 		if( NULL == pEntity )
 		{
 			return NULL;
@@ -102,15 +117,18 @@ public:
 		}
 		unsigned int hashidx = HashFunction( (unsigned char*)key, strlen( (char*)key ) );
 		hashidx %= m_lSize;
+
+		lock_if_necessary();
 		HashEntity** ppEntity= &m_table[hashidx];
 		while( NULL != *ppEntity )
 		{
-			assert( 0!= strcmp( (char*)(*ppEntity)->m_key, (char*)key ) );
+			( 0!= strcmp( (char*)(*ppEntity)->m_key, (char*)key ) );
 			ppEntity = &( (*ppEntity)->next );
 		}
-		HashEntity* pTemp = (HashEntity*)JKMalloc( sizeof(HashEntity) );
+		HashEntity* pTemp = (HashEntity*)JK_MALLOC( sizeof(HashEntity) );
 		if( NULL == pTemp )
 		{
+			unlock_if_necessary();
 			return false;
 		}
 		pTemp->m_key = key;
@@ -118,6 +136,7 @@ public:
 		pTemp->next = NULL;
 		*ppEntity = pTemp;
 		++m_lUsed;
+		unlock_if_necessary();
 		return true;
 	}
 
@@ -130,12 +149,14 @@ public:
 		}
 		unsigned int hashidx = HashFunction( ( unsigned char*)key, strlen( (char*)key ) );
 		hashidx %= m_lSize;
+		lock_if_necessary();
 		HashEntity* pParent = GetParentEntity( m_table[hashidx], key );
-		assert( NULL != pParent->next );
+		JK_ASSERT(NULL != pParent->next);
 		HashEntity* pTemp = pParent->next;
 		pParent->next = pParent->next->next;
-		JKFree( pTemp );
+		JK_FREE( pTemp );
 		--m_lUsed;
+		unlock_if_necessary();
 		return true;
 	}
 
@@ -165,7 +186,7 @@ private:
 		{
 			pTemp = pEntity;
 			pEntity = pEntity->next;
-			JKFree( pTemp );
+			JK_FREE( pTemp );
 		}
 	}
 
@@ -205,49 +226,6 @@ private:
 	}
 
 };
-
-
-
-class JK_Dictionary
-{
-public:
-	JK_Dictionary()
-	{
-
-	}
-
-	~JK_Dictionary()
-	{
-
-	}
-
-	bool AddElement( void* key, void* val )
-	{
-
-		return true;
-	}
-
-
-	void RemoveElement( void* key )
-	{
-
-	}
-
-	void  Reset()
-	{
-	}
-
-
-
-
-
-private:
-	JK_Hashmap	m_hashtable[2];
-	int			m_iRehashidx;		// rehashing not in progress if rehashidx == -1
-	int			m_Iterators;		// number of iterators currently running 
-};
-
-
 
 
 

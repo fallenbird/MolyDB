@@ -36,8 +36,8 @@ private:
 };
 
 
-#define JKMalloc( x ) (JK_MEMMGR::JK_Malloc( x ))
-#define JKFree( x ) (JK_MEMMGR::JK_Free( x ))
-#define JKNew( x ) (JK_MEMMGR::JK_Malloc( sizeof(x) ))
+#define JK_MALLOC( x ) (JK_MEMMGR::JK_Malloc( x ))
+#define JK_FREE( x ) (JK_MEMMGR::JK_Free( x ))
+#define JK_NEW( x ) (JK_MEMMGR::JK_Malloc( sizeof(x) ))
 
 #endif

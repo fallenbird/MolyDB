@@ -1,12 +1,5 @@
 #include "JK_Singleton.h"
-#include "JK_Hashmap.h"
 
-class CTest
-{
-public :
-	int m_iX;
-	int m_iY;
-};
 
 
 class ConfigManager : public JK_Singleton<ConfigManager>
@@ -19,7 +12,5 @@ public:
 
 
 private:
-	JK_Hashmap  m_configMap;
-
 
 };

@@ -14,7 +14,7 @@ NetInterface::~NetInterface()
 
 NetworkObject* NetInterface::CreateAcceptedObject()
 {
-	return (NetworkObject*)JKNew(client);
+	return (NetworkObject*)JK_NEW(client);
 }
 
 void NetInterface::DestroyAcceptedObject( NetworkObject *pNetworkObject )
