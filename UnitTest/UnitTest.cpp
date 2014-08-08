@@ -47,5 +47,46 @@ TEST(HashmapTest, AddTest)
 
 	EXPECT_EQ(true, m_configMap.Init(64));
 	EXPECT_EQ(true, m_configMap.Add("aaa", pTemp1) );
+
+	
+	EXPECT_EQ(true, m_configMap.Add("bbb", pTemp2) );
+	EXPECT_EQ(true, m_configMap.Add("ccc", pTemp3) );
+	EXPECT_EQ(true, m_configMap.Add("ddd", pTemp4) );
+
+	bool bhit = false;
+	try
+	{
+		m_configMap.Add("ccc", pTemp5);
+	}
+	catch (std::exception e)
+	{
+		bhit = true;
+	}
+	assert(bhit);
+
+
+	m_configMap.Add("9qjfwo", pTemp1);
+	m_configMap.Add("bqjfwf", pTemp2);
+
+	CTest* pMY = (CTest*)m_configMap.Get("bbb");
+	int xxx = pMY->m_iX;
+	int yyy = pMY->m_iY;
+
+	CTest* pMY2 = (CTest*)m_configMap.Get("opp");
+	if (pMY2)
+	{
+	}
+
+
+	CTest* pMY3 = (CTest*)m_configMap.Get("bqjfwf");
+	int xxx3 = pMY3->m_iX;
+	int yyy3 = pMY3->m_iY;
+
+	m_configMap.Remove("bqjfwf");
+	CTest* pMY4 = (CTest*)m_configMap.Get("bqjfwf");
+	if (pMY4)
+	{
+	}
+
 	//EXPECT_EQ(true, m_configMap.Add("aaa", pTemp1));
 }	
