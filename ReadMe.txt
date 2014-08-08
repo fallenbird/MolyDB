@@ -1,40 +1,7 @@
-========================================================================
-    CONSOLE APPLICATION : Sundis Project Overview
-========================================================================
-
-AppWizard has created this Sundis application for you.
-
-This file contains a summary of what you will find in each of the files that
-make up your Sundis application.
 
 
-Sundis.vcxproj
-    This is the main project file for VC++ projects generated using an Application Wizard.
-    It contains information about the version of Visual C++ that generated the file, and
-    information about the platforms, configurations, and project features selected with the
-    Application Wizard.
-
-Sundis.vcxproj.filters
-    This is the filters file for VC++ projects generated using an Application Wizard. 
-    It contains information about the association between the files in your project 
-    and the filters. This association is used in the IDE to show grouping of files with
-    similar extensions under a specific node (for e.g. ".cpp" files are associated with the
-    "Source Files" filter).
-
-Sundis.cpp
-    This is the main application source file.
-
-/////////////////////////////////////////////////////////////////////////////
-Other standard files:
-
-StdAfx.h, StdAfx.cpp
-    These files are used to build a precompiled header (PCH) file
-    named Sundis.pch and a precompiled types file named StdAfx.obj.
-
-/////////////////////////////////////////////////////////////////////////////
-Other notes:
-
-AppWizard uses "TODO:" comments to indicate parts of the source code you
-should add to or customize.
-
-/////////////////////////////////////////////////////////////////////////////
+0.0.0.1  2014-08-03		搭建整体简单框架
+0.0.2.0	 2014-08-04~06		完成网络IO模块
+0.0.3.0  2014-08-07		增加数据引擎的hash结构，并亲自测试
+0.0.3.2	 2014-08-08		引入google开源unit test框架gtest
+0.0.3.3	 2014-08-08		调整输出目录结构，调整工程依赖
