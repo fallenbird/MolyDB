@@ -21,7 +21,7 @@
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>Unicode</CharacterSet>
-    <PlatformToolset>v120</PlatformToolset>
+    <PlatformToolset>v110</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -87,18 +87,18 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\%40SrcCode\MolyDB\molyserver\ConfigManager.cpp" />
-    <ClCompile Include="..\..\..\%40SrcCode\MolyDB\molyserver\MainLogic.cpp" />
-    <ClCompile Include="..\..\..\%40SrcCode\MolyDB\molyserver\NetIntface.cpp" />
+    <ClCompile Include="..\..\..\..\%40JakeProj\SXF_PROJ0021_MolyDB\MolyDB\molyserver\ConfigManager.cpp" />
+    <ClCompile Include="..\..\..\..\%40JakeProj\SXF_PROJ0021_MolyDB\MolyDB\molyserver\MainLogic.cpp" />
+    <ClCompile Include="..\..\..\..\%40JakeProj\SXF_PROJ0021_MolyDB\MolyDB\molyserver\NetIntface.cpp" />
     <ClCompile Include="molyserver.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\%40SrcCode\MolyDB\molyserver\ClientAgent.h" />
-    <ClInclude Include="..\..\..\%40SrcCode\MolyDB\molyserver\ConfigManager.h" />
     <ClInclude Include="..\..\..\%40SrcCode\MolyDB\molyserver\Dictonary.h" />
     <ClInclude Include="..\..\..\%40SrcCode\MolyDB\molyserver\Hashmap.h" />
-    <ClInclude Include="..\..\..\%40SrcCode\MolyDB\molyserver\molyserver.h" />
-    <ClInclude Include="..\..\..\%40SrcCode\MolyDB\molyserver\NetIntface.h" />
+    <ClInclude Include="..\..\..\..\%40JakeProj\SXF_PROJ0021_MolyDB\MolyDB\molyserver\ConfigManager.h" />
+    <ClInclude Include="..\..\..\..\%40JakeProj\SXF_PROJ0021_MolyDB\MolyDB\molyserver\molyserver.h" />
+    <ClInclude Include="..\..\..\..\%40JakeProj\SXF_PROJ0021_MolyDB\MolyDB\molyserver\NetIntface.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

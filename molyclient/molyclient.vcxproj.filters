@@ -5,10 +5,27 @@
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
+    <Filter Include="NetBase">
+      <UniqueIdentifier>{67d43659-9309-438a-ac1d-0cff1b891229}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="molyclient.cpp">
       <Filter>main</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\..\%40JakeProj\SXF_PROJ0021_MolyDB\MolyDB\molyclient\NetBase.cpp">
+      <Filter>NetBase</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\..\%40JakeProj\SXF_PROJ0021_MolyDB\MolyDB\molyclient\LoginMessage.h">
+      <Filter>NetBase</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\%40JakeProj\SXF_PROJ0021_MolyDB\MolyDB\molyclient\NetBase.h">
+      <Filter>NetBase</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\%40JakeProj\SXF_PROJ0021_MolyDB\MolyDB\molyclient\NetMsg.h">
+      <Filter>NetBase</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

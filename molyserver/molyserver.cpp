@@ -12,7 +12,7 @@ void MolyServer::InitServer()
 	m_serverPort = 3690;
 
 	// --init config
-	ConfigManager::GetInstance().LoadConfig( "config.ini" );
+	ConfigManager::GetInstance().OpenConfigFile( "config.ini" );
 
 	// --init net interface
 	NetInterface::GetInstance().initInterface( "127.0.0.1", 3690 );

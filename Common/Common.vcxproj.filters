@@ -11,25 +11,25 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\%40SrcCode\MolyDB\Common\JK_Singleton.h">
+    <ClInclude Include="..\..\..\..\%40JakeProj\SXF_PROJ0021_MolyDB\MolyDB\Common\JK_Array.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="JK_Lock.h">
+    <ClInclude Include="..\..\..\..\%40JakeProj\SXF_PROJ0021_MolyDB\MolyDB\Common\JK_Assert.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\%40SrcCode\MolyDB\Common\JK_Hashmap.h">
+    <ClInclude Include="..\..\..\..\%40JakeProj\SXF_PROJ0021_MolyDB\MolyDB\Common\JK_Dictionary.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\%40SrcCode\MolyDB\Common\JK_MemMgr.h">
+    <ClInclude Include="..\..\..\..\%40JakeProj\SXF_PROJ0021_MolyDB\MolyDB\Common\JK_Hashmap.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\%40SrcCode\MolyDB\Common\JK_Array.h">
+    <ClInclude Include="..\..\..\..\%40JakeProj\SXF_PROJ0021_MolyDB\MolyDB\Common\JK_Lock.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\%40SrcCode\MolyDB\Common\JK_Dictionary.h">
+    <ClInclude Include="..\..\..\..\%40JakeProj\SXF_PROJ0021_MolyDB\MolyDB\Common\JK_MemMgr.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\%40SrcCode\MolyDB\Common\JK_Assert.h">
+    <ClInclude Include="..\..\..\..\%40JakeProj\SXF_PROJ0021_MolyDB\MolyDB\Common\JK_Singleton.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -4,13 +4,13 @@
     <ClCompile Include="molyserver.cpp">
       <Filter>Server</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\%40SrcCode\MolyDB\molyserver\MainLogic.cpp">
+    <ClCompile Include="..\..\..\..\%40JakeProj\SXF_PROJ0021_MolyDB\MolyDB\molyserver\MainLogic.cpp">
       <Filter>Main</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\%40SrcCode\MolyDB\molyserver\NetIntface.cpp">
+    <ClCompile Include="..\..\..\..\%40JakeProj\SXF_PROJ0021_MolyDB\MolyDB\molyserver\NetIntface.cpp">
       <Filter>Event</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\%40SrcCode\MolyDB\molyserver\ConfigManager.cpp">
+    <ClCompile Include="..\..\..\..\%40JakeProj\SXF_PROJ0021_MolyDB\MolyDB\molyserver\ConfigManager.cpp">
       <Filter>Config</Filter>
     </ClCompile>
   </ItemGroup>
@@ -21,17 +21,17 @@
     <ClInclude Include="..\..\..\%40SrcCode\MolyDB\molyserver\Hashmap.h">
       <Filter>DataEngin</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\%40SrcCode\MolyDB\molyserver\NetIntface.h">
-      <Filter>Event</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\%40SrcCode\MolyDB\molyserver\ClientAgent.h">
       <Filter>ClintAgent</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\%40SrcCode\MolyDB\molyserver\molyserver.h">
-      <Filter>Server</Filter>
+    <ClInclude Include="..\..\..\..\%40JakeProj\SXF_PROJ0021_MolyDB\MolyDB\molyserver\NetIntface.h">
+      <Filter>Event</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\%40SrcCode\MolyDB\molyserver\ConfigManager.h">
+    <ClInclude Include="..\..\..\..\%40JakeProj\SXF_PROJ0021_MolyDB\MolyDB\molyserver\ConfigManager.h">
       <Filter>Config</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\%40JakeProj\SXF_PROJ0021_MolyDB\MolyDB\molyserver\molyserver.h">
+      <Filter>Server</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

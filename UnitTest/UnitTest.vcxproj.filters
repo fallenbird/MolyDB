@@ -14,12 +14,12 @@
     <ClCompile Include="UnitTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\%40SrcCode\MolyDB\UnitTest\HashmapTest.cpp">
-      <Filter>Header Files</Filter>
+    <ClCompile Include="..\..\..\..\%40JakeProj\SXF_PROJ0021_MolyDB\MolyDB\UnitTest\HashmapTest.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\%40SrcCode\MolyDB\UnitTest\HashmapTest.h">
+    <ClInclude Include="..\..\..\..\%40JakeProj\SXF_PROJ0021_MolyDB\MolyDB\UnitTest\HashmapTest.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

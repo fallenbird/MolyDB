@@ -10,6 +10,15 @@
       <Platform>Win32</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\..\%40JakeProj\SXF_PROJ0021_MolyDB\MolyDB\Common\JK_Array.h" />
+    <ClInclude Include="..\..\..\..\%40JakeProj\SXF_PROJ0021_MolyDB\MolyDB\Common\JK_Assert.h" />
+    <ClInclude Include="..\..\..\..\%40JakeProj\SXF_PROJ0021_MolyDB\MolyDB\Common\JK_Dictionary.h" />
+    <ClInclude Include="..\..\..\..\%40JakeProj\SXF_PROJ0021_MolyDB\MolyDB\Common\JK_Hashmap.h" />
+    <ClInclude Include="..\..\..\..\%40JakeProj\SXF_PROJ0021_MolyDB\MolyDB\Common\JK_Lock.h" />
+    <ClInclude Include="..\..\..\..\%40JakeProj\SXF_PROJ0021_MolyDB\MolyDB\Common\JK_MemMgr.h" />
+    <ClInclude Include="..\..\..\..\%40JakeProj\SXF_PROJ0021_MolyDB\MolyDB\Common\JK_Singleton.h" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{D7D3AB5B-319E-4853-A351-0C950A70F59C}</ProjectGuid>
     <RootNamespace>Common</RootNamespace>
@@ -19,7 +28,7 @@
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>MultiByte</CharacterSet>
-    <PlatformToolset>v120</PlatformToolset>
+    <PlatformToolset>v110</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -68,15 +77,6 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClInclude Include="..\..\..\%40SrcCode\MolyDB\Common\JK_Array.h" />
-    <ClInclude Include="..\..\..\%40SrcCode\MolyDB\Common\JK_Assert.h" />
-    <ClInclude Include="..\..\..\%40SrcCode\MolyDB\Common\JK_Dictionary.h" />
-    <ClInclude Include="..\..\..\%40SrcCode\MolyDB\Common\JK_Hashmap.h" />
-    <ClInclude Include="..\..\..\%40SrcCode\MolyDB\Common\JK_MemMgr.h" />
-    <ClInclude Include="JK_Lock.h" />
-    <ClInclude Include="..\..\..\%40SrcCode\MolyDB\Common\JK_Singleton.h" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
