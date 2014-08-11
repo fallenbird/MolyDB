@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include "NetBase.h"
 #include "assert.h"
+#include "JK_Utility.h"
 
 #pragma comment( lib, "ws2_32.lib" )
 
@@ -10,6 +11,7 @@
 //extern DWORD	g_dwRecvBuffUsed;			// 已使用的接收缓冲大小
 
 bool CNetBase::m_bConnectDestroy = false;
+void NetProcess(WPARAM wParam, LPARAM lParam);
 
 unsigned int CNetBase::NetWorkThread(DWORD Onwer)
 {
@@ -33,7 +35,8 @@ unsigned int CNetBase::NetWorkThread(DWORD Onwer)
 		if( pConnect->IsHavdData() )			//取道缓冲数据
 		{
 			//触发事件
-			PostMessage( pConnect->m_hWnd, pConnect->m_dwEventID, (DWORD)pConnect,0 );
+			//PostMessage( pConnect->m_hWnd, pConnect->m_dwEventID, (DWORD)pConnect,0 );
+			NetProcess((DWORD)pConnect, 0 );
 		}
 
 		if( pConnect->m_SendLen > 0 )								//发送数据
@@ -49,7 +52,7 @@ unsigned int CNetBase::NetWorkThread(DWORD Onwer)
 			{
 				int er = WSAGetLastError();
 				char temp[32];
-				sprintf( temp, "%d\n", er );
+				JK_SPRITF(temp, "%d\n", er);
 				//OutputDebugString( temp );
 			}
 			LeaveCriticalSection( &pConnect->m_SendCritSect );
@@ -167,19 +170,19 @@ bool ConnectInfo::GetData( char* pData, int& iLen )
 	else
 	{
 		PacketHeader* pHeader = (PacketHeader*)&m_pMemPool[m_iStartPtr];
-		//if( pHeader->wSize + 2 > curDatalen )		//断包
-		if( pHeader->wSize + 4  > curDatalen )		//断包
+		//if( pHeader->wSize + 4 > curDatalen )		//断包
+		if( pHeader->wSize + 2  > curDatalen )		//断包
 		{
 			return false;
 		}
 		else
 		{
 			EnterCriticalSection( &m_RecvCritSect );
-			//memcpy( pData, &m_pMemPool[m_iStartPtr+2], pHeader->wSize );
-			memcpy( pData, &m_pMemPool[m_iStartPtr+4], pHeader->wSize );
+			memcpy( pData, &m_pMemPool[m_iStartPtr+2], pHeader->wSize );
+			//memcpy( pData, &m_pMemPool[m_iStartPtr+4], pHeader->wSize );
 
-			//m_iStartPtr += pHeader->wSize + 2;
-			m_iStartPtr += pHeader->wSize  + 4;
+			m_iStartPtr += pHeader->wSize + 2;
+			//m_iStartPtr += pHeader->wSize  + 4;
 			iLen = pHeader->wSize;
 
 			LeaveCriticalSection( &m_RecvCritSect );

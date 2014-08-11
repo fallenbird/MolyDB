@@ -1,26 +1,7 @@
 #include "IOCPServer.h"
-#include "NetworkObject.h"
+#include "JK_Singleton.h"
 #include "ClientAgent.h"
 
-#include "JK_Singleton.h"
-
-
-
-//-------------------------------------------------------------------------------------------------
-// User Class
-//-------------------------------------------------------------------------------------------------
-class client : public NetworkObject
-{
-protected:
-	virtual void	OnAccept( DWORD dwNetworkIndex ) {};
-	virtual void	OnDisconnect() {};
-	virtual	void	OnRecv( BYTE *pMsg, WORD wSize ) { Send( pMsg, wSize ); }
-	virtual void	OnConnect( BOOL bSuccess, DWORD dwNetworkIndex ) {}    
-};
-
-//-------------------------------------------------------------------------------------------------
-// Callback Functions
-//-------------------------------------------------------------------------------------------------
 
 
 const DWORD CLIENT_IOHANDLER_KEY = 0;

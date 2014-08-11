@@ -13,18 +13,12 @@
     <ClCompile Include="molyclient.cpp">
       <Filter>main</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\%40JakeProj\SXF_PROJ0021_MolyDB\MolyDB\molyclient\NetBase.cpp">
+    <ClCompile Include="..\..\..\%40SrcCode\MolyDB\molyclient\NetBase.cpp">
       <Filter>NetBase</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\..\%40JakeProj\SXF_PROJ0021_MolyDB\MolyDB\molyclient\LoginMessage.h">
-      <Filter>NetBase</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\%40JakeProj\SXF_PROJ0021_MolyDB\MolyDB\molyclient\NetBase.h">
-      <Filter>NetBase</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\%40JakeProj\SXF_PROJ0021_MolyDB\MolyDB\molyclient\NetMsg.h">
+    <ClInclude Include="..\..\..\%40SrcCode\MolyDB\molyclient\NetBase.h">
       <Filter>NetBase</Filter>
     </ClInclude>
   </ItemGroup>

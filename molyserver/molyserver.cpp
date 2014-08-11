@@ -16,7 +16,7 @@ void MolyServer::InitServer()
 
 	// --init net interface
 	NetInterface::GetInstance().initInterface( "127.0.0.1", 3690 );
-	m_runningSta = ers_NONE;
+	m_runningSta = ers_RUNNING;
 }
 
 

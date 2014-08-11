@@ -3,28 +3,30 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "molyclient", "molyclient\molyclient.vcxproj", "{F2FC7319-152A-41F1-8FF4-226F5F698910}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "04.molyclient", "molyclient\molyclient.vcxproj", "{F2FC7319-152A-41F1-8FF4-226F5F698910}"
 	ProjectSection(ProjectDependencies) = postProject
 		{D7D3AB5B-319E-4853-A351-0C950A70F59C} = {D7D3AB5B-319E-4853-A351-0C950A70F59C}
 		{8451455F-A33B-4B9C-847A-8D86FB97D4D6} = {8451455F-A33B-4B9C-847A-8D86FB97D4D6}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "molyserver", "molyserver\molyserver.vcxproj", "{EAB5DA4C-66F3-4E4A-821A-B5111862E2DB}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "05.molyserver", "molyserver\molyserver.vcxproj", "{EAB5DA4C-66F3-4E4A-821A-B5111862E2DB}"
 	ProjectSection(ProjectDependencies) = postProject
 		{D7D3AB5B-319E-4853-A351-0C950A70F59C} = {D7D3AB5B-319E-4853-A351-0C950A70F59C}
 		{8451455F-A33B-4B9C-847A-8D86FB97D4D6} = {8451455F-A33B-4B9C-847A-8D86FB97D4D6}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Network", "Network\Network.vcxproj", "{8451455F-A33B-4B9C-847A-8D86FB97D4D6}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "02.Network", "Network\Network.vcxproj", "{8451455F-A33B-4B9C-847A-8D86FB97D4D6}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Common", "Common\Common.vcxproj", "{D7D3AB5B-319E-4853-A351-0C950A70F59C}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "03.Resource", "Resource\Resource.vcxproj", "{7E698B20-8E78-44ED-B37B-9DC5FCA90C5C}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Resource", "Resource\Resource.vcxproj", "{7E698B20-8E78-44ED-B37B-9DC5FCA90C5C}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "UnitTest", "UnitTest\UnitTest.vcxproj", "{3E973BAC-2C55-402B-A998-89F7FDCEFB91}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "06.UnitTest", "UnitTest\UnitTest.vcxproj", "{3E973BAC-2C55-402B-A998-89F7FDCEFB91}"
 	ProjectSection(ProjectDependencies) = postProject
 		{D7D3AB5B-319E-4853-A351-0C950A70F59C} = {D7D3AB5B-319E-4853-A351-0C950A70F59C}
 	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "00.Global", "Global\Global.vcxproj", "{D7D3AB5B-319E-4853-A351-0C950A70F59C}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "01.Common", "Common\Common.vcxproj", "{499E9482-342B-44DF-9C01-97CBA277AD74}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,12 +53,6 @@ Global
 		{8451455F-A33B-4B9C-847A-8D86FB97D4D6}.Release|Win32.Build.0 = Release|Win32
 		{8451455F-A33B-4B9C-847A-8D86FB97D4D6}.Template|Win32.ActiveCfg = Template|Win32
 		{8451455F-A33B-4B9C-847A-8D86FB97D4D6}.Template|Win32.Build.0 = Template|Win32
-		{D7D3AB5B-319E-4853-A351-0C950A70F59C}.Debug|Win32.ActiveCfg = Debug|Win32
-		{D7D3AB5B-319E-4853-A351-0C950A70F59C}.Debug|Win32.Build.0 = Debug|Win32
-		{D7D3AB5B-319E-4853-A351-0C950A70F59C}.Release|Win32.ActiveCfg = Release|Win32
-		{D7D3AB5B-319E-4853-A351-0C950A70F59C}.Release|Win32.Build.0 = Release|Win32
-		{D7D3AB5B-319E-4853-A351-0C950A70F59C}.Template|Win32.ActiveCfg = Release|Win32
-		{D7D3AB5B-319E-4853-A351-0C950A70F59C}.Template|Win32.Build.0 = Release|Win32
 		{7E698B20-8E78-44ED-B37B-9DC5FCA90C5C}.Debug|Win32.ActiveCfg = Debug|Win32
 		{7E698B20-8E78-44ED-B37B-9DC5FCA90C5C}.Debug|Win32.Build.0 = Debug|Win32
 		{7E698B20-8E78-44ED-B37B-9DC5FCA90C5C}.Release|Win32.ActiveCfg = Release|Win32
@@ -69,6 +65,18 @@ Global
 		{3E973BAC-2C55-402B-A998-89F7FDCEFB91}.Release|Win32.Build.0 = Release|Win32
 		{3E973BAC-2C55-402B-A998-89F7FDCEFB91}.Template|Win32.ActiveCfg = Release|Win32
 		{3E973BAC-2C55-402B-A998-89F7FDCEFB91}.Template|Win32.Build.0 = Release|Win32
+		{D7D3AB5B-319E-4853-A351-0C950A70F59C}.Debug|Win32.ActiveCfg = Debug|Win32
+		{D7D3AB5B-319E-4853-A351-0C950A70F59C}.Debug|Win32.Build.0 = Debug|Win32
+		{D7D3AB5B-319E-4853-A351-0C950A70F59C}.Release|Win32.ActiveCfg = Release|Win32
+		{D7D3AB5B-319E-4853-A351-0C950A70F59C}.Release|Win32.Build.0 = Release|Win32
+		{D7D3AB5B-319E-4853-A351-0C950A70F59C}.Template|Win32.ActiveCfg = Release|Win32
+		{D7D3AB5B-319E-4853-A351-0C950A70F59C}.Template|Win32.Build.0 = Release|Win32
+		{499E9482-342B-44DF-9C01-97CBA277AD74}.Debug|Win32.ActiveCfg = Debug|Win32
+		{499E9482-342B-44DF-9C01-97CBA277AD74}.Debug|Win32.Build.0 = Debug|Win32
+		{499E9482-342B-44DF-9C01-97CBA277AD74}.Release|Win32.ActiveCfg = Release|Win32
+		{499E9482-342B-44DF-9C01-97CBA277AD74}.Release|Win32.Build.0 = Release|Win32
+		{499E9482-342B-44DF-9C01-97CBA277AD74}.Template|Win32.ActiveCfg = Release|Win32
+		{499E9482-342B-44DF-9C01-97CBA277AD74}.Template|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
