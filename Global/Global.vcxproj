@@ -18,12 +18,13 @@
     <ClInclude Include="..\..\..\%40SrcCode\MolyDB\Global\JK_Lock.h" />
     <ClInclude Include="..\..\..\%40SrcCode\MolyDB\Global\JK_MemMgr.h" />
     <ClInclude Include="..\..\..\%40SrcCode\MolyDB\Global\JK_Singleton.h" />
+    <ClInclude Include="..\..\..\%40SrcCode\MolyDB\Global\JK_Timer.h" />
     <ClInclude Include="..\..\..\%40SrcCode\MolyDB\Global\JK_Utility.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{D7D3AB5B-319E-4853-A351-0C950A70F59C}</ProjectGuid>
     <RootNamespace>Common</RootNamespace>
-    <ProjectName>00.Global</ProjectName>
+    <ProjectName>Global</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">

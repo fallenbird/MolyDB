@@ -18,12 +18,14 @@ m_variable.DeleteElement( pNew );
 
 //#include "j_List.h"
 
+
 template< typename T > 
 void swap( T& _Left, T& _Right)
 {	
 	T _Tmp = _Left;
 	_Left = _Right, _Right = _Tmp;
 }
+
 
 template< typename T, int acount, bool bThread = false >
 class __declspec(dllexport) j_Hash
@@ -73,6 +75,7 @@ protected:
 	__inline T* GetElement( DWORD dwKey, Int2Type< true >  );
 };
 
+
 template < typename T, int acount, bool bThread > j_Hash< T, acount, bThread >::j_Hash():m_dwCount( 0 )
 {
 	m_pMap = JNEW( j_HashNode, acount);
@@ -81,6 +84,7 @@ template < typename T, int acount, bool bThread > j_Hash< T, acount, bThread >::
 		InitializeCriticalSection( &m_CritSect );
 }
 
+
 template < typename T, int acount, bool bThread > j_Hash< T, acount, bThread >::~j_Hash()
 {
 	Close();
@@ -88,6 +92,7 @@ template < typename T, int acount, bool bThread > j_Hash< T, acount, bThread >::
 		DeleteCriticalSection( &m_CritSect );
 	JDELETE( m_pMap);
 }
+
 
 template < typename T, int acount, bool bThread > void j_Hash< T, acount, bThread >::Close()
 {
@@ -99,10 +104,12 @@ template < typename T, int acount, bool bThread > void j_Hash< T, acount, bThrea
 	m_pPtrList.Close();
 }
 
+
 template < typename T, int acount, bool bThread > DWORD j_Hash< T, acount, bThread >::Size() const
 {
 	return m_dwCount;
 }
+
 
 template < typename T, int acount, bool bThread > bool j_Hash< T, acount, bThread >::IsEmpty()
 {
@@ -133,6 +140,8 @@ template < typename T, int acount, bool bThread > T* j_Hash< T, acount, bThread 
 	m_dwCount++;
 	return &pNode->data;
 }
+
+
 template < typename T, int acount, bool bThread > T* j_Hash< T, acount, bThread >::AddElement( DWORD dwKey )
 {
 	T* pObject = GetElement( dwKey );

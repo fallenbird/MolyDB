@@ -14,7 +14,7 @@
     <ProjectGuid>{EAB5DA4C-66F3-4E4A-821A-B5111862E2DB}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>Sundis</RootNamespace>
-    <ProjectName>05.molyserver</ProjectName>
+    <ProjectName>molyserver</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">

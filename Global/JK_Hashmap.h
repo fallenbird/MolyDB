@@ -51,6 +51,16 @@ public:
 		m_bThread = bThread;
 	}
 
+	inline unsigned long GetSize()
+	{
+		return m_lSize;
+	}
+
+	inline unsigned long GetUsed()
+	{
+		return m_lUsed;
+	}
+
 	bool Init( unsigned long lMaxSize )
 	{
 		m_lSize = lMaxSize;

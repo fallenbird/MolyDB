@@ -3,7 +3,7 @@
 
 #include "NetBase.h"
 #include "NetMsg.h "
-
+#include <stdio.h>
 
 CNetBase*			g_pNetBase;						// ÍøÂç½Ó¿Ú
 

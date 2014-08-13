@@ -14,7 +14,7 @@
     <ProjectGuid>{F2FC7319-152A-41F1-8FF4-226F5F698910}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>molyclient</RootNamespace>
-    <ProjectName>04.molyclient</ProjectName>
+    <ProjectName>molyclient</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
