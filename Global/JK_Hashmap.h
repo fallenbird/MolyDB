@@ -30,8 +30,6 @@ public:
 
 //extern unsigned int dict_hash_function_seed;
 
-#define lock_if_necessary() if( m_bThread ){m_lock.Lock();}else{}
-#define unlock_if_necessary() if( m_bThread ){m_lock.Unlock();}else{}
 
 //template< typename T, bool bThread = false >
 //class __declspec(dllexport) JK_Hashmap
@@ -51,21 +49,44 @@ public:
 		m_bThread = bThread;
 	}
 
+
 	inline unsigned long GetSize()
 	{
+		lock_if_necessary();
 		return m_lSize;
+		unlock_if_necessary();
 	}
+
 
 	inline unsigned long GetUsed()
 	{
+		lock_if_necessary();
 		return m_lUsed;
+		unlock_if_necessary();
 	}
+
+
+	inline void IncUsed()
+	{
+		lock_if_necessary();
+		++m_lUsed;
+		unlock_if_necessary();
+	}
+
+
+	inline void DecUsed()
+	{
+		lock_if_necessary();
+		--m_lUsed;
+		unlock_if_necessary();
+	}
+
 
 	bool Init( unsigned long lMaxSize )
 	{
+		lock_if_necessary();
 		m_lSize = lMaxSize;
 		m_lUsed = 0;
-		lock_if_necessary();
 		m_table = (HashEntity**)JK_MALLOC( sizeof(HashEntity*)*lMaxSize );
 		if( m_table )
 		{
@@ -78,13 +99,15 @@ public:
 	}
 
 
-	bool Release()
+	// release hash and all node
+	bool ReleaseAll()
 	{
 		lock_if_necessary();
 		for( unsigned long i = 0; i < m_lSize; ++i )
 		{
 			ReleaseEntity( m_table[i] );
 		}
+		JK_FREE(m_table);
 		unlock_if_necessary();
 		m_lSize = 0;
 		m_lUsed = 0;
@@ -92,9 +115,31 @@ public:
 	}
 
 
-	bool Reset()
+	// release hash only
+	bool Release()
 	{
+		lock_if_necessary();
+		JK_FREE(m_table);
+		unlock_if_necessary();
+		m_lSize = 0;
+		m_lUsed = 0;
+		m_table = NULL;
+	}
 
+
+	HashEntity* GetEntityByIdx(int idx)
+	{
+		lock_if_necessary();
+		return m_table[idx];
+		unlock_if_necessary();
+	}
+
+
+	void SetEntityByIdx( int idx, HashEntity* he )
+	{
+		lock_if_necessary();
+		m_table[idx] = he;
+		unlock_if_necessary();
 	}
 
 	
@@ -104,7 +149,7 @@ public:
 		{
 			return NULL;
 		}
-		unsigned int hashidx = HashFunction( (unsigned char*)key, strlen( (char*)key ) );
+		unsigned int hashidx = HashFunction( (unsigned char*)key );
 		hashidx %= m_lSize;
 		lock_if_necessary();
 		HashEntity** ppEntity= &m_table[hashidx];
@@ -125,7 +170,7 @@ public:
 		{
 			return false;
 		}
-		unsigned int hashidx = HashFunction( (unsigned char*)key, strlen( (char*)key ) );
+		unsigned int hashidx = HashFunction( (unsigned char*)key );
 		hashidx %= m_lSize;
 
 		lock_if_necessary();
@@ -157,7 +202,7 @@ public:
 		{
 			return false;
 		}
-		unsigned int hashidx = HashFunction( ( unsigned char*)key, strlen( (char*)key ) );
+		unsigned int hashidx = HashFunction( ( unsigned char*)key );
 		hashidx %= m_lSize;
 		lock_if_necessary();
 		HashEntity* pParent = GetParentEntity( m_table[hashidx], key );
@@ -171,13 +216,12 @@ public:
 	}
 
 
-private:
-
 	// --djb hash 
-	unsigned int HashFunction( const unsigned char *buf, int len ) 
+	unsigned int HashFunction( const unsigned char *buf ) 
 	{
 		//unsigned int hash = (unsigned int)dict_hash_function_seed;
 		unsigned int hash = 5381;
+		int len = strlen((char*)buf);
 		while (len--)
 		{
 			hash = ((hash << 5) + hash) + (tolower(*buf++)); /* hash * 33 + c */
@@ -185,6 +229,8 @@ private:
 		return hash;
 	}
 
+
+private:
 	void ReleaseEntity( HashEntity* pEntity )
 	{
 		if( NULL == pEntity ) 

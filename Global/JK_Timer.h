@@ -5,16 +5,22 @@
 
 #ifdef WIN32
 #include <Windows.h>
+long long GetCurrentTick()
+{
+	return GetTickCount();
+}
+
 #else
-#include <pthread.h>
+
+#include <sys/time.h>
+long long GetCurrentTick()
+{
+	struct timeval tv;
+	gettimeofday(&tv, NULL);
+	return (((long long)tv.tv_sec) * 1000) + (tv.tv_usec / 1000);
+}
+
 #endif
 
-
-
-#ifdef _
-#define JK_ASSERT(expr) (assert(expr))
-#else
-#define JK_ASSERT(expr) ((void)0)
-#endif
 
 #endif

@@ -87,17 +87,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\%40SrcCode\MolyDB\molyserver\DataSpace.cpp" />
+    <ClCompile Include="..\..\..\%40SrcCode\MolyDB\molyserver\MainLogic.cpp" />
     <ClCompile Include="ClientAgent.cpp" />
     <ClCompile Include="..\..\..\%40SrcCode\MolyDB\molyserver\ConfigManager.cpp" />
-    <ClCompile Include="..\..\..\%40SrcCode\MolyDB\molyserver\MainLogic.cpp" />
     <ClCompile Include="..\..\..\%40SrcCode\MolyDB\molyserver\NetIntface.cpp" />
     <ClCompile Include="molyserver.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\%40SrcCode\MolyDB\molyserver\ClientAgent.h" />
     <ClInclude Include="..\..\..\%40SrcCode\MolyDB\molyserver\ConfigManager.h" />
-    <ClInclude Include="..\..\..\%40SrcCode\MolyDB\molyserver\Dictonary.h" />
-    <ClInclude Include="..\..\..\%40SrcCode\MolyDB\molyserver\Hashmap.h" />
+    <ClInclude Include="..\..\..\%40SrcCode\MolyDB\molyserver\DataSpace.h" />
     <ClInclude Include="..\..\..\%40SrcCode\MolyDB\molyserver\NetIntface.h" />
     <ClInclude Include="..\..\..\..\%40JakeProj\SXF_PROJ0021_MolyDB\MolyDB\molyserver\molyserver.h" />
   </ItemGroup>

@@ -58,6 +58,7 @@ private:
 
 };
 
-
+#define lock_if_necessary() if( m_bThread ){m_lock.Lock();}else{}
+#define unlock_if_necessary() if( m_bThread ){m_lock.Unlock();}else{}
 
 #endif

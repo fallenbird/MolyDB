@@ -7,23 +7,20 @@
     <ClCompile Include="..\..\..\%40SrcCode\MolyDB\molyserver\ConfigManager.cpp">
       <Filter>Config</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\%40SrcCode\MolyDB\molyserver\MainLogic.cpp">
-      <Filter>Main</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\%40SrcCode\MolyDB\molyserver\NetIntface.cpp">
       <Filter>Event</Filter>
     </ClCompile>
     <ClCompile Include="ClientAgent.cpp">
       <Filter>ClintAgent</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\%40SrcCode\MolyDB\molyserver\DataSpace.cpp">
+      <Filter>DataEngin</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\%40SrcCode\MolyDB\molyserver\MainLogic.cpp">
+      <Filter>MainLogic</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\%40SrcCode\MolyDB\molyserver\Dictonary.h">
-      <Filter>DataEngin</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\%40SrcCode\MolyDB\molyserver\Hashmap.h">
-      <Filter>DataEngin</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\%40SrcCode\MolyDB\molyserver\ClientAgent.h">
       <Filter>ClintAgent</Filter>
     </ClInclude>
@@ -35,6 +32,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\%40SrcCode\MolyDB\molyserver\NetIntface.h">
       <Filter>Event</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\%40SrcCode\MolyDB\molyserver\DataSpace.h">
+      <Filter>DataEngin</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -56,9 +56,6 @@
     <Filter Include="Event">
       <UniqueIdentifier>{19219090-bfe2-4967-a766-ba3bb9eb28e1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Main">
-      <UniqueIdentifier>{6329c427-522e-40fc-b516-d94cccf30caf}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Replication">
       <UniqueIdentifier>{60432339-e1cd-465e-b358-f83e88b901a0}</UniqueIdentifier>
     </Filter>
@@ -67,6 +64,9 @@
     </Filter>
     <Filter Include="ClintAgent">
       <UniqueIdentifier>{0ad324de-07db-40cf-bc72-df27180eef7e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MainLogic">
+      <UniqueIdentifier>{2ce89e2d-9da4-4f31-ab8d-d52619310990}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
