@@ -12,3 +12,5 @@
 0.0.3.4	 2014-08-09	JakeSun		client端的网络接口1
 0.0.3.5	 2014-08-09	JakeSun		client端的网络接口2
 0.0.3.6	 2014-08-11	JakeSun		调试通Server与Client之间的协议
+0.0.4.0  2014-08-14 JakeSun   实现Dictionary结构及动态重置功能(rehash)  
+
