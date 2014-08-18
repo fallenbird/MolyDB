@@ -35,14 +35,39 @@ public:
 
 	bool AddElement( void* key, void* val )
 	{
+		if (-1 == m_iRehashidx)
+		{
+			return m_hashtable[1].Add(key, val);
+		}
+		return m_hashtable[0].Add(key, val);
+	}
 
-		return true;
+	void* GetElement(void* key )
+	{
+		if (-1 != m_iRehashidx)
+		{
+			return m_hashtable[0].Get(key);
+		}
+		void* tempVal = m_hashtable[0].Get(key);
+		if (NULL != tempVal )
+		{
+			return tempVal;
+		}
+		return m_hashtable[1].Get(key);
 	}
 
 
-	void RemoveElement( void* key )
+	bool RemoveElement( void* key )
 	{
-
+		if (-1 != m_iRehashidx)
+		{
+			return m_hashtable[0].Remove(key);
+		}
+		if (true == m_hashtable[0].Remove(key))
+		{
+			return true;
+		}
+		return m_hashtable[1].Remove(key);
 	}
 
 

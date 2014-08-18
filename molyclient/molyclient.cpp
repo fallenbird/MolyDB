@@ -63,13 +63,15 @@ int ServerPro( int nConctID, char* pMsg, int nLen )
 
 
 
-
+unsigned int CommondThread();
 
 int main(int argc, char* argv[])
 {
 	g_pNetBase = new CNetBase;
 	g_pNetBase->InitNet( MAX_CONNECT_NUM, ServerPro, NULL, NET_MSG );
 	g_pNetBase->ConncetToServer(8, "127.0.0.1", 3690 );
+
+	CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)CommondThread, NULL, 0, 0);
 
 	while ( true )
 	{
@@ -79,3 +81,40 @@ int main(int argc, char* argv[])
 	return 0;
 }
 
+
+void PrintHelpInfo()
+{
+	printf("Set  设置K-V值\n");
+	printf("Get  根据key获取相应value\n");
+}
+
+
+
+unsigned int CommondThread()
+{
+	char commondLine[128];
+	while (true)
+	{
+		gets_s(commondLine);
+		if (!strcmp(commondLine, "Get"))
+		{
+			printf("OK!");
+		}
+		else if (!strcmp(commondLine, "Set"))
+		{
+			break;
+		}
+		else if (!strcmp(commondLine, "quit"))
+		{
+		}
+		else if (!strcmp(commondLine, "help"))
+		{
+			PrintHelpInfo();
+		}
+		else
+		{
+			printf("无效的命令\n");
+		}
+	}
+	return 0;
+}

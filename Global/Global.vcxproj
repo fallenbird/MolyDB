@@ -13,6 +13,7 @@
   <ItemGroup>
     <ClInclude Include="..\..\..\%40SrcCode\MolyDB\Global\JK_Array.h" />
     <ClInclude Include="..\..\..\%40SrcCode\MolyDB\Global\JK_Assert.h" />
+    <ClInclude Include="..\..\..\%40SrcCode\MolyDB\Global\JK_Console.h" />
     <ClInclude Include="..\..\..\%40SrcCode\MolyDB\Global\JK_Dictionary.h" />
     <ClInclude Include="..\..\..\%40SrcCode\MolyDB\Global\JK_Hashmap.h" />
     <ClInclude Include="..\..\..\%40SrcCode\MolyDB\Global\JK_Lock.h" />

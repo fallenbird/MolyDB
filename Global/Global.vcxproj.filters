@@ -10,5 +10,6 @@
     <ClInclude Include="..\..\..\%40SrcCode\MolyDB\Global\JK_Singleton.h" />
     <ClInclude Include="..\..\..\%40SrcCode\MolyDB\Global\JK_Utility.h" />
     <ClInclude Include="..\..\..\%40SrcCode\MolyDB\Global\JK_Timer.h" />
+    <ClInclude Include="..\..\..\%40SrcCode\MolyDB\Global\JK_Console.h" />
   </ItemGroup>
 </Project>
