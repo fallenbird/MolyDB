@@ -14,4 +14,4 @@
 0.0.3.6	 2014-08-11 JakeSun   调试通Server与Client之间的协议
 0.0.4.0  2014-08-14 JakeSun   实现Dictionary结构及动态重置功能(rehash)  
 0.0.4.1  2014-08-18 JakeSu8n  实现Client端命令解析&控制台彩色显示
-
+0.0.4.2  2014-08-18 JakeSu8n  完全调试通过Client到Server的命令，可以初步当做一个缓存来使用了。
