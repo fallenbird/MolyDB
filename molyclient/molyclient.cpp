@@ -37,6 +37,11 @@ void ProcessLTConnectMsg(int nConctID, MSG_BASE* pMsg)
 														  printf( "insert success!\n");
 								}break;
 
+								case egr_INSERTFAILD:
+								{
+														printf("insert failed!\n");
+								}break;
+
 								case egr_CANTFINDVAL:
 								{
 														  printf("can't find the value!\n");

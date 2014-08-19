@@ -12,6 +12,7 @@ public:
 	~DataSpace();
 
 	bool	InitDB();
+	void	UpdateDB( int iUpdateMS );
 	bool	InsertKV( void* key, void* val );
 	void*	GetValue( void* key );
 	bool	RemoveKV( void* key );

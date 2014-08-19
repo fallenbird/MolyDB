@@ -44,9 +44,17 @@ private:
 	JK_Lock			m_lock;
 
 public:
-	JK_Hashmap( bool bThread = false  )
+	JK_Hashmap(bool bThread = false) : m_bThread(bThread), m_lSize(0), m_lUsed(0)
 	{
-		m_bThread = bThread;
+	}
+
+	inline void Reset()
+	{
+		lock_if_necessary();
+		m_table = NULL;
+		m_lSize = 0;
+		m_lUsed = 0;
+		unlock_if_necessary();
 	}
 
 
@@ -116,7 +124,7 @@ public:
 
 
 	// release hash only
-	bool Release()
+	void Release()
 	{
 		lock_if_necessary();
 		JK_FREE(m_table);
@@ -177,7 +185,10 @@ public:
 		HashEntity** ppEntity= &m_table[hashidx];
 		while( NULL != *ppEntity )
 		{
-			( 0!= strcmp( (char*)(*ppEntity)->m_key, (char*)key ) );
+			if (0 == strcmp((char*)(*ppEntity)->m_key, (char*)key))
+			{
+				return false;
+			}
 			ppEntity = &( (*ppEntity)->next );
 		}
 		HashEntity* pTemp = (HashEntity*)JK_MALLOC( sizeof(HashEntity) );

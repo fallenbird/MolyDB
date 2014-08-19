@@ -16,6 +16,13 @@ bool	DataSpace::InitDB()
 	return m_normalDict.InitDictionary() && m_expireDict.InitDictionary();
 }
 
+void	DataSpace::UpdateDB(int iUpdateMS )
+{
+	m_normalDict.UpdateDict(iUpdateMS);
+}
+
+
+
 bool DataSpace::InsertKV(void* key, void* val)
 {
 	return m_normalDict.AddElement( key, val );

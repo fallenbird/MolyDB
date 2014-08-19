@@ -56,6 +56,12 @@ void ClientAgent::OnRecv(BYTE *pMsg, WORD wSize)
 													 genermsg.m_iRes = egr_INSERTSUCCESS;
 													 Send((BYTE*)&genermsg, sizeof(MSG_S2C_GERERAL_RES_CMD));
 												 }
+											 else
+											 {
+												 MSG_S2C_GERERAL_RES_CMD genermsg;
+												 genermsg.m_iRes = egr_INSERTFAILD;
+												 Send((BYTE*)&genermsg, sizeof(MSG_S2C_GERERAL_RES_CMD));
+											 }
 					 }break;
 
 					 case C2S_SELECT_ITEM_SYN:

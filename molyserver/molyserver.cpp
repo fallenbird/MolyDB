@@ -32,7 +32,7 @@ void MolyServer::RunServer()
 {
 	// --run net interface
 	NetInterface::GetInstance().RunInterface();
-
+	DataSpace::GetInstance().UpdateDB(100);
 }
 
 

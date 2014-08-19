@@ -13,13 +13,14 @@
 
 #define DICT_INITIAL_SIZE   4
 #define	REHASH_MIN_REFER	10
-#define	REHASH_MAX_REFER	5
+#define	REHASH_MAX_REFER	2
 
 class JK_Dictionary
 {
 public:
 	JK_Dictionary()
 	{
+		m_iRehashidx = -1;
 	}
 
 	~JK_Dictionary()
@@ -36,14 +37,14 @@ public:
 	{
 		if (-1 == m_iRehashidx)
 		{
-			return m_hashtable[1].Add(key, val);
+			return m_hashtable[0].Add(key, val);
 		}
-		return m_hashtable[0].Add(key, val);
+		return m_hashtable[1].Add(key, val);
 	}
 
 	void* GetElement(void* key )
 	{
-		if (-1 != m_iRehashidx)
+		if (-1 == m_iRehashidx)
 		{
 			return m_hashtable[0].Get(key);
 		}
@@ -58,7 +59,7 @@ public:
 
 	bool RemoveElement( void* key )
 	{
-		if (-1 != m_iRehashidx)
+		if (-1 == m_iRehashidx)
 		{
 			return m_hashtable[0].Remove(key);
 		}
@@ -84,6 +85,7 @@ public:
 	{
 		long long start = Utility::GetCurrentTimeTick();
 		int iTimes = 0;
+		TryRehashDict();
 		while (!UpdateResize())
 		{
 			if ((iTimes >= 100) || (Utility::GetCurrentTimeTick() - start > iUpdateTick))
@@ -112,12 +114,12 @@ private:
 
 	bool IsNeedResize() 
 	{
-		if (-1 == m_iRehashidx )
+		if (-1 != m_iRehashidx )
 		{
 			return false;
 		}
-		long long size = m_hashtable[0].GetSize() + m_hashtable[1].GetSize();
-		long long used = m_hashtable[0].GetUsed() + m_hashtable[1].GetUsed();
+		long long size = m_hashtable[0].GetSize(); // +m_hashtable[1].GetSize();
+		long long used = m_hashtable[0].GetUsed(); // +m_hashtable[1].GetUsed();
 		if (used / size >= REHASH_MAX_REFER )
 		{
 			return true;
@@ -133,7 +135,7 @@ private:
 	// return true if reshashed
 	bool UpdateResize()
 	{
-		if (-1 != m_iRehashidx)
+		if (-1 == m_iRehashidx)
 		{
 			return true;
 		}
@@ -143,6 +145,7 @@ private:
 		{
 			m_hashtable[0].Release();
 			m_hashtable[0] = m_hashtable[1];
+			m_hashtable[1].Reset();
 			m_iRehashidx = -1;
 			return true;
 		}

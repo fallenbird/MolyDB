@@ -28,7 +28,7 @@ public:
 		desc.dwMaxConnectSession		= 0;
 		desc.dwSendBufferSize			= 60000;
 		desc.dwRecvBufferSize			= 60000;
-		desc.dwTimeOut					= 30000;
+		desc.dwTimeOut					= 1000 * 60 * 20;
 		desc.dwMaxPacketSize			= 4096;
 		desc.dwNumberOfIoThreads		= 1;
 		desc.dwNumberOfAcceptThreads	= 1;
