@@ -57,6 +57,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>..\Network;..\Common;..\Global;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -98,8 +99,8 @@
     <ClInclude Include="..\..\..\%40SrcCode\MolyDB\molyserver\ClientAgent.h" />
     <ClInclude Include="..\..\..\%40SrcCode\MolyDB\molyserver\ConfigManager.h" />
     <ClInclude Include="..\..\..\%40SrcCode\MolyDB\molyserver\DataSpace.h" />
+    <ClInclude Include="..\..\..\%40SrcCode\MolyDB\molyserver\molyserver.h" />
     <ClInclude Include="..\..\..\%40SrcCode\MolyDB\molyserver\NetIntface.h" />
-    <ClInclude Include="..\..\..\..\%40JakeProj\SXF_PROJ0021_MolyDB\MolyDB\molyserver\molyserver.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

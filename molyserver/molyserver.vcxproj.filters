@@ -24,9 +24,6 @@
     <ClInclude Include="..\..\..\%40SrcCode\MolyDB\molyserver\ClientAgent.h">
       <Filter>ClintAgent</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\%40JakeProj\SXF_PROJ0021_MolyDB\MolyDB\molyserver\molyserver.h">
-      <Filter>Server</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\%40SrcCode\MolyDB\molyserver\ConfigManager.h">
       <Filter>Config</Filter>
     </ClInclude>
@@ -35,6 +32,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\%40SrcCode\MolyDB\molyserver\DataSpace.h">
       <Filter>DataEngin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\%40SrcCode\MolyDB\molyserver\molyserver.h">
+      <Filter>Server</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

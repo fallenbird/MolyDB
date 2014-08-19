@@ -2,5 +2,6 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClInclude Include="..\..\..\%40SrcCode\MolyDB\Common\NetMsg.h" />
+    <ClInclude Include="..\..\..\%40SrcCode\MolyDB\Common\CommandParser.h" />
   </ItemGroup>
 </Project>

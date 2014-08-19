@@ -1,8 +1,14 @@
 // Sundis.cpp : Defines the entry point for the console application.
 //
+#ifndef _JK_MOLYSERVER_YUX9U1P_H_
+#define _JK_MOLYSERVER_YUX9U1P_H_
+
+
+
 #include "./Server.h"
 #include "NetIntface.h"
 #include "ConfigManager.h"
+#include "DataSpace.h"
 
 typedef struct ServerInof
 {
@@ -31,7 +37,7 @@ typedef struct
 class MolyServer
 {
 public:
-	void InitServer();
+	bool InitServer();
 	void RunServer();
 	void StopServer();
 	int GetState();
@@ -40,8 +46,11 @@ public:
 private:
 	NetInterface	m_NetInterface;
 	ConfigManager	m_ConfigManger;
+	DataSpace		m_DataEngine;
 	char*			m_serverIP;
 	int				m_serverPort;
 	int				m_runningSta;
 };
 
+
+#endif

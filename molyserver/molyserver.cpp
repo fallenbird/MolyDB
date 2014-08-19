@@ -6,7 +6,7 @@ int MolyServer::GetState()
 	return m_runningSta;
 }
 
-void MolyServer::InitServer()
+bool MolyServer::InitServer()
 {
 	m_serverIP = "127.0.0.1";;
 	m_serverPort = 3690;
@@ -14,9 +14,16 @@ void MolyServer::InitServer()
 	// --init config
 	ConfigManager::GetInstance().OpenConfigFile( "config.ini" );
 
+	// --init database
+	if( !DataSpace::GetInstance().InitDB() )
+	{
+		return false;
+	}
+
 	// --init net interface
 	NetInterface::GetInstance().initInterface( "127.0.0.1", 3690 );
 	m_runningSta = ers_RUNNING;
+	return true;
 }
 
 

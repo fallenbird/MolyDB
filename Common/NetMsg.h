@@ -1,6 +1,5 @@
-#ifndef __NETPROTOCOL_CS_H__
-#define __NETPROTOCOL_CS_H__
-
+#ifndef __NETPROTOCOL_PX7G7U4_H__
+#define __NETPROTOCOL_PX7G7U4_H__
 
 /*   包结构命名规则 Jake.Sun
 1) 请求(Request)						_SYN
@@ -25,7 +24,7 @@ enum
 
 enum eCS_CATEGORY
 {
-	CS_LOGON		= CS_CATEGORY_BASE,				// --登陆消息大类
+	CS_AGENT		= CS_CATEGORY_BASE,				// --登陆消息大类
 	WS_DATA			= WS_CATEGORY_BASE,				// --
 };
 
@@ -58,13 +57,22 @@ enum eWS_AUTH
 };
 
 
+enum GENERALRESULT
+{
+	egr_NONE = 0,
+	egr_INSERTSUCCESS = 1,
+	egr_INSERTFAILD = 2,
+	egr_CANTFINDVAL = 3,
+};
+
 #pragma pack(push,1)
 
 //-------------------------------------------------------------------------------------------------------
 // --基础包
 // --最基础的 Packet,所有包的父类
-struct MSG_BASE
+class MSG_BASE
 {
+public:
 	BYTE						m_byCategory;	// 协议分类
 	BYTE						m_byProtocol;
 };
@@ -91,12 +99,25 @@ struct MSG_DBPROXY_RESULT : public MSG_BASE
 
 
 // --Server --> Client
+class MSG_S2C_GERERAL_RES_CMD : public MSG_BASE
+{
+public:
+	MSG_S2C_GERERAL_RES_CMD()
+	{
+		m_byCategory = CS_AGENT;
+		m_byProtocol = S2C_GERERAL_RES_CMD;
+	}
+	int		m_iRes;
+};
+
+
+// --Server --> Client
 class MSG_S2C_SVR_READY_CMD : public MSG_BASE
 {
 public:
 	MSG_S2C_SVR_READY_CMD()
 	{
-		m_byCategory = CS_LOGON;
+		m_byCategory = CS_AGENT;
 		m_byProtocol = S2C_SVR_READY_CMD;
 	}
 	SHORT		sHighVer;					// --高版本号
@@ -112,7 +133,7 @@ class MSG_C2S_INSERT_ITEM_SYN : public MSG_BASE
 public:
 	MSG_C2S_INSERT_ITEM_SYN()
 	{
-		m_byCategory = CS_LOGON;
+		m_byCategory = CS_AGENT;
 		m_byProtocol = C2S_INSERT_ITEM_SYN;
 	}
 	char			strKey[168];
@@ -126,7 +147,7 @@ class MSG_C2S_SELECT_ITEM_SYN : public MSG_BASE
 public:
 	MSG_C2S_SELECT_ITEM_SYN()
 	{
-		m_byCategory = CS_LOGON;
+		m_byCategory = CS_AGENT;
 		m_byProtocol = C2S_SELECT_ITEM_SYN;
 	}
 	char			strKey[168];
@@ -139,7 +160,7 @@ class MSG_S2C_SELECT_ITEM_ACK : public MSG_BASE
 public:
 	MSG_S2C_SELECT_ITEM_ACK()
 	{
-		m_byCategory = CS_LOGON;
+		m_byCategory = CS_AGENT;
 		m_byProtocol = S2C_SELECT_ITEM_ACK;
 	}
 	char			strKey[168];

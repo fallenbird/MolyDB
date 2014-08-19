@@ -20,7 +20,6 @@ class JK_Dictionary
 public:
 	JK_Dictionary()
 	{
-
 	}
 
 	~JK_Dictionary()
@@ -30,7 +29,7 @@ public:
 
 	bool InitDictionary()
 	{
-
+		return m_hashtable[0].Init(DICT_INITIAL_SIZE);
 	}
 
 	bool AddElement( void* key, void* val )
@@ -83,11 +82,11 @@ public:
 
 	void UpdateDict( int iUpdateTick )
 	{
-		long long start = GetCurrentTick();
+		long long start = Utility::GetCurrentTimeTick();
 		int iTimes = 0;
 		while (!UpdateResize())
 		{
-			if ((iTimes >= 100) || (GetCurrentTick() - start > iUpdateTick))
+			if ((iTimes >= 100) || (Utility::GetCurrentTimeTick() - start > iUpdateTick))
 			{
 				break;
 			}

@@ -3,6 +3,8 @@
 #include "assert.h"
 #include "JK_Utility.h"
 
+#define PROTOCOL_HEAD_LEN 2
+
 #pragma comment( lib, "ws2_32.lib" )
 
 //extern DWORD	g_dwTotalSendNum;			// 总发包数
@@ -82,7 +84,7 @@ ConnectInfo::ConnectInfo() : m_bConnect(false),m_bIsClosed(false)
 {
 	InitializeCriticalSection( &m_SendCritSect );
 	InitializeCriticalSection( &m_RecvCritSect );
-
+	m_SendLen = 0;
 }
 
 
@@ -142,7 +144,7 @@ bool ConnectInfo::IsHavdData()
 	else
 	{
 		PacketHeader* pHeader = (PacketHeader*)&m_pMemPool[m_iStartPtr];
-		if( pHeader->wSize + 2 > curDatalen )		//断包
+		if (pHeader->wSize + PROTOCOL_HEAD_LEN > curDatalen)		//断包
 		{
 			return false;
 		}
@@ -171,17 +173,17 @@ bool ConnectInfo::GetData( char* pData, int& iLen )
 	{
 		PacketHeader* pHeader = (PacketHeader*)&m_pMemPool[m_iStartPtr];
 		//if( pHeader->wSize + 4 > curDatalen )		//断包
-		if( pHeader->wSize + 2  > curDatalen )		//断包
+		if (pHeader->wSize + PROTOCOL_HEAD_LEN  > curDatalen)		//断包
 		{
 			return false;
 		}
 		else
 		{
 			EnterCriticalSection( &m_RecvCritSect );
-			memcpy( pData, &m_pMemPool[m_iStartPtr+2], pHeader->wSize );
+			memcpy(pData, &m_pMemPool[m_iStartPtr + PROTOCOL_HEAD_LEN], pHeader->wSize);
 			//memcpy( pData, &m_pMemPool[m_iStartPtr+4], pHeader->wSize );
 
-			m_iStartPtr += pHeader->wSize + 2;
+			m_iStartPtr += pHeader->wSize + PROTOCOL_HEAD_LEN;
 			//m_iStartPtr += pHeader->wSize  + 4;
 			iLen = pHeader->wSize;
 
@@ -213,9 +215,9 @@ void ConnectInfo::SaveSendData( char* pData, int iLen )
 	}
 
 	// --同上 [SXF 2012/07/23 15:01:14]
-	memcpy( &m_pSendMemPool[m_SendLen], &iLen, sizeof(int) );
-	memcpy( &m_pSendMemPool[m_SendLen+4], pData, iLen );
-	m_SendLen += iLen + sizeof(int);
+	memcpy(&m_pSendMemPool[m_SendLen], &iLen, sizeof(unsigned short));
+	memcpy(&m_pSendMemPool[m_SendLen + sizeof(unsigned short)], pData, iLen);
+	m_SendLen += iLen + sizeof(unsigned short);
 
 	// --发包监视
 	//g_dwTotalSendNum++;

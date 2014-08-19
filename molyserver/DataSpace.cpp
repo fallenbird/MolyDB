@@ -11,7 +11,10 @@ DataSpace::~DataSpace()
 
 }
 
-
+bool	DataSpace::InitDB()
+{
+	return m_normalDict.InitDictionary() && m_expireDict.InitDictionary();
+}
 
 bool DataSpace::InsertKV(void* key, void* val)
 {

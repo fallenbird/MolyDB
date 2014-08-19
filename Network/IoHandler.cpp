@@ -497,7 +497,7 @@ VOID IoHandler::ProcessActiveSessionList()
 		{
 			if( pSession->IsAcceptSocket() && pSession->IsOnIdle() )
 			{
-				pSession->OnLogString( "Idle Session이므로 연결을 끊습니다." );
+				pSession->OnLogString( "Idle Session disconnected!." );
 				pSession->Remove();
 				continue;
 			}

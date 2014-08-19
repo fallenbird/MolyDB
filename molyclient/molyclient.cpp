@@ -4,6 +4,9 @@
 #include "NetBase.h"
 #include "NetMsg.h "
 #include <stdio.h>
+#include "CommandParser.h"
+#include "JK_Assert.h"
+
 
 CNetBase*			g_pNetBase;						// 网络接口
 
@@ -16,12 +19,39 @@ void ProcessLTConnectMsg(int nConctID, MSG_BASE* pMsg)
 
 	switch (pMsg->m_byProtocol)
 	{
-		case S2C_SVR_READY_CMD:
-		{
-			MSG_S2C_SVR_READY_CMD* pReadyMsg = (MSG_S2C_SVR_READY_CMD*)pMsg;
-			printf("Connet server success!");
-			int i = pReadyMsg->sHighVer;
-		}break;
+	case S2C_SVR_READY_CMD:
+	{
+							  MSG_S2C_SVR_READY_CMD* pReadyMsg = (MSG_S2C_SVR_READY_CMD*)pMsg;
+							  printf("Connet server success!\n");
+							  int i = pReadyMsg->sHighVer;
+	}break;
+
+
+	case S2C_GERERAL_RES_CMD:
+	{
+								MSG_S2C_GERERAL_RES_CMD* pReadyMsg = (MSG_S2C_GERERAL_RES_CMD*)pMsg;
+								switch (pReadyMsg->m_iRes)
+								{
+								case egr_INSERTSUCCESS:
+								{
+														  printf( "insert success!\n");
+								}break;
+
+								case egr_CANTFINDVAL:
+								{
+														  printf("can't find the value!\n");
+								}break;
+								default:
+									break; 
+								}
+	}break;
+
+
+	case S2C_SELECT_ITEM_ACK:
+	{
+								MSG_S2C_SELECT_ITEM_ACK* pReadyMsg = (MSG_S2C_SELECT_ITEM_ACK*)pMsg;
+								printf("%s\n", pReadyMsg->strVal);
+	}break;
 
 	default:
 		break;
@@ -36,26 +66,26 @@ void ProcessLTConnectMsg(int nConctID, MSG_BASE* pMsg)
 // Function		:		处理登陆服务器消息
 // Input  Param :		- 
 // Output Param :		-
-// Info			:		SXF	/ 2012.08.01 / 1.0
+// Info			:		SXF	/ 2014.08.10 / 1.0
 //-----------------------------------------------------------------------------------------------------------------------
-int ServerPro( int nConctID, char* pMsg, int nLen )
+int ServerPro(int nConctID, char* pMsg, int nLen)
 {
 	MSG_BASE* pMsgHead = (MSG_BASE*)pMsg;
 
 	//解析消息头
-	switch( pMsgHead->m_byCategory )
+	switch (pMsgHead->m_byCategory)
 	{
-	case CS_LOGON:
-		ProcessLTConnectMsg(nConctID, pMsgHead );
+	case CS_AGENT:
+		ProcessLTConnectMsg(nConctID, pMsgHead);
 		break;
 
-	//case HMsg_TLConnect:									// LoginServer
-	//	ProcessLTConnectMsg( nConctID, pMsg );
-	//	break;
+		//case HMsg_TLConnect:									// LoginServer
+		//	ProcessLTConnectMsg( nConctID, pMsg );
+		//	break;
 
-	//case HMsg_TWConnect:									// --World连接
-	//	ProcessTWConnectMsg( nConctID, pMsg );
-	//	break;
+		//case HMsg_TWConnect:									// --World连接
+		//	ProcessTWConnectMsg( nConctID, pMsg );
+		//	break;
 
 	}
 	return 0;
@@ -68,12 +98,17 @@ unsigned int CommondThread();
 int main(int argc, char* argv[])
 {
 	g_pNetBase = new CNetBase;
-	g_pNetBase->InitNet( MAX_CONNECT_NUM, ServerPro, NULL, NET_MSG );
-	g_pNetBase->ConncetToServer(8, "127.0.0.1", 3690 );
+	g_pNetBase->InitNet(MAX_CONNECT_NUM, ServerPro, NULL, NET_MSG);
+	if (!g_pNetBase->ConncetToServer(0, "127.0.0.1", 3690))
+	{
+		printf("Can't connent the molydb server!\n");
+		Sleep(2000);
+		return 1;
+	}
 
 	CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)CommondThread, NULL, 0, 0);
 
-	while ( true )
+	while (true)
 	{
 		Sleep(1000);
 	}
@@ -89,6 +124,40 @@ void PrintHelpInfo()
 }
 
 
+void SendCmdMsg(unsigned int cmdtype, char argv[MAX_PARA_CNT][MAX_CMD_LEN], unsigned int argc )
+{
+	switch (cmdtype)
+	{
+	case ect_COMMAND_SET:
+	{
+							if (2 != argc)
+							{
+								printf( "incorrect number of arguments!\n");
+								return;
+							}
+			MSG_C2S_INSERT_ITEM_SYN setPacket;
+			strcpy_s(setPacket.strKey, 168, argv[0]);
+			strcpy_s(setPacket.strVal, 1024, argv[1]);
+			g_pNetBase->Send((char*)&setPacket, sizeof(MSG_C2S_INSERT_ITEM_SYN));
+	}break;
+
+	case ect_COMMAND_GET:
+	{
+							if (1 != argc)
+							{
+								printf("incorrect number of arguments!\n");
+								return;
+							}
+							MSG_C2S_SELECT_ITEM_SYN setPacket;
+							strcpy_s(setPacket.strKey, 168, argv[0]);
+							g_pNetBase->Send((char*)&setPacket, sizeof(MSG_C2S_SELECT_ITEM_SYN));
+	}break;
+
+	default:
+		break;
+	}
+}
+
 
 unsigned int CommondThread()
 {
@@ -96,25 +165,30 @@ unsigned int CommondThread()
 	while (true)
 	{
 		gets_s(commondLine);
-		if (!strcmp(commondLine, "Get"))
+
+		unsigned int cmdtype = 0;
+		unsigned int argc = 0;
+		char argv[MAX_PARA_CNT][MAX_CMD_LEN];
+		CommandParser::ParseCommandStr(commondLine, cmdtype, argv, argc);
+		switch (cmdtype)
 		{
-			printf("OK!");
-		}
-		else if (!strcmp(commondLine, "Set"))
-		{
+			case ect_COMMAND_NONE:
+			{
+				printf("illegal command！\n");
+			}break;
+
+			case ect_COMMAND_HELP:
+			{
+				PrintHelpInfo();
+			}break;
+
+			default:
+			{
+				SendCmdMsg( cmdtype, argv, argc );
+			}
 			break;
 		}
-		else if (!strcmp(commondLine, "quit"))
-		{
-		}
-		else if (!strcmp(commondLine, "help"))
-		{
-			PrintHelpInfo();
-		}
-		else
-		{
-			printf("无效的命令\n");
-		}
+
 	}
 	return 0;
 }
