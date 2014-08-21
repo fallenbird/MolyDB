@@ -15,3 +15,5 @@
 0.0.4.0  2014-08-14 JakeSun   实现Dictionary结构及动态重置功能(rehash)  
 0.0.4.1  2014-08-18 JakeSu8n  实现Client端命令解析&控制台彩色显示
 0.0.4.2  2014-08-18 JakeSu8n  调试通过Client到Server的命令，可以初步用作一个缓存系统。
+0.0.4.7  2014-08-21 JakeSu8n  开始实现持久化-二进制dump持久化
+
