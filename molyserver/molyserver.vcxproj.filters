@@ -19,6 +19,15 @@
     <ClCompile Include="..\..\..\%40SrcCode\MolyDB\molyserver\MainLogic.cpp">
       <Filter>MainLogic</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\%40SrcCode\MolyDB\molyserver\Dumper.cpp">
+      <Filter>Persistence</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\%40SrcCode\MolyDB\molyserver\Appender.cpp">
+      <Filter>Persistence</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\%40SrcCode\MolyDB\molyserver\LogManager.cpp">
+      <Filter>Log</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\%40SrcCode\MolyDB\molyserver\ClientAgent.h">
@@ -35,6 +44,15 @@
     </ClInclude>
     <ClInclude Include="..\..\..\%40SrcCode\MolyDB\molyserver\molyserver.h">
       <Filter>Server</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\%40SrcCode\MolyDB\molyserver\Dumper.h">
+      <Filter>Persistence</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\%40SrcCode\MolyDB\molyserver\Appender.h">
+      <Filter>Persistence</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\%40SrcCode\MolyDB\molyserver\LogManager.h">
+      <Filter>Log</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -88,7 +88,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\%40SrcCode\MolyDB\molyserver\Appender.cpp" />
     <ClCompile Include="..\..\..\%40SrcCode\MolyDB\molyserver\DataSpace.cpp" />
+    <ClCompile Include="..\..\..\%40SrcCode\MolyDB\molyserver\Dumper.cpp" />
+    <ClCompile Include="..\..\..\%40SrcCode\MolyDB\molyserver\LogManager.cpp" />
     <ClCompile Include="..\..\..\%40SrcCode\MolyDB\molyserver\MainLogic.cpp" />
     <ClCompile Include="ClientAgent.cpp" />
     <ClCompile Include="..\..\..\%40SrcCode\MolyDB\molyserver\ConfigManager.cpp" />
@@ -96,9 +99,12 @@
     <ClCompile Include="molyserver.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\%40SrcCode\MolyDB\molyserver\Appender.h" />
     <ClInclude Include="..\..\..\%40SrcCode\MolyDB\molyserver\ClientAgent.h" />
     <ClInclude Include="..\..\..\%40SrcCode\MolyDB\molyserver\ConfigManager.h" />
     <ClInclude Include="..\..\..\%40SrcCode\MolyDB\molyserver\DataSpace.h" />
+    <ClInclude Include="..\..\..\%40SrcCode\MolyDB\molyserver\Dumper.h" />
+    <ClInclude Include="..\..\..\%40SrcCode\MolyDB\molyserver\LogManager.h" />
     <ClInclude Include="..\..\..\%40SrcCode\MolyDB\molyserver\molyserver.h" />
     <ClInclude Include="..\..\..\%40SrcCode\MolyDB\molyserver\NetIntface.h" />
   </ItemGroup>

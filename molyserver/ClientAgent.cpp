@@ -4,9 +4,9 @@
 #include "DataSpace.h"
 
 
-ClientAgent::ClientAgent( )
+ClientAgent::ClientAgent()
 {
-	
+
 }
 
 ClientAgent::~ClientAgent()
@@ -30,11 +30,10 @@ void ClientAgent::OnAccept(DWORD connindex)
 	readyPacket.sHighVer = 7;
 	readyPacket.sLowVer = 8;
 	readyPacket.iEncKey = 666;
-	printf("Accept client[%d] success!\n", connindex );
+	printf("Accept client[%d] success!\n", connindex);
 	//Send(connindex, (char*)&readyPacket, sizeof(MSG_S2C_SVR_READY_CMD));
-	Send( (BYTE*)&readyPacket, sizeof(MSG_S2C_SVR_READY_CMD));
+	Send((BYTE*)&readyPacket, sizeof(MSG_S2C_SVR_READY_CMD));
 }
-
 
 
 void ClientAgent::OnRecv(BYTE *pMsg, WORD wSize)
@@ -42,54 +41,57 @@ void ClientAgent::OnRecv(BYTE *pMsg, WORD wSize)
 	MSG_BASE* pMsgBase = (MSG_BASE*)pMsg;
 	switch (pMsgBase->m_byCategory)
 	{
+		case CS_AGENT:
+		{
+			switch (pMsgBase->m_byProtocol)
+			{
+				case C2S_INSERT_ITEM_SYN:
+				{
+				MSG_C2S_INSERT_ITEM_SYN* pInsertMsg = (MSG_C2S_INSERT_ITEM_SYN*)pMsg;
+				if (DataSpace::GetInstance().InsertKV(pInsertMsg->strKey, pInsertMsg->strVal))
+				{
+					MSG_S2C_GERERAL_RES_CMD genermsg;
+					genermsg.m_iRes = egr_INSERTSUCCESS;
+					Send((BYTE*)&genermsg, sizeof(MSG_S2C_GERERAL_RES_CMD));
+				}
+				else
+				{
+					MSG_S2C_GERERAL_RES_CMD genermsg;
+					genermsg.m_iRes = egr_INSERTFAILD;
+					Send((BYTE*)&genermsg, sizeof(MSG_S2C_GERERAL_RES_CMD));
+				}
+				}break;
 
-	case CS_AGENT:
-	{
-					 switch (pMsgBase->m_byProtocol)
-					 {
-					 case C2S_INSERT_ITEM_SYN:
-					 {
-												 MSG_C2S_INSERT_ITEM_SYN* pInsertMsg = (MSG_C2S_INSERT_ITEM_SYN*)pMsg;
-											 if (DataSpace::GetInstance().InsertKV(pInsertMsg->strKey, pInsertMsg->strVal))
-												 {
-													 MSG_S2C_GERERAL_RES_CMD genermsg;
-													 genermsg.m_iRes = egr_INSERTSUCCESS;
-													 Send((BYTE*)&genermsg, sizeof(MSG_S2C_GERERAL_RES_CMD));
-												 }
-											 else
-											 {
-												 MSG_S2C_GERERAL_RES_CMD genermsg;
-												 genermsg.m_iRes = egr_INSERTFAILD;
-												 Send((BYTE*)&genermsg, sizeof(MSG_S2C_GERERAL_RES_CMD));
-											 }
-					 }break;
+				case C2S_SELECT_ITEM_SYN:
+				{
+					MSG_C2S_SELECT_ITEM_SYN* pInsertMsg = (MSG_C2S_SELECT_ITEM_SYN*)pMsg;
+					char* strVal = (char*)DataSpace::GetInstance().GetValue(pInsertMsg->strKey);
+					if (NULL == strVal)
+					{
+						MSG_S2C_GERERAL_RES_CMD genermsg;
+						genermsg.m_iRes = egr_CANTFINDVAL;
+						Send((BYTE*)&genermsg, sizeof(MSG_S2C_GERERAL_RES_CMD));
+					}
+					else
+					{
+						MSG_S2C_SELECT_ITEM_ACK ackmsg;
+						strcpy_s(ackmsg.strKey, 168, pInsertMsg->strKey);
+						strcpy_s(ackmsg.strVal, 1024, strVal);
+						Send((BYTE*)&ackmsg, sizeof(MSG_S2C_SELECT_ITEM_ACK));
+					}
+				}break;
 
-					 case C2S_SELECT_ITEM_SYN:
-					 {
-												 MSG_C2S_SELECT_ITEM_SYN* pInsertMsg = (MSG_C2S_SELECT_ITEM_SYN*)pMsg;
-												 char* strVal = (char*)DataSpace::GetInstance().GetValue(pInsertMsg->strKey);
-												 if (NULL == strVal )
-												 {
-													 MSG_S2C_GERERAL_RES_CMD genermsg;
-													 genermsg.m_iRes = egr_CANTFINDVAL;
-													 Send((BYTE*)&genermsg, sizeof(MSG_S2C_GERERAL_RES_CMD));
-												 }
-												 else
-												 {
-													 MSG_S2C_SELECT_ITEM_ACK ackmsg;
-													 strcpy_s(ackmsg.strKey, 168, pInsertMsg->strKey);
-													 strcpy_s(ackmsg.strVal, 1024, strVal);
-													 Send((BYTE*)&ackmsg, sizeof(MSG_S2C_SELECT_ITEM_ACK));
-												 }
-					 }break;
-
-					 default:
-						 break;
-					 }
-	}
+				default:
+				{
+				}
+				break;
+			}
+		}
 		break;
 
-	default:
+		default:
+		{
+		}
 		break;
 	}
 }

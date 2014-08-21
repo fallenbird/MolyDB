@@ -34,7 +34,7 @@ void ProcessLTConnectMsg(int nConctID, MSG_BASE* pMsg)
 								{
 								case egr_INSERTSUCCESS:
 								{
-														  printf( "insert success!\n");
+														  printf("insert success!\n");
 								}break;
 
 								case egr_INSERTFAILD:
@@ -44,10 +44,10 @@ void ProcessLTConnectMsg(int nConctID, MSG_BASE* pMsg)
 
 								case egr_CANTFINDVAL:
 								{
-														  printf("can't find the value!\n");
+														printf("can't find the value!\n");
 								}break;
 								default:
-									break; 
+									break;
 								}
 	}break;
 
@@ -129,7 +129,7 @@ void PrintHelpInfo()
 }
 
 
-void SendCmdMsg(unsigned int cmdtype, char argv[MAX_PARA_CNT][MAX_CMD_LEN], unsigned int argc )
+void SendCmdMsg(unsigned int cmdtype, char argv[MAX_PARA_CNT][MAX_CMD_LEN], unsigned int argc)
 {
 	switch (cmdtype)
 	{
@@ -137,13 +137,13 @@ void SendCmdMsg(unsigned int cmdtype, char argv[MAX_PARA_CNT][MAX_CMD_LEN], unsi
 	{
 							if (2 != argc)
 							{
-								printf( "incorrect number of arguments!\n");
+								printf("incorrect number of arguments!\n");
 								return;
 							}
-			MSG_C2S_INSERT_ITEM_SYN setPacket;
-			strcpy_s(setPacket.strKey, 168, argv[0]);
-			strcpy_s(setPacket.strVal, 1024, argv[1]);
-			g_pNetBase->Send((char*)&setPacket, sizeof(MSG_C2S_INSERT_ITEM_SYN));
+							MSG_C2S_INSERT_ITEM_SYN setPacket;
+							strcpy_s(setPacket.strKey, 168, argv[0]);
+							strcpy_s(setPacket.strVal, 1024, argv[1]);
+							g_pNetBase->Send((char*)&setPacket, sizeof(MSG_C2S_INSERT_ITEM_SYN));
 	}break;
 
 	case ect_COMMAND_GET:
@@ -180,16 +180,18 @@ unsigned int CommondThread()
 			case ect_COMMAND_NONE:
 			{
 				printf("illegal command£¡\n");
-			}break;
+			}
+			break;
 
 			case ect_COMMAND_HELP:
 			{
 				PrintHelpInfo();
-			}break;
+			}
+			break;
 
 			default:
 			{
-				SendCmdMsg( cmdtype, argv, argc );
+				SendCmdMsg(cmdtype, argv, argc);
 			}
 			break;
 		}
