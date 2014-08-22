@@ -87,7 +87,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\%40SrcCode\MolyDB\UnitTest\HashmapTest.cpp" />
+    <ClCompile Include="HashmapTest.cpp" />
     <ClCompile Include="UnitTest.cpp" />
   </ItemGroup>
   <ItemGroup>

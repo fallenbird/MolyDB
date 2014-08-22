@@ -17,6 +17,7 @@ public:
 	void*	GetValue( void* key );
 	bool	RemoveKV( void* key );
 
+
 private:
 	JK_Dictionary m_normalDict;
 	JK_Dictionary m_expireDict;

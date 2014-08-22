@@ -9,8 +9,13 @@ public:
 	Dumper();
 	~Dumper();
 
+	static unsigned int DumpThread();
+
 	int LoadDumpFile( char* srcFileName );
 	int DumpToFile(char* dstFileName);
+
+private:
+	static int	m_iAccuTime;
 };
 
 #endif

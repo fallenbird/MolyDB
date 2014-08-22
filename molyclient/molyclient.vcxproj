@@ -83,11 +83,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\%40SrcCode\MolyDB\molyclient\NetBase.cpp" />
     <ClCompile Include="molyclient.cpp" />
+    <ClCompile Include="NetBase.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\%40SrcCode\MolyDB\molyclient\NetBase.h" />
+    <ClInclude Include="NetBase.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

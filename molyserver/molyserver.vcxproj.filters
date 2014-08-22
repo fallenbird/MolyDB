@@ -4,55 +4,55 @@
     <ClCompile Include="molyserver.cpp">
       <Filter>Server</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\%40SrcCode\MolyDB\molyserver\ConfigManager.cpp">
-      <Filter>Config</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\%40SrcCode\MolyDB\molyserver\NetIntface.cpp">
-      <Filter>Event</Filter>
-    </ClCompile>
     <ClCompile Include="ClientAgent.cpp">
       <Filter>ClintAgent</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\%40SrcCode\MolyDB\molyserver\DataSpace.cpp">
+    <ClCompile Include="Appender.cpp">
+      <Filter>Persistence</Filter>
+    </ClCompile>
+    <ClCompile Include="Dumper.cpp">
+      <Filter>Persistence</Filter>
+    </ClCompile>
+    <ClCompile Include="ConfigManager.cpp">
+      <Filter>Config</Filter>
+    </ClCompile>
+    <ClCompile Include="NetIntface.cpp">
+      <Filter>Event</Filter>
+    </ClCompile>
+    <ClCompile Include="LogManager.cpp">
+      <Filter>Log</Filter>
+    </ClCompile>
+    <ClCompile Include="DataSpace.cpp">
       <Filter>DataEngin</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\%40SrcCode\MolyDB\molyserver\MainLogic.cpp">
+    <ClCompile Include="MainLogic.cpp">
       <Filter>MainLogic</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\%40SrcCode\MolyDB\molyserver\Dumper.cpp">
-      <Filter>Persistence</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\%40SrcCode\MolyDB\molyserver\Appender.cpp">
-      <Filter>Persistence</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\%40SrcCode\MolyDB\molyserver\LogManager.cpp">
-      <Filter>Log</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\%40SrcCode\MolyDB\molyserver\ClientAgent.h">
       <Filter>ClintAgent</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\%40SrcCode\MolyDB\molyserver\ConfigManager.h">
-      <Filter>Config</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\%40SrcCode\MolyDB\molyserver\NetIntface.h">
-      <Filter>Event</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\%40SrcCode\MolyDB\molyserver\DataSpace.h">
-      <Filter>DataEngin</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\%40SrcCode\MolyDB\molyserver\molyserver.h">
       <Filter>Server</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\%40SrcCode\MolyDB\molyserver\Dumper.h">
+    <ClInclude Include="Appender.h">
       <Filter>Persistence</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\%40SrcCode\MolyDB\molyserver\Appender.h">
+    <ClInclude Include="Dumper.h">
       <Filter>Persistence</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\%40SrcCode\MolyDB\molyserver\LogManager.h">
+    <ClInclude Include="ConfigManager.h">
+      <Filter>Config</Filter>
+    </ClInclude>
+    <ClInclude Include="NetIntface.h">
+      <Filter>Event</Filter>
+    </ClInclude>
+    <ClInclude Include="LogManager.h">
       <Filter>Log</Filter>
+    </ClInclude>
+    <ClInclude Include="DataSpace.h">
+      <Filter>DataEngin</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
