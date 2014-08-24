@@ -8,6 +8,7 @@ public:
 	Appender();
 	~Appender();
 
+	int LoadAppendFile();
 	int AppendToFile();
 };
 
