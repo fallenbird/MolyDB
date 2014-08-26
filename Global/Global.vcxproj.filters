@@ -1,15 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClInclude Include="..\..\..\%40SrcCode\MolyDB\Global\JK_Array.h" />
-    <ClInclude Include="..\..\..\%40SrcCode\MolyDB\Global\JK_Assert.h" />
-    <ClInclude Include="..\..\..\%40SrcCode\MolyDB\Global\JK_Dictionary.h" />
-    <ClInclude Include="..\..\..\%40SrcCode\MolyDB\Global\JK_Hashmap.h" />
-    <ClInclude Include="..\..\..\%40SrcCode\MolyDB\Global\JK_Lock.h" />
-    <ClInclude Include="..\..\..\%40SrcCode\MolyDB\Global\JK_MemMgr.h" />
-    <ClInclude Include="..\..\..\%40SrcCode\MolyDB\Global\JK_Singleton.h" />
-    <ClInclude Include="..\..\..\%40SrcCode\MolyDB\Global\JK_Utility.h" />
-    <ClInclude Include="..\..\..\%40SrcCode\MolyDB\Global\JK_Timer.h" />
-    <ClInclude Include="..\..\..\%40SrcCode\MolyDB\Global\JK_Console.h" />
+    <ClInclude Include="JK_Array.h" />
+    <ClInclude Include="JK_Assert.h" />
+    <ClInclude Include="JK_Console.h" />
+    <ClInclude Include="JK_Dictionary.h" />
+    <ClInclude Include="JK_Hashmap.h" />
+    <ClInclude Include="JK_Lock.h" />
+    <ClInclude Include="JK_MemMgr.h" />
+    <ClInclude Include="JK_Singleton.h" />
+    <ClInclude Include="JK_Timer.h" />
+    <ClInclude Include="JK_Utility.h" />
+    <ClInclude Include="JK_LockFreeQueue.h" />
   </ItemGroup>
 </Project>

@@ -1,7 +1,7 @@
 #include "HashmapTest.h"
 #include <assert.h>
 #include <stdexcept>
-#include <gtest/gtest.h>
+//#include <gtest/gtest.h>
 
 HashmapTest::HashmapTest(): m_configMap(true)
 {

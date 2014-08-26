@@ -8,7 +8,7 @@
 #include <pthread.h>
 #endif
 
-class KDBConsole : public JK_Singleton<KDBConsole>
+class JK_Console : public JK_Singleton<JK_Console>
 {
 public:
 	enum TextColor
@@ -25,11 +25,11 @@ public:
 	};
 
 
-	KDBConsole() :m_hConsole(INVALID_HANDLE_VALUE)
+	JK_Console() :m_hConsole(INVALID_HANDLE_VALUE)
 	{
 	}
 
-	virtual ~KDBConsole()
+	virtual ~JK_Console()
 	{
 		if (m_hConsole)
 			FreeConsole();

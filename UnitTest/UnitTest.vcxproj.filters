@@ -19,7 +19,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\%40SrcCode\MolyDB\UnitTest\HashmapTest.h">
+    <ClInclude Include="HashmapTest.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
