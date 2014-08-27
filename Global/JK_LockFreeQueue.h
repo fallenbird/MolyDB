@@ -5,34 +5,6 @@
 #include <stddef.h>
 #include <windows.h>
 
-struct LFQueueNode;
-struct pointer_t 
-{
-	LFQueueNode *ptr;
-	unsigned int tag;
-	pointer_t() 
-	{
-		ptr = NULL;
-		tag = 0;
-	}
-	pointer_t(LFQueueNode *a_ptr, unsigned int a_tag)
-	{
-		ptr = a_ptr; tag=a_tag;
-	}
-
-	friend bool operator==(pointer_t const &l, pointer_t const &r)
-	{
-		return l.ptr == r.ptr && l.tag == r.tag;
-	}
-
-	friend bool operator!=(pointer_t const &l, pointer_t const &r)
-	{
-		return !(l == r);
-	}
-};
-
-
-
 
 struct LFQueueNode 
 { 
@@ -179,8 +151,10 @@ public:
 	void Init() 
 	{
 		m_headNode = new LFQueueNode();
-		m_headNode->next = NULL;;
+		m_headNode->next = NULL;
+		m_headNode->value = NULL;
 		m_tailNode = m_headNode;
+
 	}
 
 
@@ -194,8 +168,6 @@ public:
 		{ 
 			targetNode = m_tailNode; 
 		}
-		//pNode->next = targetNode;
-		//m_headNode->next = pNode;
 		while( __InlineInterlockedCompareExchangePointer( (PVOID*)&targetNode->next, (PVOID)pNode, 0 ) != targetNode->next );
 		__InlineInterlockedCompareExchangePointer((PVOID*)&m_tailNode, (PVOID)pNode, targetNode ); 
 	}
@@ -212,9 +184,10 @@ public:
 				return NULL; 
 			}
 		}while (  __InlineInterlockedCompareExchangePointer((PVOID*)&(m_headNode->next), tempNode->next, tempNode ) != tempNode ); 
-
-		//LFQueueNode* sxxxx  = (LFQueueNode*)__InlineInterlockedCompareExchangePointer((PVOID*)&(m_headNode->next), tempNode->next, tempNode ); 
-		return tempNode->value; 
+		__InlineInterlockedCompareExchangePointer( (PVOID*)&(m_tailNode), m_headNode, tempNode );
+		void* temVal = tempNode->value;
+		delete tempNode;
+		return temVal; 
 	}
 };
 

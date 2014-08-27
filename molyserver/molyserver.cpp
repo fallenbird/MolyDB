@@ -1,4 +1,5 @@
 #include "molyserver.h"
+#include "Appender.h"
 
 
 int MolyServer::GetState()
@@ -20,9 +21,13 @@ bool MolyServer::InitServer()
 		return false;
 	}
 
+	// --init append background thread
+	CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)Appender::AppendThread, NULL, 0, 0);
+
 	// --init net interface
 	NetInterface::GetInstance().initInterface( "127.0.0.1", 3690 );
 	m_runningSta = ers_RUNNING;
+
 	return true;
 }
 

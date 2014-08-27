@@ -21,41 +21,41 @@ void ProcessLTConnectMsg(int nConctID, MSG_BASE* pMsg)
 	{
 	case S2C_SVR_READY_CMD:
 	{
-							  MSG_S2C_SVR_READY_CMD* pReadyMsg = (MSG_S2C_SVR_READY_CMD*)pMsg;
-							  printf("Connet server success!\n");
-							  int i = pReadyMsg->sHighVer;
+		MSG_S2C_SVR_READY_CMD* pReadyMsg = (MSG_S2C_SVR_READY_CMD*)pMsg;
+		printf("Connet server success!\n");
+		int i = pReadyMsg->sHighVer;
 	}break;
 
 
 	case S2C_GERERAL_RES_CMD:
 	{
-								MSG_S2C_GERERAL_RES_CMD* pReadyMsg = (MSG_S2C_GERERAL_RES_CMD*)pMsg;
-								switch (pReadyMsg->m_iRes)
-								{
-								case egr_INSERTSUCCESS:
-								{
-														  printf("insert success!\n");
-								}break;
+		MSG_S2C_GERERAL_RES_CMD* pReadyMsg = (MSG_S2C_GERERAL_RES_CMD*)pMsg;
+		switch (pReadyMsg->m_iRes)
+		{
+		case egr_INSERTSUCCESS:
+			{
+				printf("insert success!\n");
+			}break;
 
-								case egr_INSERTFAILD:
-								{
-														printf("insert failed!\n");
-								}break;
+		case egr_INSERTFAILD:
+			{
+				printf("insert failed!\n");
+			}break;
 
-								case egr_CANTFINDVAL:
-								{
-														printf("can't find the value!\n");
-								}break;
-								default:
-									break;
-								}
+		case egr_CANTFINDVAL:
+			{
+				printf("can't find the value!\n");
+			}break;
+		default:
+			break;
+		}
 	}break;
 
 
 	case S2C_SELECT_ITEM_ACK:
 	{
-								MSG_S2C_SELECT_ITEM_ACK* pReadyMsg = (MSG_S2C_SELECT_ITEM_ACK*)pMsg;
-								printf("%s\n", pReadyMsg->strVal);
+		MSG_S2C_SELECT_ITEM_ACK* pReadyMsg = (MSG_S2C_SELECT_ITEM_ACK*)pMsg;
+		printf("%s\n", pReadyMsg->strVal);
 	}break;
 
 	default:

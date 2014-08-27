@@ -16,6 +16,8 @@ public:
 	bool	InsertKV( void* key, void* val );
 	void*	GetValue( void* key );
 	bool	RemoveKV( void* key );
+	void	Operation( int cmd, void* key, void* val, char* opt );
+
 
 
 private:

@@ -16,11 +16,10 @@ public:
 	~Appender();
 
 
-	static unsigned int DumpThread();
+	static unsigned int AppendThread();
 	static int OpenAppendFile();
 	static void CloseAppendFile();
 	static int WriteAppendFile( void* pdata );
-
 
 	int LoadAppendFile();
 

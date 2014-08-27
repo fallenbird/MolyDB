@@ -7,12 +7,11 @@
 
 
 
-bool	Appender::m_bAppendOpen = false;
+bool	Appender::m_bAppendOpen = true;
 FILE*	Appender::m_fpAppendfile = NULL;
 
 Appender::Appender()
 {
-
 }
 
 
@@ -63,7 +62,7 @@ char* Appender::CatGenericCommand( char* dst, int argc, char** argv)
 
 
 
-unsigned int Appender::DumpThread()
+unsigned int Appender::AppendThread()
 {
 	void* pData = NULL;
 	int iRes = 0;
@@ -76,6 +75,10 @@ unsigned int Appender::DumpThread()
 			{
 				MOLYLOG(MOLY_LOG_ERORR, "Failed to write append file, errno: %d!", errno);
 				return iRes;
+			}
+			else
+			{
+				printf( "³Ö¾Ã»¯:%s\n",  (char*)pData  );
 			}
 		}
 		Sleep(500);
@@ -103,6 +106,7 @@ void Appender::CloseAppendFile()
 {
 	m_bAppendOpen = false;
 	fclose( m_fpAppendfile );
+	m_fpAppendfile = NULL;
 }
 
 
@@ -117,7 +121,7 @@ int Appender::WriteAppendFile( void* pdata )
 			return res;
 		}
 	}
-	fprintf( m_fpAppendfile, "%s\n", pdata );
+	fprintf( m_fpAppendfile, "%s", pdata );
 	return 0;
 }
 
