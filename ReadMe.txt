@@ -13,10 +13,10 @@
 0.0.3.5	 2014-08-09 JakeSun   client端的网络接口2
 0.0.3.6	 2014-08-11 JakeSun   调试通Server与Client之间的协议
 0.0.4.0  2014-08-14 JakeSun   实现Dictionary结构及动态重置功能(rehash)  
-0.0.4.1  2014-08-18 JakeSu8n  实现Client端命令解析&控制台彩色显示
-0.0.4.2  2014-08-18 JakeSu8n  调试通过Client到Server的命令，可以初步用作一个缓存系统。
-0.0.4.7  2014-08-21 JakeSu8n  开始实现持久化-二进制dump持久化
-0.0.5.0  2014-08-26 JakeSu8n  完成无锁队列(lock-free-queue)的实现，支持多读多写
-0.0.5.3  2014-08-26 JakeSu8n  调试通过无锁队列，持久化-append file开发结束
+0.0.4.1  2014-08-18 JakeSun   实现Client端命令解析&控制台彩色显示
+0.0.4.2  2014-08-18 JakeSun   调试通过Client到Server的命令，可以初步用作一个缓存系统。
+0.0.4.7  2014-08-21 JakeSun   开始实现持久化-二进制dump持久化
+0.0.5.0  2014-08-26 JakeSun   完成无锁队列(lock-free-queue)的实现，支持多读多写
+0.0.5.3  2014-08-26 JakeSun   调试通过无锁队列，持久化-append file开发结束
 
 
