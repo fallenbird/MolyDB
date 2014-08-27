@@ -1,19 +1,21 @@
 #ifndef __LOCK_FREE_QUEUE_HPP__
 #define __LOCK_FREE_QUEUE_HPP__
 
+#include <atomic>
 #include <stddef.h>
+#include <windows.h>
 
-struct node_t;
+struct LFQueueNode;
 struct pointer_t 
 {
-	node_t *ptr;
+	LFQueueNode *ptr;
 	unsigned int tag;
 	pointer_t() 
 	{
 		ptr = NULL;
 		tag = 0;
 	}
-	pointer_t(node_t *a_ptr, unsigned int a_tag)
+	pointer_t(LFQueueNode *a_ptr, unsigned int a_tag)
 	{
 		ptr = a_ptr; tag=a_tag;
 	}
@@ -29,42 +31,32 @@ struct pointer_t
 	}
 };
 
-typedef void * data_type;
 
-#define dummy_val NULL
 
-struct node_t 
+
+struct LFQueueNode 
 { 
-	pointer_t next; // wgg 发现了64位错误的原因是 cmp16b需要16字节对齐，现在改正过来了。
-	data_type value; 
-	node_t()
+	LFQueueNode* next; 
+	void* value; 
+	LFQueueNode()
 	{
-		value = dummy_val;
-		next=  pointer_t(NULL,0);
+		value = NULL;
+		next=  NULL;
 	}
 };
 
 
 
+#ifndef _WIN32
 #ifdef __x86_64__
 inline bool CAS2(pointer_t *addr, pointer_t &old_value, pointer_t &new_value)
 {
 	bool  ret;
-	//__asm__ __volatile__(
-	//	"lock cmpxchg16b %1;\n"
-	//	"sete %0;\n"
-	//	:"=m"(ret),"+m" (*(volatile pointer_t *) (addr))
-	//	:"a" (old_value.ptr), "d" (old_value.tag), "b" (new_value.ptr), "c" (new_value.tag));
-	//return ret;
-
-
-	//__asm
-	//{
-	//	"lock cmpxchg16b %1;\n"
-	//	"sete %0;\n"
-	//	:"=m"(ret),"+m" (*(volatile pointer_t *) (addr))
-	//	:"a" (old_value.ptr), "d" (old_value.tag), "b" (new_value.ptr), "c" (new_value.tag)
-	//}
+	__asm__ __volatile__(
+		"lock cmpxchg16b %1;\n"
+		"sete %0;\n"
+		:"=m"(ret),"+m" (*(volatile pointer_t *) (addr))
+		:"a" (old_value.ptr), "d" (old_value.tag), "b" (new_value.ptr), "c" (new_value.tag));
 	return ret;
 }
 
@@ -72,28 +64,19 @@ inline bool CAS2(pointer_t *addr, pointer_t &old_value, pointer_t &new_value)
 inline bool CAS2(pointer_t *addr, pointer_t &old_value, pointer_t &new_value)
 {
 	bool  ret;
-	//__asm__ __volatile__(
-	//	"lock cmpxchg8b %1;\n"
-	//	"sete %0;\n"
-	//	:"=m"(ret),"+m" (*(volatile pointer_t *) (addr))
-	//	:"a" (old_value.ptr), "d" (old_value.tag), "b" (new_value.ptr), "c" (new_value.tag));
-	//return ret;
-
-	//__asm 
-	//{
-	//	"lock cmpxchg8b %1;\n"
-	//	"sete %0;\n"
-	//	:"=m"(ret),"+m" (*(volatile pointer_t *) (addr))
-	//	:"a" (old_value.ptr), "d" (old_value.tag), "b" (new_value.ptr), "c" (new_value.tag)
-	//}
+	__asm__ __volatile__(
+		"lock cmpxchg8b %1;\n"
+		"sete %0;\n"
+		:"=m"(ret),"+m" (*(volatile pointer_t *) (addr))
+		:"a" (old_value.ptr), "d" (old_value.tag), "b" (new_value.ptr), "c" (new_value.tag));
 	return ret;
 }
 #endif
 
 class JK_LockFreeQueue 
 {
-	pointer_t tail_;
-	pointer_t head_;
+	pointer_t m_tailNode;
+	pointer_t m_headNode;
 
 public:
 	JK_LockFreeQueue() 
@@ -104,28 +87,28 @@ public:
 
 	void init() 
 	{
-		node_t *nd = new node_t();
+		LFQueueNode *nd = new LFQueueNode();
 		nd->next = pointer_t(NULL, 0);
-		head_ = pointer_t(nd, 0);
-		tail_ = pointer_t(nd, 0);
+		m_headNode = pointer_t(nd, 0);
+		m_tailNode = pointer_t(nd, 0);
 	}
 
 
 	void enqueue(data_type val) 
 	{
 		pointer_t tail, next;
-		node_t* nd = new node_t();
+		LFQueueNode* nd = new LFQueueNode();
 		nd->value = val;
 		while(true)
 		{
-			tail = this->tail_;
+			tail = this->m_tailNode;
 			next = tail.ptr->next;
-			if (tail == this->tail_)
+			if (tail == this->m_tailNode)
 			{
 				if(next.ptr == NULL)
 				{
 					pointer_t new_pt(nd, next.tag+1);
-					if(CAS2(&(this->tail_.ptr->next), next, new_pt))
+					if(CAS2(&(this->m_tailNode.ptr->next), next, new_pt))
 					{
 						break; // Enqueue done!
 					}
@@ -133,12 +116,12 @@ public:
 				else 
 				{
 					pointer_t new_pt(next.ptr, tail.tag+1);
-					CAS2(&(this->tail_), tail, new_pt);
+					CAS2(&(this->m_tailNode), tail, new_pt);
 				}
 			}
 		}
 		pointer_t new_pt(nd, tail.tag+1);
-		CAS2(&(this->tail_), tail, new_pt);
+		CAS2(&(this->m_tailNode), tail, new_pt);
 	}
 
 
@@ -148,10 +131,10 @@ public:
 		data_type val=NULL;
 		while(true)
 		{
-			head = this->head_;
-			tail = this->tail_;
+			head = this->m_headNode;
+			tail = this->m_tailNode;
 			next = (head.ptr)->next;
-			if (head != this->head_) continue;
+			if (head != this->m_headNode) continue;
 
 			if(head.ptr == tail.ptr)
 			{
@@ -160,13 +143,13 @@ public:
 					return NULL;
 				}
 				pointer_t new_pt(next.ptr, tail.tag+1);
-				CAS2(&(this->tail_), tail, new_pt);
+				CAS2(&(this->m_tailNode), tail, new_pt);
 			} 
 			else
 			{ 
 				val = next.ptr->value;
 				pointer_t new_pt(next.ptr, head.tag+1);
-				if(CAS2(&(this->head_), head, new_pt))
+				if(CAS2(&(this->m_headNode), head, new_pt))
 				{
 					break;
 				}
@@ -177,5 +160,64 @@ public:
 	}
 };
 
+// lock free queue( windows ) 
+#else
+
+class JK_LockFreeQueue 
+{
+	LFQueueNode* m_headNode;
+	LFQueueNode* m_tailNode;
+
+
+public:
+	JK_LockFreeQueue() 
+	{
+		Init();
+	}
+
+
+	void Init() 
+	{
+		m_headNode = new LFQueueNode();
+		m_headNode->next = NULL;;
+		m_tailNode = m_headNode;
+	}
+
+
+	void Enqueue( void* val ) 
+	{
+		LFQueueNode* targetNode = NULL; 
+		LFQueueNode* pNode = new LFQueueNode();
+		pNode->value = val;
+		pNode->next = NULL;
+		do 
+		{ 
+			targetNode = m_tailNode; 
+		}
+		//pNode->next = targetNode;
+		//m_headNode->next = pNode;
+		while( __InlineInterlockedCompareExchangePointer( (PVOID*)&targetNode->next, (PVOID)pNode, 0 ) != targetNode->next );
+		__InlineInterlockedCompareExchangePointer((PVOID*)&m_tailNode, (PVOID)pNode, targetNode ); 
+	}
+
+
+	void* Dequeue()
+	{
+		LFQueueNode* tempNode = NULL; 
+		do 
+		{ 
+			tempNode = m_headNode->next; 
+			if ( tempNode == NULL) 
+			{
+				return NULL; 
+			}
+		}while (  __InlineInterlockedCompareExchangePointer((PVOID*)&(m_headNode->next), tempNode->next, tempNode ) != tempNode ); 
+
+		//LFQueueNode* sxxxx  = (LFQueueNode*)__InlineInterlockedCompareExchangePointer((PVOID*)&(m_headNode->next), tempNode->next, tempNode ); 
+		return tempNode->value; 
+	}
+};
+
+#endif
 
 #endif //__LOCK_FREE_QUEUE_HPP__

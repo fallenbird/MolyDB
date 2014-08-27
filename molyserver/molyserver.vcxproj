@@ -88,6 +88,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AppendCmdQueue.cpp" />
     <ClCompile Include="Appender.cpp" />
     <ClCompile Include="ClientAgent.cpp" />
     <ClCompile Include="ConfigManager.cpp" />
@@ -99,14 +100,15 @@
     <ClCompile Include="NetIntface.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\%40SrcCode\MolyDB\molyserver\ClientAgent.h" />
-    <ClInclude Include="..\..\..\%40SrcCode\MolyDB\molyserver\molyserver.h" />
+    <ClInclude Include="AppendCmdQueue.h" />
     <ClInclude Include="Appender.h" />
+    <ClInclude Include="ClientAgent.h" />
     <ClInclude Include="CmdObject.h" />
     <ClInclude Include="ConfigManager.h" />
     <ClInclude Include="DataSpace.h" />
     <ClInclude Include="Dumper.h" />
     <ClInclude Include="LogManager.h" />
+    <ClInclude Include="molyserver.h" />
     <ClInclude Include="NetIntface.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

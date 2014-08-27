@@ -28,14 +28,11 @@
     <ClCompile Include="MainLogic.cpp">
       <Filter>MainLogic</Filter>
     </ClCompile>
+    <ClCompile Include="AppendCmdQueue.cpp">
+      <Filter>DataEngin</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\%40SrcCode\MolyDB\molyserver\ClientAgent.h">
-      <Filter>ClintAgent</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\%40SrcCode\MolyDB\molyserver\molyserver.h">
-      <Filter>Server</Filter>
-    </ClInclude>
     <ClInclude Include="Appender.h">
       <Filter>Persistence</Filter>
     </ClInclude>
@@ -55,6 +52,15 @@
       <Filter>DataEngin</Filter>
     </ClInclude>
     <ClInclude Include="CmdObject.h">
+      <Filter>DataEngin</Filter>
+    </ClInclude>
+    <ClInclude Include="molyserver.h">
+      <Filter>Server</Filter>
+    </ClInclude>
+    <ClInclude Include="ClientAgent.h">
+      <Filter>ClintAgent</Filter>
+    </ClInclude>
+    <ClInclude Include="AppendCmdQueue.h">
       <Filter>DataEngin</Filter>
     </ClInclude>
   </ItemGroup>

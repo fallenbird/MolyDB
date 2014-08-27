@@ -1,8 +1,14 @@
 #include <stdio.h>
 #include "Appender.h"
 #include "JK_Utility.h"
+#include "JK_Assert.h"
 #include "LogManager.h"
+#include "AppendCmdQueue.h"
 
+
+
+bool	Appender::m_bAppendOpen = false;
+FILE*	Appender::m_fpAppendfile = NULL;
 
 Appender::Appender()
 {
@@ -16,42 +22,16 @@ Appender::~Appender()
 }
 
 
+
+
 int Appender::LoadAppendFile()
 {
-	char tmpfile[256];
-	JK_SPRITF_S(tmpfile, 256, "molydb_af-%d.dmf", (int)JK_GETPID() );
-	FILE *fp = NULL;
-	JK_OPENFILE_S( fp,tmpfile,"w");
-	if (!fp) 
-	{
-		MOLYLOG(MOLY_LOG_ERORR, "Failed opening dump file, errno: %d!", errno);
-		return 1;
-	}
 	return 0;
 }
 
 
 
-int Appender::AppendToFile()
-{
-	char tmpfile[256];
-	JK_SPRITF_S(tmpfile, 256, "molydb_af-%d.dmf", (int)JK_GETPID() );
-	FILE *fp = NULL;
-	JK_OPENFILE_S( fp,tmpfile,"at");
-	if (!fp) 
-	{
-		MOLYLOG(MOLY_LOG_ERORR, "Failed opening dump file, errno: %d!", errno);
-		return 1;
-	}
 
-	vector<CmdObject>::iterator iter; 
-	for (iter=m_vecCmdBuff.begin();iter!=m_vecCmdBuff.end();iter++)  
-	{
-		fprintf( fp, "%d %s\n", (*iter).m_byCmdID, (*iter).m_strArgv );
-	}
-	
-	return 0;
-}
 
 
 char* Appender::CatGenericCommand( char* dst, int argc, char** argv) 
@@ -80,3 +60,64 @@ char* Appender::CatGenericCommand( char* dst, int argc, char** argv)
 	//return dst;
 	return NULL;
 }
+
+
+
+unsigned int Appender::DumpThread()
+{
+	void* pData = NULL;
+	int iRes = 0;
+	while ( m_bAppendOpen )
+	{
+		while ( pData = AppendCmdQueue::Dequeue() )
+		{
+			iRes = WriteAppendFile( pData );
+			if( 0 != iRes )
+			{
+				MOLYLOG(MOLY_LOG_ERORR, "Failed to write append file, errno: %d!", errno);
+				return iRes;
+			}
+		}
+		Sleep(500);
+	}
+	return 0;
+}
+
+
+int Appender::OpenAppendFile()
+{
+	JK_ASSERT( NULL == m_fpAppendfile );
+	char tmpfile[256];
+	JK_SPRITF_S(tmpfile, 256, "molydb_af-%d.dmf", (int)JK_GETPID() );
+	JK_OPENFILE_S( m_fpAppendfile,tmpfile,"w");
+	if (!m_fpAppendfile ) 
+	{
+		MOLYLOG(MOLY_LOG_ERORR, "Failed opening dump file, errno: %d!", errno);
+		return 1;
+	}
+	return 0;
+}
+
+
+void Appender::CloseAppendFile()
+{
+	m_bAppendOpen = false;
+	fclose( m_fpAppendfile );
+}
+
+
+
+int Appender::WriteAppendFile( void* pdata )
+{
+	if ( !m_fpAppendfile )
+	{
+		int res = OpenAppendFile();
+		if(  0!= res )
+		{
+			return res;
+		}
+	}
+	fprintf( m_fpAppendfile, "%s\n", pdata );
+	return 0;
+}
+

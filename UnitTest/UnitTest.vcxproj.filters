@@ -22,5 +22,8 @@
     <ClInclude Include="HashmapTest.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="AppendCmdQueueTest.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

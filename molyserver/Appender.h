@@ -15,14 +15,21 @@ public:
 	Appender();
 	~Appender();
 
+
+	static unsigned int DumpThread();
+	static int OpenAppendFile();
+	static void CloseAppendFile();
+	static int WriteAppendFile( void* pdata );
+
+
 	int LoadAppendFile();
-	int AppendToFile();
+
 
 	static char* CatGenericCommand( char* dst, int argc, char** argv ) ;
 
 private:
-	vector<CmdObject>  m_vecCmdBuff;
-	JK_LockFreeQueue m_lockfreeQueue;
+	static bool			m_bAppendOpen;
+	static FILE*		m_fpAppendfile;
 };
 
 #endif
