@@ -43,7 +43,12 @@ void* DataSpace::GetValue(void* key)
 
 bool DataSpace::RemoveKV(void* key)
 {
-	return m_normalDict.RemoveElement(key);
+	if ( m_normalDict.RemoveElement(key) )
+	{
+		Operation( 102, key, "", "" );
+		return true;
+	}
+	return false;
 }
 
 
