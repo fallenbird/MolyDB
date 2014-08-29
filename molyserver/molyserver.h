@@ -7,7 +7,6 @@
 
 #include "./Server.h"
 #include "NetIntface.h"
-#include "ConfigManager.h"
 #include "DataSpace.h"
 #include "JK_Console.h"
 
@@ -46,7 +45,6 @@ public:
 
 private:
 	NetInterface	m_NetInterface;
-	ConfigManager	m_ConfigManger;
 	JK_Console		m_ConsoleMgr;
 	DataSpace		m_DataEngine;
 	char*			m_serverIP;

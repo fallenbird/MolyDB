@@ -34,7 +34,7 @@ void NetInterface::DestroyConnectedObject( NetworkObject *pNetworkObject )
 }
 
 
-int NetInterface::initInterface( char* szIP, unsigned short usPort )
+int NetInterface::initInterface( int iMaster, char* strMasterIP, unsigned short usMasterPort, unsigned short uslocalPort  )
 {
 	IOHANDLER_DESC desc;
 	desc.dwIoHandlerKey				= CLIENT_IOHANDLER_KEY;
@@ -57,11 +57,17 @@ int NetInterface::initInterface( char* szIP, unsigned short usPort )
 		return 0;
 	}
 
-	if( !m_IOCPServer.StartListen( CLIENT_IOHANDLER_KEY, szIP, usPort ) )
+	if( !m_IOCPServer.StartListen( CLIENT_IOHANDLER_KEY, NULL, uslocalPort ) )
 	{
-		printf( "Listen failed! IP:%s Port:%d !", szIP, usPort );
+		DISPMSG_ERROR( "Listen failed! IP:%s Port:%d !", "null", uslocalPort );
 		return 0;
 	}
+
+	if ( 1 == iMaster )
+	{
+		//m_IOCPServer.Connect( strMasterIP, usMasterPort );
+	}
+
 	DISPMSG_SUCCESS( "Server started!\n" );
 	return 1;
 }

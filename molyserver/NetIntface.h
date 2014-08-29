@@ -20,7 +20,7 @@ private:
 	static void DestroyConnectedObject( NetworkObject *pNetworkObject );
 
 public:
-	int initInterface( char* szIP, unsigned short usPort );
+	int initInterface( int iMaster, char* strMasterIP, unsigned short usMasterPort, unsigned short uslocalPort );
 	void RunInterface();
 	void CloseInterface();
 

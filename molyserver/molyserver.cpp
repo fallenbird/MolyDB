@@ -1,5 +1,7 @@
 #include "molyserver.h"
 #include "Appender.h"
+#include "ServerConfigData.h"
+
 
 
 int MolyServer::GetState()
@@ -13,7 +15,8 @@ bool MolyServer::InitServer()
 	m_serverPort = 3690;
 
 	// --init config
-	ConfigManager::GetInstance().OpenConfigFile( "config.ini" );
+	//ConfigManager::GetInstance().OpenConfigFile( "config.ini" );
+	ServerConfigData::LoadConfigData( ".\\config.ini");
 
 	// --init database
 	if( !DataSpace::GetInstance().InitDB() )
@@ -25,7 +28,11 @@ bool MolyServer::InitServer()
 	CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)Appender::AppendThread, NULL, 0, 0);
 
 	// --init net interface
-	NetInterface::GetInstance().initInterface( "127.0.0.1", 3690 );
+	NetInterface::GetInstance().initInterface(  
+		ServerConfigData::IsMaster(),
+		ServerConfigData::GetMasterIP(),
+		ServerConfigData::GetMasterPort(), 
+		ServerConfigData::GetLocalPort() );
 	m_runningSta = ers_RUNNING;
 
 	return true;
