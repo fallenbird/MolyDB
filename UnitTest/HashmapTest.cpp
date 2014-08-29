@@ -39,6 +39,10 @@ void HashmapTest::TestFunction()
 	pTemp5->m_iY = 52;
 
 	m_configMap.Init( 64 );
+
+	m_configMap.Add( "sxf", "888" );
+	m_configMap.Remove("sxf");
+
 	m_configMap.Add( "aaa", pTemp1 );
 	m_configMap.Add( "bbb", pTemp2 );
 	m_configMap.Add( "ccc", pTemp3 );

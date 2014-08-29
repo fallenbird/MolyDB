@@ -63,6 +63,9 @@
     <ClInclude Include="AppendCmdQueue.h">
       <Filter>DataEngin</Filter>
     </ClInclude>
+    <ClInclude Include="SeverConfigData.h">
+      <Filter>Config</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="DataEngin">

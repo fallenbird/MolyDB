@@ -110,6 +110,7 @@
     <ClInclude Include="LogManager.h" />
     <ClInclude Include="molyserver.h" />
     <ClInclude Include="NetIntface.h" />
+    <ClInclude Include="SeverConfigData.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

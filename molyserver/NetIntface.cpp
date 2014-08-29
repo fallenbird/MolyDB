@@ -1,7 +1,7 @@
 #include "NetIntface.h"
 #include "JK_MemMgr.h"
 #include "ClientAgent.h"
-
+#include "JK_Console.h"
 
 NetInterface::NetInterface()
 {
@@ -53,7 +53,7 @@ int NetInterface::initInterface( char* szIP, unsigned short usPort )
 
 	if( !m_IOCPServer.Init( &desc, 1 ) )
 	{
-		printf( "IOCP initialize failed!" );
+		DISPMSG_ERROR( "IOCP initialize failed!" );
 		return 0;
 	}
 
@@ -62,7 +62,7 @@ int NetInterface::initInterface( char* szIP, unsigned short usPort )
 		printf( "Listen failed! IP:%s Port:%d !", szIP, usPort );
 		return 0;
 	}
-	printf( "Server started!\n" );
+	DISPMSG_SUCCESS( "Server started!\n" );
 	return 1;
 }
 
@@ -75,6 +75,6 @@ void NetInterface::RunInterface()
 
 void NetInterface::CloseInterface()
 {
-	printf( "Server is terminated...\n" );
+	DISPMSG_ERROR( "Server is terminated...\n" );
 	m_IOCPServer.Shutdown();
 }

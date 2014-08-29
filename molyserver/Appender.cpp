@@ -3,6 +3,7 @@
 #include "JK_Utility.h"
 #include "JK_Assert.h"
 #include "LogManager.h"
+#include "JK_Console.h"
 #include "AppendCmdQueue.h"
 
 
@@ -78,8 +79,13 @@ unsigned int Appender::AppendThread()
 			}
 			else
 			{
-				printf( "持久化:%s\n",  (char*)pData  );
+				DISPMSG_DEBUG( "持久化:%s",  (char*)pData );
 			}
+		}
+		if (  m_fpAppendfile )
+		{
+			fclose( m_fpAppendfile );
+			m_fpAppendfile = NULL;
 		}
 		Sleep(500);
 	}
@@ -92,7 +98,7 @@ int Appender::OpenAppendFile()
 	JK_ASSERT( NULL == m_fpAppendfile );
 	char tmpfile[256];
 	JK_SPRITF_S(tmpfile, 256, "molydb_af-%d.dmf", (int)JK_GETPID() );
-	JK_OPENFILE_S( m_fpAppendfile,tmpfile,"w");
+	JK_OPENFILE_S( m_fpAppendfile,tmpfile,"a");
 	if (!m_fpAppendfile ) 
 	{
 		MOLYLOG(MOLY_LOG_ERORR, "Failed opening dump file, errno: %d!", errno);

@@ -217,10 +217,30 @@ public:
 		hashidx %= m_lSize;
 		lock_if_necessary();
 		HashEntity* pParent = GetParentEntity( m_table[hashidx], key );
+		if ( !pParent )
+		{
+			if ( !m_table[hashidx] )
+			{
+				unlock_if_necessary();
+				return false;
+			}
+			if ( 0 != strcmp( (char*)m_table[hashidx]->m_key, (char*)key ) )
+			{
+				unlock_if_necessary();
+				return false;
+			}
+			JK_ASSERT( NULL == m_table[hashidx]->next );
+			JK_FREE( m_table[hashidx] );
+			m_table[hashidx] = NULL;
+			--m_lUsed;
+			unlock_if_necessary();
+			return true;
+		}
 		JK_ASSERT(NULL != pParent->next);
 		HashEntity* pTemp = pParent->next;
 		pParent->next = pParent->next->next;
 		JK_FREE( pTemp );
+		pTemp = NULL;
 		--m_lUsed;
 		unlock_if_necessary();
 		return true;
@@ -279,9 +299,9 @@ private:
 		}
 		while( true )
 		{
-			if( NULL != pEntity->next )
+			if( NULL == pEntity->next )
 			{
-				return pEntity;
+				return NULL;
 			}
 			if ( 0 == strcmp( (char*)pEntity->next->m_key, (char*)key ) )
 			{

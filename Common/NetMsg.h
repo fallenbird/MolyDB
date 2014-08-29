@@ -63,6 +63,7 @@ enum GENERALRESULT
 	egr_INSERTSUCCESS = 1,
 	egr_INSERTFAILD = 2,
 	egr_CANTFINDVAL = 3,
+	egr_REMOVESUCCESS = 4,
 };
 
 #pragma pack(push,1)
@@ -141,7 +142,7 @@ public:
 };
 
 
-// --Client-->Server ：请求写入一条数据
+// --Client-->Server ：请求查询一个key
 class MSG_C2S_SELECT_ITEM_SYN : public MSG_BASE
 {
 public:
@@ -166,6 +167,20 @@ public:
 	char			strKey[168];
 	char			strVal[1024];
 };
+
+
+// --Client-->Server ：请求删除一个key
+class MSG_C2S_REMOVE_ITEM_SYN : public MSG_BASE
+{
+public:
+	MSG_C2S_REMOVE_ITEM_SYN()
+	{
+		m_byCategory = CS_AGENT;
+		m_byProtocol = C2S_REMOVE_ITEM_SYN;
+	}
+	char			strKey[168];
+};
+
 
 
 #pragma pack(pop)
