@@ -41,7 +41,7 @@ void ClientAgent::OnRecv(BYTE *pMsg, WORD wSize)
 	MSG_BASE* pMsgBase = (MSG_BASE*)pMsg;
 	switch (pMsgBase->m_byCategory)
 	{
-	case CS_AGENT:
+	case emc_CS_CATEGORY:
 		{
 			switch (pMsgBase->m_byProtocol)
 			{

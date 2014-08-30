@@ -87,7 +87,7 @@ int ServerPro(int nConctID, char* pMsg, int nLen)
 	//解析消息头
 	switch (pMsgHead->m_byCategory)
 	{
-	case CS_AGENT:
+	case emc_CS_CATEGORY:
 		ProcessLTConnectMsg(nConctID, pMsgHead);
 		break;
 

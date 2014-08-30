@@ -1,6 +1,7 @@
 #include "NetIntface.h"
 #include "JK_MemMgr.h"
 #include "ClientAgent.h"
+#include "SlaveAgent.h"
 #include "JK_Console.h"
 
 NetInterface::NetInterface()
@@ -17,27 +18,39 @@ NetInterface::~NetInterface()
 
 NetworkObject* NetInterface::CreateAcceptedObject()
 {
-	//return (NetworkObject*)JK_NEW(ClientAgent);
-	return new ClientAgent();
+	ClientAgent* pAgent = (ClientAgent*)JK_NEW(ClientAgent);
+	pAgent->ClientAgent::ClientAgent();
+	return pAgent;
+
+	//return new ClientAgent();
 }
 
 
 void NetInterface::DestroyAcceptedObject( NetworkObject *pNetworkObject )
 {
-	delete pNetworkObject;
+	JK_DELETE(ClientAgent, pNetworkObject);
 }
 
 
 void NetInterface::DestroyConnectedObject( NetworkObject *pNetworkObject )
 {
-	delete pNetworkObject;
+	JK_DELETE(ClientAgent, pNetworkObject);
 }
 
 
 int NetInterface::initInterface( int iMaster, char* strMasterIP, unsigned short usMasterPort, unsigned short uslocalPort  )
 {
+	unsigned int dwIOKey;
+	if ( 1== iMaster )
+	{
+		dwIOKey = SLAVE_IOHANDLER_KEY;
+	}
+	else
+	{
+		dwIOKey = MASTER_IOHANDLER_KEY;
+	}
 	IOHANDLER_DESC desc;
-	desc.dwIoHandlerKey				= CLIENT_IOHANDLER_KEY;
+	desc.dwIoHandlerKey				= dwIOKey;
 	desc.dwMaxAcceptSession			= 1000;
 	desc.dwMaxConnectSession		= 0;
 	desc.dwSendBufferSize			= 60000;
@@ -57,15 +70,15 @@ int NetInterface::initInterface( int iMaster, char* strMasterIP, unsigned short 
 		return 0;
 	}
 
-	if( !m_IOCPServer.StartListen( CLIENT_IOHANDLER_KEY, NULL, uslocalPort ) )
+	if( !m_IOCPServer.StartListen( dwIOKey, NULL, uslocalPort ) )
 	{
 		DISPMSG_ERROR( "Listen failed! IP:%s Port:%d !", "null", uslocalPort );
 		return 0;
 	}
 
-	if ( 1 == iMaster )
+	if ( 1 != iMaster )
 	{
-		//m_IOCPServer.Connect( strMasterIP, usMasterPort );
+		m_IOCPServer.Connect( dwIOKey, new SlaveAgent(), strMasterIP, usMasterPort,1024 * 1024*8,1024 * 1024 * 8,1024 * 64 );
 	}
 
 	DISPMSG_SUCCESS( "Server started!\n" );

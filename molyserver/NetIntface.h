@@ -5,14 +5,15 @@
 #include "JK_Singleton.h"
 #include "ClientAgent.h"
 
-const DWORD CLIENT_IOHANDLER_KEY = 0;
+const DWORD MASTER_IOHANDLER_KEY	= 0;
+const DWORD SLAVE_IOHANDLER_KEY		= 1;
 
 class NetInterface : public JK_Singleton<NetInterface>
 {
 
 public:
 	NetInterface();
-	~NetInterface();
+	virtual ~NetInterface();
 
 private:
 	static NetworkObject* CreateAcceptedObject();
