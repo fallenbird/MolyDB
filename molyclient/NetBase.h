@@ -2,7 +2,7 @@
 #include <winsock2.h>
 
 #define  RECEIVEBUFLEN	8*1024*2
-#define	 MAXNETPOOL		256*1024
+#define	 MAXNETPOOL		1024*1024//256*1024
 struct PacketHeader
 {
 	WORD wSize;

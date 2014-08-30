@@ -37,6 +37,9 @@
     <ClCompile Include="SlaveAgent.cpp">
       <Filter>Replication</Filter>
     </ClCompile>
+    <ClCompile Include="MasterConnector.cpp">
+      <Filter>Replication</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Appender.h">
@@ -73,6 +76,9 @@
       <Filter>Config</Filter>
     </ClInclude>
     <ClInclude Include="SlaveAgent.h">
+      <Filter>Replication</Filter>
+    </ClInclude>
+    <ClInclude Include="MasterConnector.h">
       <Filter>Replication</Filter>
     </ClInclude>
   </ItemGroup>

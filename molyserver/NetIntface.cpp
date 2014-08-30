@@ -1,7 +1,7 @@
 #include "NetIntface.h"
 #include "JK_MemMgr.h"
 #include "ClientAgent.h"
-#include "SlaveAgent.h"
+#include "MasterConnector.h"
 #include "JK_Console.h"
 
 NetInterface::NetInterface()
@@ -78,7 +78,7 @@ int NetInterface::initInterface( int iMaster, char* strMasterIP, unsigned short 
 
 	if ( 1 != iMaster )
 	{
-		m_IOCPServer.Connect( dwIOKey, new SlaveAgent(), strMasterIP, usMasterPort,1024 * 1024*8,1024 * 1024 * 8,1024 * 64 );
+		m_IOCPServer.Connect( dwIOKey, new MasterConnector(), strMasterIP, usMasterPort,1024 * 1024*8,1024 * 1024 * 8,1024 * 64 );
 	}
 
 	DISPMSG_SUCCESS( "Server started!\n" );

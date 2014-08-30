@@ -210,7 +210,7 @@ void ConnectInfo::SaveSendData( char* pData, int iLen )
 	if( int( MAXNETPOOL - m_SendLen ) < iLen + sizeof(int) )
 	{
 		//MessageBox( NULL, "·¢ËÍ»º³åÂú",NULL,MB_OK );
-		assert( "·¢ËÍ»º³åÂú" );
+		printf( "·¢ËÍ»º³åÂú" );
 		return;
 	}
 

@@ -21,7 +21,7 @@ enum eMSGCATEGORY
 enum elp_CS_PROTOCOL
 {
 	S2C_SVR_READY_CMD		= 0,			// S2C:服务器准备
-	S2C_GERERAL_RES_CMD		= 4,			// S2C:断开连接
+	S2C_GERERAL_RES_CMD		= 4,			// S2C:服务器通用通知
 	S2C_SELECT_ITEM_ACK		= 6,			// S2C:查询回复
 
 	C2S_INSERT_ITEM_SYN		= 51,			// C2S:请求插入key-value pair
@@ -35,22 +35,21 @@ enum elp_CS_PROTOCOL
 // master & slave protocol number
 enum elp_MS_PROTOCOL
 {
-	W2S_WSCONNECTED_CMD	= 0,				// W2S:Web服务器连接通知
-	S2W_PUSHSVRAUTH_SYN	= 1,				// S2W:推送服务器认证请求
-	W2S_AUTH_RESULT_ACK	= 2,				// W2S:推送服务器认证反馈
-	W2S_NEWORDERBRD_CMD	= 4,				// W2S:新增订单广播请求
+	M2S_GERERAL_RES_CMD		= 0,			// M2S:Master通用通知
 
-	S2W_TEST_ORDER_SYN	= 52,				// S2W:测试下单
+	S2M_APPENDFILE_SYN		= 1,			// S2M:请求同步append文件
+	M2S_APPENDFILE_ACK		= 2,			// M2S:append 文件回复
+
 };
 
 
 enum GENERALRESULT
 {
-	egr_NONE = 0,
-	egr_INSERTSUCCESS = 1,
-	egr_INSERTFAILD = 2,
-	egr_CANTFINDVAL = 3,
-	egr_REMOVESUCCESS = 4,
+	egr_NONE				= 0,
+	egr_INSERTSUCCESS		= 1,
+	egr_INSERTFAILD			= 2,
+	egr_CANTFINDVAL			= 3,
+	egr_REMOVESUCCESS		= 4,
 };
 
 #pragma pack(push,1)
@@ -67,7 +66,7 @@ public:
 
 
 /* 类名: MSG_SERVER_TYPE
- * 说明: 服务器间登陆消息，指示了服务器类型，ＩＤ，名称，最大玩家数相关信息
+ * 说明: 服务器间登陆消息，指示了服务器类型，ID，名称，最大玩家数相关信息
  */
 struct MSG_SERVER_TYPE : public MSG_BASE
 {
@@ -112,7 +111,6 @@ public:
 	SHORT		sLowVer;					// --低版本号
 	int			iEncKey;					// --密钥
 };
-
 
 
 // --Client-->Server ：请求写入一条数据
@@ -168,6 +166,19 @@ public:
 	char			strKey[168];
 };
 
+
+
+
+// --Slave-->Master ：request replication
+class MSG_S2M_APPENDFILE_SYN : public MSG_BASE
+{
+public:
+	MSG_S2M_APPENDFILE_SYN()
+	{
+		m_byCategory = emc_MS_CATEGORY;
+		m_byProtocol = S2M_APPENDFILE_SYN;
+	}
+};
 
 
 #pragma pack(pop)

@@ -147,10 +147,24 @@ void SendCmdMsg(unsigned int cmdtype, char argv[MAX_PARA_CNT][MAX_CMD_LEN], unsi
 				printf("incorrect number of arguments!\n");
 				return;
 			}
+
+
 			MSG_C2S_INSERT_ITEM_SYN setPacket;
 			strcpy_s(setPacket.strKey, 168, argv[0]);
 			strcpy_s(setPacket.strVal, 1024, argv[1]);
 			g_pNetBase->Send((char*)&setPacket, sizeof(MSG_C2S_INSERT_ITEM_SYN));
+
+			//for( int i=0; i<60; ++i )
+			//{
+			//	MSG_C2S_INSERT_ITEM_SYN setPacket;
+			//	strcpy_s(setPacket.strKey, 168, argv[0]);
+			//	strcpy_s(setPacket.strVal, 1024, argv[1]);
+			//	sprintf_s( setPacket.strKey, "%d",  i );
+			//	sprintf_s( setPacket.strVal, "%d",  i );
+			//	g_pNetBase->Send((char*)&setPacket, sizeof(MSG_C2S_INSERT_ITEM_SYN));
+			//	Sleep(1);
+			//}
+
 		}break;
 
 	case ect_COMMAND_GET:

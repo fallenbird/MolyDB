@@ -96,6 +96,7 @@
     <ClCompile Include="Dumper.cpp" />
     <ClCompile Include="LogManager.cpp" />
     <ClCompile Include="MainLogic.cpp" />
+    <ClCompile Include="MasterConnector.cpp" />
     <ClCompile Include="molyserver.cpp" />
     <ClCompile Include="NetIntface.cpp" />
     <ClCompile Include="ServerConfigData.cpp" />
@@ -110,6 +111,7 @@
     <ClInclude Include="DataSpace.h" />
     <ClInclude Include="Dumper.h" />
     <ClInclude Include="LogManager.h" />
+    <ClInclude Include="MasterConnector.h" />
     <ClInclude Include="molyserver.h" />
     <ClInclude Include="NetIntface.h" />
     <ClInclude Include="ServerConfigData.h" />

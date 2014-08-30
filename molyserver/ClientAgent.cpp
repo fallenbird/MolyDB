@@ -6,7 +6,6 @@
 
 ClientAgent::ClientAgent()
 {
-
 }
 
 ClientAgent::~ClientAgent()
@@ -34,6 +33,20 @@ void ClientAgent::OnAccept(DWORD connindex)
 	//Send(connindex, (char*)&readyPacket, sizeof(MSG_S2C_SVR_READY_CMD));
 	Send((BYTE*)&readyPacket, sizeof(MSG_S2C_SVR_READY_CMD));
 }
+
+
+void ClientAgent::OnDisconnect()
+{
+	DISPMSG_ERROR( "client[%d] disconnected!\n", 102 );
+}
+
+
+void ClientAgent::OnConnect(BOOL bSuccess, DWORD dwNetworkIndex)
+{
+
+}
+
+
 
 
 void ClientAgent::OnRecv(BYTE *pMsg, WORD wSize)
@@ -109,6 +122,32 @@ void ClientAgent::OnRecv(BYTE *pMsg, WORD wSize)
 		}
 		break;
 
+
+	case emc_MS_CATEGORY:
+		{
+			switch (pMsgBase->m_byProtocol)
+			{
+			case C2S_INSERT_ITEM_SYN:
+				{
+					MSG_C2S_INSERT_ITEM_SYN* pInsertMsg = (MSG_C2S_INSERT_ITEM_SYN*)pMsg;
+					if (DataSpace::GetInstance().InsertKV(pInsertMsg->strKey, pInsertMsg->strVal))
+					{
+						MSG_S2C_GERERAL_RES_CMD genermsg;
+						genermsg.m_iRes = egr_INSERTSUCCESS;
+						Send((BYTE*)&genermsg, sizeof(MSG_S2C_GERERAL_RES_CMD));
+					}
+					else
+					{
+						MSG_S2C_GERERAL_RES_CMD genermsg;
+						genermsg.m_iRes = egr_INSERTFAILD;
+						Send((BYTE*)&genermsg, sizeof(MSG_S2C_GERERAL_RES_CMD));
+					}
+				}
+				break;
+			}
+		}
+		break;
+
 	default:
 		{
 		}
@@ -117,16 +156,7 @@ void ClientAgent::OnRecv(BYTE *pMsg, WORD wSize)
 }
 
 
-void ClientAgent::OnDisconnect()
-{
 
-}
-
-
-void ClientAgent::OnConnect(BOOL bSuccess, DWORD dwNetworkIndex)
-{
-
-}
 
 
 
