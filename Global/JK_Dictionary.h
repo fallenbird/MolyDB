@@ -200,9 +200,9 @@ private:
 
 
 private:
-	JK_Hashmap	m_hashtable[2];
-	int			m_iRehashidx;		// rehashing not in progress if rehashidx == -1
-	int			m_Iterators;		// number of iterators currently running 
+	JK_Hashmap<char*>	m_hashtable[2];
+	int					m_iRehashidx;		// rehashing not in progress if rehashidx == -1
+	int					m_Iterators;		// number of iterators currently running 
 };
 
 

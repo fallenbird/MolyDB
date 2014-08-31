@@ -6,7 +6,6 @@
 #include "JK_MemMgr.h"
 #include "JK_Assert.h"
 
-
 class HashEntity
 {
 public:
@@ -33,6 +32,8 @@ public:
 
 //template< typename T, bool bThread = false >
 //class __declspec(dllexport) JK_Hashmap
+
+template< typename T, bool m_bThread = false >
 class JK_Hashmap
 {
 
@@ -40,11 +41,11 @@ private:
 	HashEntity**	m_table;
 	unsigned long	m_lSize;
 	unsigned long	m_lUsed;
-	bool			m_bThread;
+	//bool			m_bThread;
 	JK_Lock			m_lock;
 
 public:
-	JK_Hashmap(bool bThread = false) : m_bThread(bThread), m_lSize(0), m_lUsed(0)
+	JK_Hashmap() : m_lSize(0), m_lUsed(0)
 	{
 	}
 
@@ -239,6 +240,7 @@ public:
 		JK_ASSERT(NULL != pParent->next);
 		HashEntity* pTemp = pParent->next;
 		pParent->next = pParent->next->next;
+		JK_FREE( pTemp->v.m_val );
 		JK_FREE( pTemp );
 		pTemp = NULL;
 		--m_lUsed;
@@ -279,13 +281,14 @@ private:
 
 	HashEntity* GetEntity( HashEntity* pEntity, void* key  )
 	{
-		while( NULL != pEntity )
+		HashEntity* pTempEntity = pEntity;
+		while( NULL != pTempEntity )
 		{
-			if ( 0 == strcmp( (char*)pEntity->m_key, (char*)key ) )
+			if ( 0 == strcmp( (char*)pTempEntity->m_key, (char*)key ) )
 			{
-				return pEntity;
+				return pTempEntity;
 			}
-			pEntity = pEntity->next;
+			pTempEntity = pTempEntity->next;
 		}
 		return NULL;
 	}

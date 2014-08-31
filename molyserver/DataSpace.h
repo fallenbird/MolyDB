@@ -13,7 +13,7 @@ public:
 
 	bool	InitDB();
 	void	UpdateDB( int iUpdateMS );
-	bool	InsertKV( void* key, void* val );
+	bool	InsertKV( char* key, int keylen, char* val, int valen );
 	void*	GetValue( void* key );
 	bool	RemoveKV( void* key );
 	void	Operation( int cmd, void* key, void* val, char* opt );

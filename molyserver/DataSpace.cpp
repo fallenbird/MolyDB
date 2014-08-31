@@ -1,7 +1,7 @@
 #include "DataSpace.h"
 #include "AppendCmdQueue.h"
 #include "JK_Utility.h"
-
+#include "JK_MemMgr.h"
 
 DataSpace::DataSpace()
 {
@@ -25,13 +25,20 @@ void	DataSpace::UpdateDB(int iUpdateMS )
 
 
 
-bool DataSpace::InsertKV(void* key, void* val)
+bool DataSpace::InsertKV( char* key, int keylen, char* val, int vallen )
 {
-	if (  m_normalDict.AddElement( key, val ) )
+	void* pkey = JK_MALLOC( keylen);
+	void* pval = JK_MALLOC( vallen );
+	JK_MEMCPY_S(pkey,keylen+1,key,keylen+1);
+	JK_MEMCPY_S(pval,vallen+1,val,vallen+1);
+
+	if (  m_normalDict.AddElement( pkey, pval ) )
 	{
-		Operation( 101, key, val, "" );
+		Operation( 101, pkey, pval, "" );
 		return true;
 	}
+	JK_FREE( pkey );
+	JK_FREE( pval );
 	return false;
 }
 

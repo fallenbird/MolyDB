@@ -3,7 +3,7 @@
 #include <stdexcept>
 //#include <gtest/gtest.h>
 
-HashmapTest::HashmapTest(): m_configMap(true)
+HashmapTest::HashmapTest(): m_configMap()
 {
 
 }
@@ -82,5 +82,24 @@ void HashmapTest::TestFunction()
 	if( pMY4 )
 	{
 	}
+}
+
+
+// --avoid memmery bug
+void HashmapTest::TestDoubleGet()
+{
+	char			strKey[32];
+	char			strVal[32];
+
+	for( int i=0; i<51; ++i )
+	{
+
+		sprintf_s( strKey, "key%d", i );
+		sprintf_s( strVal, "val%d", i );
+		m_configMap.Add( strKey, strVal );
+	}
+	char* pChar = (char*)m_configMap.Get( "key0" );
+	pChar = (char*)m_configMap.Get( "key0" );
+	assert(pChar);
 }
 

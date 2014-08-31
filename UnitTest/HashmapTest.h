@@ -16,7 +16,8 @@ public:
 	~HashmapTest();
 
 	void TestFunction();
+	void TestDoubleGet();
 
 private:
-	JK_Hashmap  m_configMap;
+	JK_Hashmap<char*>  m_configMap;
 };

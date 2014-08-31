@@ -14,10 +14,12 @@ public:
 	RecvBuffer()			{ m_pQueue = NULL; }
 	virtual ~RecvBuffer()	{ if( m_pQueue ) delete m_pQueue; }
 
-	inline VOID	Create( int nBufferSize, DWORD dwExtraBufferSize ) {
+	inline VOID	Create( int nBufferSize, DWORD dwExtraBufferSize ) 
+	{
 		if( m_pQueue ) delete m_pQueue;
 		m_pQueue = new CircuitQueue<BYTE>;
-		m_pQueue->Create( nBufferSize, dwExtraBufferSize ); }
+		m_pQueue->Create( nBufferSize, dwExtraBufferSize );
+	}
 
 	inline VOID	Completion( int nBytesRecvd ) { m_pQueue->Enqueue( NULL, nBytesRecvd ); }
 

@@ -6,7 +6,7 @@
 #include <stdio.h>
 #include "CommandParser.h"
 #include "JK_Assert.h"
-
+#include "JK_Utility.h"
 
 CNetBase*			g_pNetBase;						// ÍøÂç½Ó¿Ú
 
@@ -150,18 +150,16 @@ void SendCmdMsg(unsigned int cmdtype, char argv[MAX_PARA_CNT][MAX_CMD_LEN], unsi
 
 
 			MSG_C2S_INSERT_ITEM_SYN setPacket;
-			strcpy_s(setPacket.strKey, 168, argv[0]);
-			strcpy_s(setPacket.strVal, 1024, argv[1]);
-			g_pNetBase->Send((char*)&setPacket, sizeof(MSG_C2S_INSERT_ITEM_SYN));
+			setPacket.m_usKeyLen = JK_SPRITF_S(setPacket.strKey, "%s", argv[0]);
+			setPacket.m_usValLen = JK_SPRITF_S(setPacket.strVal, "%s", argv[1]);
+			g_pNetBase->Send((char*)&setPacket, setPacket.GetMsgSize() );
 
-			//for( int i=0; i<60; ++i )
+			//for( int i=0; i<9999; ++i )
 			//{
 			//	MSG_C2S_INSERT_ITEM_SYN setPacket;
-			//	strcpy_s(setPacket.strKey, 168, argv[0]);
-			//	strcpy_s(setPacket.strVal, 1024, argv[1]);
-			//	sprintf_s( setPacket.strKey, "%d",  i );
-			//	sprintf_s( setPacket.strVal, "%d",  i );
-			//	g_pNetBase->Send((char*)&setPacket, sizeof(MSG_C2S_INSERT_ITEM_SYN));
+			//	setPacket.m_usKeyLen = sprintf_s( setPacket.strKey, "%s%d", argv[0], i );
+			//	setPacket.m_usValLen = sprintf_s( setPacket.strVal, "%d",  i );
+			//	g_pNetBase->Send((char*)&setPacket, setPacket.GetMsgSize() );
 			//	Sleep(1);
 			//}
 

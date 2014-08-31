@@ -1,6 +1,5 @@
 #ifndef __NETPROTOCOL_PX7G7U4_H__
 #define __NETPROTOCOL_PX7G7U4_H__
-
 /*   包结构命名规则 Jake.Sun
 1) 请求(Request)			_SYN
 2) 请求应答(Answer)			_ACK
@@ -121,9 +120,16 @@ public:
 	{
 		m_byCategory = emc_CS_CATEGORY;
 		m_byProtocol = C2S_INSERT_ITEM_SYN;
+		m_usValLen = 1024;
 	}
+	unsigned short	m_usKeyLen;
+	unsigned short	m_usValLen;
 	char			strKey[168];
 	char			strVal[1024];
+	int GetMsgSize()
+	{
+		return sizeof(MSG_C2S_INSERT_ITEM_SYN)-( (1024-m_usValLen) ) + 1; // --1 for "\0"
+	}
 };
 
 

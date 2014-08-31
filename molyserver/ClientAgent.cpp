@@ -61,7 +61,7 @@ void ClientAgent::OnRecv(BYTE *pMsg, WORD wSize)
 			case C2S_INSERT_ITEM_SYN:
 				{
 					MSG_C2S_INSERT_ITEM_SYN* pInsertMsg = (MSG_C2S_INSERT_ITEM_SYN*)pMsg;
-					if (DataSpace::GetInstance().InsertKV(pInsertMsg->strKey, pInsertMsg->strVal))
+					if (DataSpace::GetInstance().InsertKV(pInsertMsg->strKey, pInsertMsg->m_usKeyLen, pInsertMsg->strVal, pInsertMsg->m_usValLen))
 					{
 						MSG_S2C_GERERAL_RES_CMD genermsg;
 						genermsg.m_iRes = egr_INSERTSUCCESS;
@@ -129,19 +129,6 @@ void ClientAgent::OnRecv(BYTE *pMsg, WORD wSize)
 			{
 			case C2S_INSERT_ITEM_SYN:
 				{
-					MSG_C2S_INSERT_ITEM_SYN* pInsertMsg = (MSG_C2S_INSERT_ITEM_SYN*)pMsg;
-					if (DataSpace::GetInstance().InsertKV(pInsertMsg->strKey, pInsertMsg->strVal))
-					{
-						MSG_S2C_GERERAL_RES_CMD genermsg;
-						genermsg.m_iRes = egr_INSERTSUCCESS;
-						Send((BYTE*)&genermsg, sizeof(MSG_S2C_GERERAL_RES_CMD));
-					}
-					else
-					{
-						MSG_S2C_GERERAL_RES_CMD genermsg;
-						genermsg.m_iRes = egr_INSERTFAILD;
-						Send((BYTE*)&genermsg, sizeof(MSG_S2C_GERERAL_RES_CMD));
-					}
 				}
 				break;
 			}
