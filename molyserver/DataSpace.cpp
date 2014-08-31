@@ -27,8 +27,8 @@ void	DataSpace::UpdateDB(int iUpdateMS )
 
 bool DataSpace::InsertKV( char* key, int keylen, char* val, int vallen )
 {
-	void* pkey = JK_MALLOC( keylen);
-	void* pval = JK_MALLOC( vallen );
+	void* pkey = JK_MALLOC( keylen+1 );
+	void* pval = JK_MALLOC( vallen+1 );
 	JK_MEMCPY_S(pkey,keylen+1,key,keylen+1);
 	JK_MEMCPY_S(pval,vallen+1,val,vallen+1);
 

@@ -148,19 +148,42 @@ void SendCmdMsg(unsigned int cmdtype, char argv[MAX_PARA_CNT][MAX_CMD_LEN], unsi
 				return;
 			}
 
-
 			MSG_C2S_INSERT_ITEM_SYN setPacket;
 			setPacket.m_usKeyLen = JK_SPRITF_S(setPacket.strKey, "%s", argv[0]);
 			setPacket.m_usValLen = JK_SPRITF_S(setPacket.strVal, "%s", argv[1]);
 			g_pNetBase->Send((char*)&setPacket, setPacket.GetMsgSize() );
-
-			//for( int i=0; i<9999; ++i )
+			
+			//int TCNT = 1; 
+			//while (  true )
 			//{
-			//	MSG_C2S_INSERT_ITEM_SYN setPacket;
-			//	setPacket.m_usKeyLen = sprintf_s( setPacket.strKey, "%s%d", argv[0], i );
-			//	setPacket.m_usValLen = sprintf_s( setPacket.strVal, "%d",  i );
-			//	g_pNetBase->Send((char*)&setPacket, setPacket.GetMsgSize() );
-			//	Sleep(1);
+			//	DWORD dwBegTM = GetTickCount();
+			//	for( int i=0; i<9999; ++i )
+			//	{
+			//		MSG_C2S_INSERT_ITEM_SYN setPacket;
+			//		setPacket.m_usKeyLen = sprintf_s( setPacket.strKey, "%s%d", argv[0], i );
+			//		setPacket.m_usValLen = sprintf_s( setPacket.strVal, "%d",  i );
+			//		g_pNetBase->Send((char*)&setPacket, setPacket.GetMsgSize() );
+			//		Sleep(1);
+			//	}
+			//	DWORD dwEndTM = GetTickCount();
+			//	printf( "总共耗时: %d 秒!\n", (dwEndTM-dwBegTM)/1000 );
+
+			//	Sleep(3000);
+
+			//	dwBegTM = GetTickCount();
+			//	for( int i=0; i<9999; ++i )
+			//	{
+			//		MSG_C2S_REMOVE_ITEM_SYN setPacket;
+			//		sprintf_s( setPacket.strKey, "%s%d", argv[0], i );
+			//		g_pNetBase->Send((char*)&setPacket, sizeof(MSG_C2S_REMOVE_ITEM_SYN) );
+			//		Sleep(1);
+			//	}
+			//	dwEndTM = GetTickCount();
+			//	printf( "总共耗时: %d 秒!\n", (dwEndTM-dwBegTM)/1000 );
+			//	++TCNT;
+			//	Sleep( 1000 );
+			//	printf( "第 %d 轮测试即将开始!\n", TCNT );
+			//	Sleep( 5000 );
 			//}
 
 		}break;

@@ -77,7 +77,7 @@ public:
 		{
 			return;
 		}
-		BeginResizeDict( m_hashtable[0].GetSize()*2 );
+		BeginResizeDict( m_hashtable[0].GetUsed()*2 );
 	}
 
 

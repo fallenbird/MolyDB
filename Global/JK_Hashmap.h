@@ -59,6 +59,13 @@ public:
 	}
 
 
+	void SetSize(unsigned long val) 
+	{ 
+		JK_ASSERT( val >= 0 && val < 999999 );
+		m_lSize = val; 
+	}
+
+
 	inline unsigned long GetSize()
 	{
 		lock_if_necessary();
@@ -94,7 +101,7 @@ public:
 	bool Init( unsigned long lMaxSize )
 	{
 		lock_if_necessary();
-		m_lSize = lMaxSize;
+		SetSize( lMaxSize );
 		m_lUsed = 0;
 		m_table = (HashEntity**)JK_MALLOC( sizeof(HashEntity*)*lMaxSize );
 		if( m_table )
@@ -154,7 +161,7 @@ public:
 	
 	void* Get( void* key )
 	{
-		if( NULL == key )
+		if( NULL == key  || 0 == m_lUsed )
 		{
 			return NULL;
 		}
@@ -210,10 +217,11 @@ public:
 
 	bool Remove( void* key )
 	{
-		if( NULL == key )
+		if( NULL == key || 0 == m_lUsed  )
 		{
 			return false;
 		}
+		HashEntity* ptmpEntity;
 		unsigned int hashidx = HashFunction( ( unsigned char*)key );
 		hashidx %= m_lSize;
 		lock_if_necessary();
@@ -230,9 +238,12 @@ public:
 				unlock_if_necessary();
 				return false;
 			}
-			JK_ASSERT( NULL == m_table[hashidx]->next );
-			JK_FREE( m_table[hashidx] );
-			m_table[hashidx] = NULL;
+			//JK_ASSERT( NULL == m_table[hashidx]->next );
+			//JK_FREE( m_table[hashidx] );
+			ptmpEntity = m_table[hashidx];
+			m_table[hashidx] = m_table[hashidx]->next;
+			JK_FREE(ptmpEntity->v.m_val );
+			JK_FREE(ptmpEntity);
 			--m_lUsed;
 			unlock_if_necessary();
 			return true;
