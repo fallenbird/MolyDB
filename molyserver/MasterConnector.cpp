@@ -29,9 +29,9 @@ void MasterConnector::OnRecv( BYTE *pMsg, WORD wSize )
 		{
 			switch (pMsgBase->m_byProtocol)
 			{
-			case C2S_INSERT_ITEM_SYN:
+			case S2M_APPENDFILE_SYN:
 				{
-					MSG_C2S_INSERT_ITEM_SYN* pInsertMsg = (MSG_C2S_INSERT_ITEM_SYN*)pMsg;
+					MSG_S2M_APPENDFILE_SYN* pInsertMsg = (MSG_S2M_APPENDFILE_SYN*)pMsg;
 					//if (DataSpace::GetInstance().InsertKV(pInsertMsg->strKey, pInsertMsg->strVal))
 					//{
 					//	MSG_S2C_GERERAL_RES_CMD genermsg;

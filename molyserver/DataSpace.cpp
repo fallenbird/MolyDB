@@ -61,7 +61,7 @@ bool DataSpace::RemoveKV(void* key)
 
 void DataSpace::Operation( int cmd, void* key, void* val, char* opt )
 {
-	char* strTemp = new char[128]; 
+	char* strTemp = (char*)JK_MALLOC(128);		// char[128]; 
 	JK_SPRITF_S( strTemp, 128, "%d %s %s %s\n", cmd, (char*)key, (char*)val, opt );
 	AppendCmdQueue::Enqueue( strTemp );
 }

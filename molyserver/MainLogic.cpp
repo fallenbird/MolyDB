@@ -7,7 +7,12 @@ int main(int argc, char* argv[])
 {
 	// --init server
 	MolyServer molySvr;
-	if (!molySvr.InitServer())
+	bool bSlave = false;
+	if ( 2 == argc && ( 0 == strcmp( "slave",argv[1] ) )  )
+	{
+		bSlave = true;
+	}
+	if (!molySvr.InitServer( bSlave ) )
 	{
 		printf( "initialize server failed!\n");
 		Sleep(2000);

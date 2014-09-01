@@ -18,11 +18,9 @@ NetInterface::~NetInterface()
 
 NetworkObject* NetInterface::CreateAcceptedObject()
 {
-	ClientAgent* pAgent = (ClientAgent*)JK_NEW(ClientAgent);
+	ClientAgent* pAgent = JK_NEW(ClientAgent);
 	pAgent->ClientAgent::ClientAgent();
 	return pAgent;
-
-	//return new ClientAgent();
 }
 
 
@@ -78,7 +76,7 @@ int NetInterface::initInterface( int iMaster, char* strMasterIP, unsigned short 
 
 	if ( 1 != iMaster )
 	{
-		m_IOCPServer.Connect( dwIOKey, new MasterConnector(), strMasterIP, usMasterPort,1024 * 1024*8,1024 * 1024 * 8,1024 * 64 );
+		m_IOCPServer.Connect( dwIOKey, JK_NEW(MasterConnector), strMasterIP, usMasterPort,1024 * 1024*8,1024 * 1024 * 8,1024 * 64 );
 	}
 
 	DISPMSG_SUCCESS( "Server started!\n" );

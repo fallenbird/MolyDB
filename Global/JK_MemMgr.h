@@ -2,6 +2,7 @@
 #ifndef _JK_MEMMGR_253BEA9_H_
 #define _JK_MEMMGR_253BEA9_H_
 
+#include <new>
 #include "JK_Lock.h"
 #include "JK_Assert.h"
 
@@ -61,7 +62,7 @@ private:
 #define JK_MALLOC( x ) (JK_MEMMGR::JK_Malloc( x ))
 #define JK_FREE( x ) (JK_MEMMGR::JK_Free( x ))
 
-#define JK_NEW( x ) new(JK_MEMMGR::JK_Malloc( sizeof(x) ))x
+#define JK_NEW( x ) new( JK_MEMMGR::JK_Malloc(sizeof(x)))x
 #define JK_DELETE( t,x ) JK_MEMMGR::JK_Delete<t>(x)
 
 //#define JK_NEW( type ) {type* pX=(type*)JK_MEMMGR::JK_Malloc( sizeof(type) );if( pX){pX->type::type();}

@@ -9,7 +9,7 @@ int MolyServer::GetState()
 	return m_runningSta;
 }
 
-bool MolyServer::InitServer()
+bool MolyServer::InitServer( bool bSlave )
 {
 	m_serverIP = "127.0.0.1";;
 	m_serverPort = 3690;
@@ -17,6 +17,10 @@ bool MolyServer::InitServer()
 	// --init config
 	//ConfigManager::GetInstance().OpenConfigFile( "config.ini" );
 	ServerConfigData::LoadConfigData( ".\\config.ini");
+	if ( bSlave )
+	{
+		ServerConfigData::SetSlave();
+	}
 
 	// --init database
 	if( !DataSpace::GetInstance().InitDB() )

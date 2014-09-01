@@ -37,7 +37,7 @@ typedef struct
 class MolyServer
 {
 public:
-	bool InitServer();
+	bool InitServer( bool bSlave = false );
 	void RunServer();
 	void StopServer();
 	int GetState();

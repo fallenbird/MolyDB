@@ -4,10 +4,11 @@
 #include <atomic>
 #include <stddef.h>
 #include <windows.h>
+#include "JK_MemMgr.h"
 
-
-struct LFQueueNode 
+class LFQueueNode 
 { 
+public:
 	LFQueueNode* next; 
 	void* value; 
 	LFQueueNode()
@@ -59,7 +60,7 @@ public:
 
 	void init() 
 	{
-		LFQueueNode *nd = new LFQueueNode();
+		LFQueueNode *nd = JK_NEW(LFQueueNode);
 		nd->next = pointer_t(NULL, 0);
 		m_headNode = pointer_t(nd, 0);
 		m_tailNode = pointer_t(nd, 0);
@@ -69,7 +70,7 @@ public:
 	void enqueue(data_type val) 
 	{
 		pointer_t tail, next;
-		LFQueueNode* nd = new LFQueueNode();
+		LFQueueNode* nd = JK_NEW(LFQueueNode);
 		nd->value = val;
 		while(true)
 		{
@@ -150,7 +151,7 @@ public:
 
 	void Init() 
 	{
-		m_headNode = new LFQueueNode();
+		m_headNode = JK_NEW(LFQueueNode);
 		m_headNode->next = NULL;
 		m_headNode->value = NULL;
 		m_tailNode = m_headNode;
@@ -161,7 +162,7 @@ public:
 	void Enqueue( void* val ) 
 	{
 		LFQueueNode* targetNode = NULL; 
-		LFQueueNode* pNode = new LFQueueNode();
+		LFQueueNode* pNode = JK_NEW(LFQueueNode);
 		pNode->value = val;
 		pNode->next = NULL;
 		do 

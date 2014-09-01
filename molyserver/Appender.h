@@ -17,11 +17,10 @@ public:
 
 
 	static unsigned int AppendThread();
-	static int OpenAppendFile();
+	static int OpenAppendFile( char* mod );
 	static void CloseAppendFile();
 	static int WriteAppendFile( void* pdata );
-
-	int LoadAppendFile();
+	static int LoadAppendFile();
 
 
 	static char* CatGenericCommand( char* dst, int argc, char** argv ) ;

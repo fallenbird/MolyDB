@@ -13,6 +13,7 @@ public:
 
 	static bool LoadConfigData( char* fileName );
 	
+	static void SetSlave(){ m_bIsMaster = false; }
 	static int IsMaster(){ return m_bIsMaster; }
 	static char* GetMasterIP(){ return m_MasterIP; }
 	static unsigned short GetMasterPort(){ return m_sMasterPort; }

@@ -26,6 +26,10 @@ Appender::~Appender()
 
 int Appender::LoadAppendFile()
 {
+	JK_ASSERT( NULL == m_fpAppendfile );
+
+
+
 	return 0;
 }
 
@@ -93,12 +97,12 @@ unsigned int Appender::AppendThread()
 }
 
 
-int Appender::OpenAppendFile()
+int Appender::OpenAppendFile( char* mod )
 {
 	JK_ASSERT( NULL == m_fpAppendfile );
 	char tmpfile[256];
-	JK_SPRITF_S(tmpfile, 256, "molydb_af-%d.dmf", (int)JK_GETPID() );
-	JK_OPENFILE_S( m_fpAppendfile,tmpfile,"a");
+	JK_SPRITF_S(tmpfile, 256, "molydb_af.dmf", (int)JK_GETPID() );
+	JK_OPENFILE_S( m_fpAppendfile,tmpfile, mod);
 	if (!m_fpAppendfile ) 
 	{
 		MOLYLOG(MOLY_LOG_ERORR, "Failed opening dump file, errno: %d!", errno);
@@ -121,7 +125,7 @@ int Appender::WriteAppendFile( void* pdata )
 {
 	if ( !m_fpAppendfile )
 	{
-		int res = OpenAppendFile();
+		int res = OpenAppendFile( "a" );
 		if(  0!= res )
 		{
 			return res;
