@@ -21,9 +21,7 @@ public:
 	static void CloseAppendFile();
 	static int WriteAppendFile( void* pdata );
 	static int LoadAppendFile();
-
-
-	static char* CatGenericCommand( char* dst, int argc, char** argv ) ;
+	static void HandleCmdLine( char* strLine );
 
 private:
 	static bool			m_bAppendOpen;

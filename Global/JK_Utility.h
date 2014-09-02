@@ -13,6 +13,8 @@
 #ifdef WIN32
 #define JK_SPRITF( dst, fmt, ... )  sprintf_s( dst, fmt, __VA_ARGS__ )
 #define JK_SPRITF_S(dst,size,fmt,...) sprintf_s(dst,size,fmt,__VA_ARGS__ )
+#define JK_STRTOK_S(str,del,context) strtok_s(str,del,context)
+
 #define JK_OPENFILE_S(fptr,fname,mod)	fopen_s(&fptr,fname,mod)
 #define JK_STRERROR_S(size,err) strerror_s(size,err)
 #define JK_MEMCPY_S(dst,dstsize,src,cnt) memcpy_s(dst,dstsize,src,cnt)
@@ -33,6 +35,22 @@
 #endif
 
 
+class JK_Utility
+{
+public:
+	void static jk_str_split( char **arr, char *str, const char *del)
+	{
+		char *s =NULL; 
+		strtok_s(str,del,&s);
+		while(s != NULL)
+		{
+			*arr++ = s;
+			strtok_s(NULL,del,&s);
+		}
+	}
+
+
+};
 
 
 

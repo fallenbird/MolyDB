@@ -28,6 +28,9 @@ bool MolyServer::InitServer( bool bSlave )
 		return false;
 	}
 
+	// --load append file and recover it
+	Appender::LoadAppendFile();
+
 	// --init append background thread
 	CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)Appender::AppendThread, NULL, 0, 0);
 

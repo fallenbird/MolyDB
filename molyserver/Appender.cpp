@@ -26,43 +26,26 @@ Appender::~Appender()
 
 int Appender::LoadAppendFile()
 {
-	JK_ASSERT( NULL == m_fpAppendfile );
-
-
-
+	int res = OpenAppendFile( "r" );
+	if(  0!= res )
+	{
+		return res;
+	}
+	char linebuf[128];
+	while( fgets(linebuf, 128, m_fpAppendfile ) ) 
+	{
+		HandleCmdLine( linebuf );
+	}
 	return 0;
 }
 
 
 
-
-
-
-char* Appender::CatGenericCommand( char* dst, int argc, char** argv) 
+void Appender::HandleCmdLine( char* strLine ) 
 {
-	//char buf[32];
-	//int len, j;
-	//char* tempstr;
-
-	//buf[0] = '*';
-	//len = 1+ll2string(buf+1,sizeof(buf)-1,argc);
-	//buf[len++] = '\r';
-	//buf[len++] = '\n';
-	//dst = sdscatlen(dst,buf,len);
-
-	//for (j = 0; j < argc; j++)
-	//{
-	//	tempstr = argv[j];
-	//	buf[0] = '$';
-	//	len = 1+ll2string(buf+1,sizeof(buf)-1,sdslen(tempstr));
-	//	buf[len++] = '\r';
-	//	buf[len++] = '\n';
-	//	dst = sdscatlen(dst,buf,len);
-	//	dst = sdscatlen(dst,tempstr,sdslen(tempstr));
-	//	dst = sdscatlen(dst,"\r\n",2);
-	//}
-	//return dst;
-	return NULL;
+	char* cmdArray[16];
+	JK_Utility::jk_str_split( cmdArray, strLine, " ");
+	return ;
 }
 
 
