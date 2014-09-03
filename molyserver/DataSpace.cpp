@@ -25,7 +25,7 @@ void	DataSpace::UpdateDB(int iUpdateMS )
 
 
 
-bool DataSpace::InsertKV( char* key, int keylen, char* val, int vallen )
+bool DataSpace::InsertKV( char* key, int keylen, char* val, int vallen, bool ops )
 {
 	void* pkey = JK_MALLOC( keylen+1 );
 	void* pval = JK_MALLOC( vallen+1 );
@@ -34,7 +34,10 @@ bool DataSpace::InsertKV( char* key, int keylen, char* val, int vallen )
 
 	if (  m_normalDict.AddElement( pkey, pval ) )
 	{
-		Operation( 101, pkey, pval, "" );
+		if ( ops )
+		{
+			Operation( 101, pkey, pval, "" );
+		}
 		return true;
 	}
 	JK_FREE( pkey );
@@ -48,11 +51,14 @@ void* DataSpace::GetValue(void* key)
 }
 
 
-bool DataSpace::RemoveKV(void* key)
+bool DataSpace::RemoveKV(void* key, bool ops )
 {
 	if ( m_normalDict.RemoveElement(key) )
 	{
-		Operation( 102, key, "", "" );
+		if ( ops )
+		{
+			Operation( 102, key, "", "" );
+		}
 		return true;
 	}
 	return false;

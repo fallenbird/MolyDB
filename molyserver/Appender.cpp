@@ -5,7 +5,7 @@
 #include "LogManager.h"
 #include "JK_Console.h"
 #include "AppendCmdQueue.h"
-
+#include "DataSpace.h"
 
 
 bool	Appender::m_bAppendOpen = true;
@@ -32,10 +32,13 @@ int Appender::LoadAppendFile()
 		return res;
 	}
 	char linebuf[128];
+	memset(linebuf,0,128);
 	while( fgets(linebuf, 128, m_fpAppendfile ) ) 
 	{
 		HandleCmdLine( linebuf );
 	}
+	fclose( m_fpAppendfile );
+	m_fpAppendfile = NULL;
 	return 0;
 }
 
@@ -45,6 +48,32 @@ void Appender::HandleCmdLine( char* strLine )
 {
 	char* cmdArray[16];
 	JK_Utility::jk_str_split( cmdArray, strLine, " ");
+	switch ( atoi(cmdArray[0]) )
+	{
+	case 101:
+		{
+			DataSpace::GetInstance().InsertKV( cmdArray[1], strlen(cmdArray[1]), cmdArray[2], strlen(cmdArray[2]), false );
+		}
+		break;
+
+	case 102:
+		{
+			DataSpace::GetInstance().RemoveKV( cmdArray[1], false );
+		}
+		break;
+
+	case 103:
+		{
+
+		}
+		break;
+
+	default:
+		{
+			DISPMSG_ERROR( "Error command : %s \n", cmdArray[0]);
+		}
+		break;
+	}
 	return ;
 }
 

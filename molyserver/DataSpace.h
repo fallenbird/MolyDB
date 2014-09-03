@@ -13,9 +13,9 @@ public:
 
 	bool	InitDB();
 	void	UpdateDB( int iUpdateMS );
-	bool	InsertKV( char* key, int keylen, char* val, int valen );
+	bool	InsertKV( char* key, int keylen, char* val, int valen, bool ops = true );
 	void*	GetValue( void* key );
-	bool	RemoveKV( void* key );
+	bool	RemoveKV( void* key, bool ops = true );
 	void	Operation( int cmd, void* key, void* val, char* opt );
 
 

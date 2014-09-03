@@ -9,6 +9,7 @@
 #include "NetIntface.h"
 #include "DataSpace.h"
 #include "JK_Console.h"
+#include "LogManager.h"
 
 typedef struct ServerInof
 {
@@ -47,6 +48,7 @@ private:
 	NetInterface	m_NetInterface;
 	JK_Console		m_ConsoleMgr;
 	DataSpace		m_DataEngine;
+	LogManager		m_LogManager;
 	char*			m_serverIP;
 	int				m_serverPort;
 	int				m_runningSta;
