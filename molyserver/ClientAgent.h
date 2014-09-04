@@ -18,7 +18,7 @@ protected:
 	virtual	void	OnRecv(BYTE *pMsg, WORD wSize);						// --成功读取了一条完整消息
 	virtual void	OnConnect(BOOL bSuccess, DWORD dwNetworkIndex);
 
-
+	int				m_iAgentType;
 
 
 public:

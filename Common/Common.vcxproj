@@ -73,9 +73,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\%40SrcCode\MolyDB\Common\CommandParser.h" />
-    <ClInclude Include="..\..\..\%40SrcCode\MolyDB\Common\Define.h" />
-    <ClInclude Include="..\..\..\%40SrcCode\MolyDB\Common\NetMsg.h" />
+    <ClInclude Include="CommandParser.h" />
+    <ClInclude Include="Define.h" />
+    <ClInclude Include="NetMsg.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

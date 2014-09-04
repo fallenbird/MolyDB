@@ -50,14 +50,14 @@ int NetInterface::initInterface( int iMaster, char* strMasterIP, unsigned short 
 	IOHANDLER_DESC desc;
 	desc.dwIoHandlerKey				= dwIOKey;
 	desc.dwMaxAcceptSession			= 1000;
-	desc.dwMaxConnectSession		= 0;
+	desc.dwMaxConnectSession		= 1;
 	desc.dwSendBufferSize			= 60000;
 	desc.dwRecvBufferSize			= 60000;
 	desc.dwTimeOut					= 1000 * 60 * 20;
 	desc.dwMaxPacketSize			= 4096;
 	desc.dwNumberOfIoThreads		= 1;
 	desc.dwNumberOfAcceptThreads	= 1;
-	desc.dwNumberOfConnectThreads	= 0;
+	desc.dwNumberOfConnectThreads	= 1;
 	desc.fnCreateAcceptedObject		= CreateAcceptedObject;
 	desc.fnDestroyAcceptedObject	= DestroyAcceptedObject;
 	desc.fnDestroyConnectedObject	= DestroyConnectedObject;
@@ -68,18 +68,26 @@ int NetInterface::initInterface( int iMaster, char* strMasterIP, unsigned short 
 		return 0;
 	}
 
+	if ( 1 != iMaster )
+	{
+		uslocalPort += 10000;
+		m_IOCPServer.Connect( dwIOKey, JK_NEW(MasterConnector), strMasterIP, usMasterPort,1024 * 1024*8,1024 * 1024 * 8,1024 * 64 );
+	}
+
 	if( !m_IOCPServer.StartListen( dwIOKey, NULL, uslocalPort ) )
 	{
 		DISPMSG_ERROR( "Listen failed! IP:%s Port:%d !", "null", uslocalPort );
 		return 0;
 	}
 
-	if ( 1 != iMaster )
+	if( 1 == iMaster )
 	{
-		m_IOCPServer.Connect( dwIOKey, JK_NEW(MasterConnector), strMasterIP, usMasterPort,1024 * 1024*8,1024 * 1024 * 8,1024 * 64 );
+		DISPMSG_SUCCESS( "Master start success!\n" );
 	}
-
-	DISPMSG_SUCCESS( "Server started!\n" );
+	else
+	{
+		DISPMSG_SUCCESS( "Slave start success!\n" );
+	}
 	return 1;
 }
 

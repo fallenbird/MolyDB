@@ -24,7 +24,7 @@ public:
 	BOOL			SendEx( DWORD dwNumberOfMessages, BYTE **ppMsg, WORD *pwSize );
 	VOID			Redirect( NetworkObject *pNetworkObject );
 	char*			GetIP();
-
+	int				GetNetIdx();
 
 private:
 	virtual VOID	OnAccept( DWORD dwNetworkIndex ) {}

@@ -10,6 +10,7 @@
 #include "DataSpace.h"
 #include "JK_Console.h"
 #include "LogManager.h"
+#include "SlaveMgr.h"
 
 typedef struct ServerInof
 {
@@ -38,17 +39,20 @@ typedef struct
 class MolyServer
 {
 public:
+	MolyServer();
+	~MolyServer();
 	bool InitServer( bool bSlave = false );
 	void RunServer();
 	void StopServer();
 	int GetState();
-
 
 private:
 	NetInterface	m_NetInterface;
 	JK_Console		m_ConsoleMgr;
 	DataSpace		m_DataEngine;
 	LogManager		m_LogManager;
+	SlaveMgr		m_SlaveManager;
+
 	char*			m_serverIP;
 	int				m_serverPort;
 	int				m_runningSta;

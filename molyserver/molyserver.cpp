@@ -4,6 +4,19 @@
 
 
 
+MolyServer::MolyServer()
+{
+
+}
+
+
+MolyServer::~MolyServer()
+{
+
+}
+
+
+
 int MolyServer::GetState()
 {
 	return m_runningSta;
@@ -23,7 +36,7 @@ bool MolyServer::InitServer( bool bSlave )
 	}
 
 	// --init database
-	if( !DataSpace::GetInstance().InitDB() )
+	if( !DataSpace::GetInstance().InitDB( bSlave ) )
 	{
 		return false;
 	}
@@ -61,4 +74,4 @@ void MolyServer::StopServer()
 }
 
 
- 
+

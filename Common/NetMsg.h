@@ -1,5 +1,8 @@
 #ifndef __NETPROTOCOL_PX7G7U4_H__
 #define __NETPROTOCOL_PX7G7U4_H__
+
+#include "Define.h"
+
 /*   包结构命名规则 Jake.Sun
 1) 请求(Request)			_SYN
 2) 请求应答(Answer)			_ACK
@@ -23,6 +26,7 @@ enum elp_CS_PROTOCOL
 	S2C_GERERAL_RES_CMD		= 4,			// S2C:服务器通用通知
 	S2C_SELECT_ITEM_ACK		= 6,			// S2C:查询回复
 
+	C2S_CLTREGISTER_SYN		= 31,			// C2S:登记
 	C2S_INSERT_ITEM_SYN		= 51,			// C2S:请求插入key-value pair
 	C2S_REMOVE_ITEM_SYN		= 55,			// C2S:请求删除指定key
 	C2S_UPDATE_ITEM_SYN		= 57,			// C2S:请求更新指定key的值
@@ -36,8 +40,10 @@ enum elp_MS_PROTOCOL
 {
 	M2S_GERERAL_RES_CMD		= 0,			// M2S:Master通用通知
 
-	S2M_APPENDFILE_SYN		= 1,			// S2M:请求同步append文件
+	S2M_SLVREGISTER_SYN		= 1,			// S2M:register
+	S2M_APPENDFILE_SYN		= 3,			// S2M:请求同步append文件
 	M2S_APPENDFILE_ACK		= 2,			// M2S:append 文件回复
+	M2S_APPENDCOMMAND_CMD	= 4,			// M2S:append command
 
 };
 
@@ -49,6 +55,7 @@ enum GENERALRESULT
 	egr_INSERTFAILD			= 2,
 	egr_CANTFINDVAL			= 3,
 	egr_REMOVESUCCESS		= 4,
+	egr_SVRNOTREADY			= 5,
 };
 
 #pragma pack(push,1)
@@ -84,7 +91,7 @@ struct MSG_DBPROXY_RESULT : public MSG_BASE
 
 
 
-// --Server --> Client
+// Server --> Client
 class MSG_S2C_GERERAL_RES_CMD : public MSG_BASE
 {
 public:
@@ -97,7 +104,7 @@ public:
 };
 
 
-// --Server --> Client
+// Server --> Client
 class MSG_S2C_SVR_READY_CMD : public MSG_BASE
 {
 public:
@@ -112,7 +119,19 @@ public:
 };
 
 
-// --Client-->Server ：请求写入一条数据
+// Client-->Server ：register to server
+class MSG_C2S_CLTREGISTER_SYN : public MSG_BASE
+{
+public:
+	MSG_C2S_CLTREGISTER_SYN()
+	{
+		m_byCategory = emc_CS_CATEGORY;
+		m_byProtocol = C2S_CLTREGISTER_SYN;
+	}
+};
+
+
+// Client-->Server ：请求写入一条数据
 class MSG_C2S_INSERT_ITEM_SYN : public MSG_BASE
 {
 public:
@@ -155,7 +174,7 @@ public:
 		m_byCategory = emc_CS_CATEGORY;
 		m_byProtocol = S2C_SELECT_ITEM_ACK;
 	}
-	char			strKey[168];
+	char			strKey[MAX_KEY_LEN];
 	char			strVal[1024];
 };
 
@@ -169,13 +188,23 @@ public:
 		m_byCategory = emc_CS_CATEGORY;
 		m_byProtocol = C2S_REMOVE_ITEM_SYN;
 	}
-	char			strKey[168];
+	char			strKey[MAX_KEY_LEN];
 };
 
 
+// Slave-->Master ：register to master
+class MSG_S2M_SLVREGISTER_SYN : public MSG_BASE
+{
+public:
+	MSG_S2M_SLVREGISTER_SYN()
+	{
+		m_byCategory = emc_MS_CATEGORY;
+		m_byProtocol = S2M_SLVREGISTER_SYN;
+	}
+};
 
 
-// --Slave-->Master ：request replication
+// Slave-->Master ：request replication
 class MSG_S2M_APPENDFILE_SYN : public MSG_BASE
 {
 public:
@@ -183,6 +212,43 @@ public:
 	{
 		m_byCategory = emc_MS_CATEGORY;
 		m_byProtocol = S2M_APPENDFILE_SYN;
+	}
+};
+
+// Master-->Master ：ack replication
+class MSG_M2S_APPENDFILE_ACK : public MSG_BASE
+{
+public:
+	MSG_M2S_APPENDFILE_ACK()
+	{
+		m_byCategory = emc_MS_CATEGORY;
+		m_byProtocol = M2S_APPENDFILE_ACK;
+	}
+	int		m_iCmdCnt;
+	char	m_CmdArray[1024][MAX_CMD_LEN];
+
+	int GetMsgSize()
+	{
+		return sizeof(MSG_M2S_APPENDFILE_ACK)-( (1024-m_iCmdCnt)*MAX_CMD_LEN ); // --1 for "\0"
+	}
+};
+
+
+
+class MSG_M2S_APPENDCOMMAND_CMD : public MSG_BASE
+{
+public:
+	MSG_M2S_APPENDCOMMAND_CMD()
+	{
+		m_byCategory = emc_MS_CATEGORY;
+		m_byProtocol = M2S_APPENDCOMMAND_CMD;
+	}
+	unsigned char m_byLen;
+	char	m_strCmd[MAX_CMD_LEN];
+
+	int GetMsgSize()
+	{
+		return sizeof(MSG_M2S_APPENDCOMMAND_CMD)-( (MAX_CMD_LEN-m_byLen) ) + 1; // --1 for "\0"
 	}
 };
 

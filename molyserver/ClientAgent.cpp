@@ -3,8 +3,10 @@
 #include "NetMsg.h"
 #include "DataSpace.h"
 #include "JK_Console.h"
+#include "Appender.h"
+#include "SlaveMgr.h"
 
-ClientAgent::ClientAgent()
+ClientAgent::ClientAgent() : m_iAgentType(0)
 {
 }
 
@@ -29,15 +31,34 @@ void ClientAgent::OnAccept(DWORD connindex)
 	readyPacket.sHighVer = 7;
 	readyPacket.sLowVer = 8;
 	readyPacket.iEncKey = 666;
-	DISPMSG_SUCCESS( "Accept client[%d] success!\n", connindex );
-	//Send(connindex, (char*)&readyPacket, sizeof(MSG_S2C_SVR_READY_CMD));
 	Send((BYTE*)&readyPacket, sizeof(MSG_S2C_SVR_READY_CMD));
+	//Send(connindex, (char*)&readyPacket, sizeof(MSG_S2C_SVR_READY_CMD));
+	
 }
 
 
 void ClientAgent::OnDisconnect()
 {
-	DISPMSG_ERROR( "client[%d] disconnected!\n", 102 );
+	switch (m_iAgentType )
+	{
+	case 1:
+		{
+			DISPMSG_ERROR( "Client[%s] disconnected!\n", GetIP() );
+		}
+		break;
+
+	case 2:
+		{
+			DISPMSG_ERROR( "Slave[%s] disconnected!\n", GetIP() );
+		}
+		break;
+	default:
+		{
+			DISPMSG_ERROR( "Agent[%s] disconnected!\n", GetIP() );
+		}
+		break;
+	}
+	
 }
 
 
@@ -58,9 +79,22 @@ void ClientAgent::OnRecv(BYTE *pMsg, WORD wSize)
 		{
 			switch (pMsgBase->m_byProtocol)
 			{
+			case C2S_CLTREGISTER_SYN:
+				{
+					DISPMSG_SUCCESS( "Accept client[%s] success!\n", GetIP() );
+					m_iAgentType = 1;
+				}
+				break;
+
 			case C2S_INSERT_ITEM_SYN:
 				{
 					MSG_C2S_INSERT_ITEM_SYN* pInsertMsg = (MSG_C2S_INSERT_ITEM_SYN*)pMsg;
+					if ( !DataSpace::GetInstance().IsServerReady() )
+					{
+						MSG_S2C_GERERAL_RES_CMD genermsg;
+						genermsg.m_iRes = egr_SVRNOTREADY;
+						Send((BYTE*)&genermsg, sizeof(MSG_S2C_GERERAL_RES_CMD));
+					}
 					if (DataSpace::GetInstance().InsertKV(pInsertMsg->strKey, pInsertMsg->m_usKeyLen, pInsertMsg->strVal, pInsertMsg->m_usValLen))
 					{
 						MSG_S2C_GERERAL_RES_CMD genermsg;
@@ -89,7 +123,7 @@ void ClientAgent::OnRecv(BYTE *pMsg, WORD wSize)
 					else
 					{
 						MSG_S2C_SELECT_ITEM_ACK ackmsg;
-						strcpy_s(ackmsg.strKey, 168, pInsertMsg->strKey);
+						strcpy_s(ackmsg.strKey, MAX_KEY_LEN, pInsertMsg->strKey);
 						strcpy_s(ackmsg.strVal, 1024, strVal);
 						Send((BYTE*)&ackmsg, sizeof(MSG_S2C_SELECT_ITEM_ACK));
 					}
@@ -99,6 +133,13 @@ void ClientAgent::OnRecv(BYTE *pMsg, WORD wSize)
 			case C2S_REMOVE_ITEM_SYN:
 				{
 					MSG_C2S_REMOVE_ITEM_SYN* pInsertMsg = (MSG_C2S_REMOVE_ITEM_SYN*)pMsg;
+
+					if ( !DataSpace::GetInstance().IsServerReady() )
+					{
+						MSG_S2C_GERERAL_RES_CMD genermsg;
+						genermsg.m_iRes = egr_SVRNOTREADY;
+						Send((BYTE*)&genermsg, sizeof(MSG_S2C_GERERAL_RES_CMD));
+					}
 					if ( !DataSpace::GetInstance().RemoveKV(pInsertMsg->strKey) )
 					{
 						MSG_S2C_GERERAL_RES_CMD genermsg;
@@ -116,6 +157,7 @@ void ClientAgent::OnRecv(BYTE *pMsg, WORD wSize)
 
 			default:
 				{
+					DISPMSG_ERROR("Error protocol type, cat[%d], pro[%d]", pMsgBase->m_byCategory, pMsgBase->m_byProtocol );
 				}
 				break;
 			}
@@ -127,8 +169,19 @@ void ClientAgent::OnRecv(BYTE *pMsg, WORD wSize)
 		{
 			switch (pMsgBase->m_byProtocol)
 			{
-			case C2S_INSERT_ITEM_SYN:
+			case S2M_SLVREGISTER_SYN:
 				{
+					DISPMSG_SUCCESS( "Accept slave[%s] success!\n", GetIP() );
+					m_iAgentType = 2;
+					Appender::ReplicateAppendFile( this );
+					SlaveMgr::GetInstance().InsertSlave( this );
+				}
+				break;
+
+			case S2M_APPENDFILE_SYN:
+				{
+					// sync replication
+					
 				}
 				break;
 			}
@@ -137,6 +190,7 @@ void ClientAgent::OnRecv(BYTE *pMsg, WORD wSize)
 
 	default:
 		{
+			DISPMSG_ERROR("Error protocol type, cat[%d], pro[%d]", pMsgBase->m_byCategory, pMsgBase->m_byProtocol );
 		}
 		break;
 	}

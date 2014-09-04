@@ -34,10 +34,10 @@
     <ClCompile Include="ServerConfigData.cpp">
       <Filter>Config</Filter>
     </ClCompile>
-    <ClCompile Include="SlaveAgent.cpp">
+    <ClCompile Include="MasterConnector.cpp">
       <Filter>Replication</Filter>
     </ClCompile>
-    <ClCompile Include="MasterConnector.cpp">
+    <ClCompile Include="SlaveMgr.cpp">
       <Filter>Replication</Filter>
     </ClCompile>
   </ItemGroup>
@@ -75,10 +75,10 @@
     <ClInclude Include="ServerConfigData.h">
       <Filter>Config</Filter>
     </ClInclude>
-    <ClInclude Include="SlaveAgent.h">
+    <ClInclude Include="MasterConnector.h">
       <Filter>Replication</Filter>
     </ClInclude>
-    <ClInclude Include="MasterConnector.h">
+    <ClInclude Include="SlaveMgr.h">
       <Filter>Replication</Filter>
     </ClInclude>
   </ItemGroup>

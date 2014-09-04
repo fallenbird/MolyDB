@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include "Define.h"
 #include "Appender.h"
 #include "JK_Utility.h"
 #include "JK_Assert.h"
@@ -6,7 +7,9 @@
 #include "JK_Console.h"
 #include "AppendCmdQueue.h"
 #include "DataSpace.h"
-
+#include "ClientAgent.h"
+#include "NetMsg.h"
+#include "ServerConfigData.h"
 
 bool	Appender::m_bAppendOpen = true;
 FILE*	Appender::m_fpAppendfile = NULL;
@@ -23,42 +26,72 @@ Appender::~Appender()
 
 
 
-
 int Appender::LoadAppendFile()
 {
-	int res = OpenAppendFile( "r" );
-	if(  0!= res )
+	FILE* fptemp = OpenAppendFile( "r" );
+	if( !fptemp )
 	{
-		return res;
+		return 1;
 	}
-	char linebuf[128];
-	memset(linebuf,0,128);
-	while( fgets(linebuf, 128, m_fpAppendfile ) ) 
+	char linebuf[MAX_CMD_LEN];
+	memset(linebuf,0, MAX_CMD_LEN);
+	while( fgets(linebuf, MAX_CMD_LEN, fptemp ) ) 
 	{
-		HandleCmdLine( linebuf );
+		HandleCmdLine( linebuf, false );
 	}
-	fclose( m_fpAppendfile );
-	m_fpAppendfile = NULL;
+	fclose( fptemp );
+	DISPMSG_NOTICE( "Load from append file success!\n");
 	return 0;
 }
 
 
 
-void Appender::HandleCmdLine( char* strLine ) 
+int Appender::ReplicateAppendFile( ClientAgent* pAgent )
 {
-	char* cmdArray[16];
+	JK_ASSERT( pAgent );
+	FILE* fptemp = OpenAppendFile( "r" );
+	if( !fptemp )
+	{
+		return 1;
+	}
+	char linebuf[MAX_CMD_LEN];
+	memset(linebuf,0, MAX_CMD_LEN);
+	MSG_M2S_APPENDFILE_ACK ackmsg;
+	ackmsg.m_iCmdCnt = 0;
+	
+	while( fgets(linebuf, MAX_CMD_LEN, fptemp ) ) 
+	{
+		JK_MEMCPY_S( ackmsg.m_CmdArray[ackmsg.m_iCmdCnt], MAX_CMD_LEN, linebuf, MAX_CMD_LEN );
+		++ackmsg.m_iCmdCnt;
+		if ( ackmsg.m_iCmdCnt > 100 )
+		{
+			pAgent->Send( (BYTE*)&ackmsg, ackmsg.GetMsgSize() );
+			ackmsg.m_iCmdCnt = 0;
+		}
+	}
+	pAgent->Send((BYTE*)&ackmsg, ackmsg.GetMsgSize() );
+	fclose( fptemp );
+	return 0;
+}
+
+
+
+
+void Appender::HandleCmdLine( char* strLine, bool bOps ) 
+{
+	char* cmdArray[MAX_PARA_CNT];
 	JK_Utility::jk_str_split( cmdArray, strLine, " ");
 	switch ( atoi(cmdArray[0]) )
 	{
 	case 101:
 		{
-			DataSpace::GetInstance().InsertKV( cmdArray[1], strlen(cmdArray[1]), cmdArray[2], strlen(cmdArray[2]), false );
+			DataSpace::GetInstance().InsertKV( cmdArray[1], strlen(cmdArray[1]), cmdArray[2], strlen(cmdArray[2]), bOps );
 		}
 		break;
 
 	case 102:
 		{
-			DataSpace::GetInstance().RemoveKV( cmdArray[1], false );
+			DataSpace::GetInstance().RemoveKV( cmdArray[1], bOps );
 		}
 		break;
 
@@ -109,18 +142,13 @@ unsigned int Appender::AppendThread()
 }
 
 
-int Appender::OpenAppendFile( char* mod )
+FILE* Appender::OpenAppendFile( char* mod )
 {
-	JK_ASSERT( NULL == m_fpAppendfile );
-	char tmpfile[256];
-	JK_SPRITF_S(tmpfile, 256, "molydb_af.dmf", (int)JK_GETPID() );
-	JK_OPENFILE_S( m_fpAppendfile,tmpfile, mod);
-	if (!m_fpAppendfile ) 
-	{
-		MOLYLOG(MOLY_LOG_ERORR, "Failed opening dump file, errno: %d!", errno);
-		return 1;
-	}
-	return 0;
+	char tmpfile[MAX_FILENAME_LEN];
+	FILE* fp = NULL;
+	JK_SPRITF_S(tmpfile, MAX_FILENAME_LEN, "molydb_af_%d.dmf", ServerConfigData::IsMaster() );
+	JK_OPENFILE_S( fp,tmpfile, mod);
+	return fp;
 }
 
 
@@ -137,10 +165,11 @@ int Appender::WriteAppendFile( void* pdata )
 {
 	if ( !m_fpAppendfile )
 	{
-		int res = OpenAppendFile( "a" );
-		if(  0!= res )
+		m_fpAppendfile = OpenAppendFile( "a" );
+		if( !m_fpAppendfile  )
 		{
-			return res;
+			MOLYLOG(MOLY_LOG_ERORR, "Failed opening dump file, errno: %d!", errno);
+			return 1;
 		}
 	}
 	fprintf( m_fpAppendfile, "%s", pdata );

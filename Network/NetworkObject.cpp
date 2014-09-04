@@ -53,3 +53,15 @@ char* NetworkObject::GetIP()
 		return NULL;
 	}
 }
+
+int NetworkObject::GetNetIdx()
+{
+	if( m_pSession )
+	{
+		return m_pSession->GetIndex();
+	}
+	else
+	{
+		return -1;
+	}
+}

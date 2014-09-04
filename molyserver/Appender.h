@@ -9,6 +9,8 @@
 
 using namespace std;
 
+
+class ClientAgent;
 class Appender
 {
 public:
@@ -17,11 +19,14 @@ public:
 
 
 	static unsigned int AppendThread();
-	static int OpenAppendFile( char* mod );
 	static void CloseAppendFile();
-	static int WriteAppendFile( void* pdata );
 	static int LoadAppendFile();
-	static void HandleCmdLine( char* strLine );
+	static int ReplicateAppendFile( ClientAgent* pAgent);
+	static void HandleCmdLine( char* strLine, bool bOps );
+
+private:
+	static int WriteAppendFile( void* pdata );
+	static FILE* OpenAppendFile( char* mod );
 
 private:
 	static bool			m_bAppendOpen;

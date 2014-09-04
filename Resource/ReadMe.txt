@@ -1,6 +1,8 @@
 
 “One step each day get closer to the dream —— MolyDB” ————JakeSun
 
+DONE
+
 0.0.0.1 2014-08-03 JakeSun 搭建整体简单框架
 0.0.2.0 2014-08-04 JakeSun 完成网络IO模块1
 0.0.2.1 2014-08-05 JakeSun 完成网络IO模块2
@@ -20,3 +22,16 @@
 0.0.5.4 2014-08-26 JakeSun 使用控制台彩显
 0.0.5.6 2014-08-27 JakeSun 开始实现replication的slave部分
 0.0.5.8 2014-08-31 JakeSun 实现了消息包压缩，并解决了一个致命的内存BUG
+0.0.6.0 2014-09-02 JakeSun 完成了从append文件恢复内存数据
+0.0.6.5 2014-09-04 JakeSun 完成了replication
+
+
+TODO
+1. 内存管理，目前只实现了接口
+2. hashmap的遍历
+3. dict加锁
+4. MVCC(多版本并发控制)
+6. 多种数据结构的支持
+7. 代码linux平台编译通过
+8. 持久化可配置，可用命令开闭
+9. client支持用命令连接server

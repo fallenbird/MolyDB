@@ -11,18 +11,24 @@ public:
 	DataSpace();
 	~DataSpace();
 
-	bool	InitDB();
+	bool	InitDB( bool bSlave );
 	void	UpdateDB( int iUpdateMS );
 	bool	InsertKV( char* key, int keylen, char* val, int valen, bool ops = true );
 	void*	GetValue( void* key );
 	bool	RemoveKV( void* key, bool ops = true );
-	void	Operation( int cmd, void* key, void* val, char* opt );
+	void	Operation( int cmd, void* key, void* val );
+	void	Replication( int cmd, void* key, void* val );
 
+
+	void	SetRepState( bool bRep ){ m_bReplicated = bRep; }
+	bool	IsServerReady();
 
 
 private:
-	JK_Dictionary m_normalDict;
-	JK_Dictionary m_expireDict;
+	JK_Dictionary	m_normalDict;
+	JK_Dictionary	m_expireDict;
+	bool			m_bSlave;
+	bool			m_bReplicated;
 };
 
 

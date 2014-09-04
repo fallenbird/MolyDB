@@ -100,7 +100,7 @@
     <ClCompile Include="molyserver.cpp" />
     <ClCompile Include="NetIntface.cpp" />
     <ClCompile Include="ServerConfigData.cpp" />
-    <ClCompile Include="SlaveAgent.cpp" />
+    <ClCompile Include="SlaveMgr.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AppendCmdQueue.h" />
@@ -115,7 +115,7 @@
     <ClInclude Include="molyserver.h" />
     <ClInclude Include="NetIntface.h" />
     <ClInclude Include="ServerConfigData.h" />
-    <ClInclude Include="SlaveAgent.h" />
+    <ClInclude Include="SlaveMgr.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

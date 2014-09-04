@@ -3,8 +3,7 @@
 #define _JK_HASHMAP_JXD7CH5_H_
 
 
-#define MAX_CMD_LEN 256
-#define MAX_PARA_CNT 10
+#include "Define.h"
 
 #ifdef WIN32
 #include <Windows.h>

@@ -2,7 +2,7 @@
 #ifndef _JK_CONSOLE_D0W9V3F_H_
 #define _JK_CONSOLE_D0W9V3F_H_
 #include "JK_Singleton.h"
-
+#include <stdio.h>
 
 #ifdef WIN32
 #include <Windows.h>

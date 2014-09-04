@@ -13,7 +13,8 @@ class JK_MEMMGR
 public:
 	JK_MEMMGR()
 	{
-
+		//m_iAllocSize = 0;
+		//m_iFreeSize  = 0;
 	}
 
 	~JK_MEMMGR()
@@ -24,6 +25,7 @@ public:
 	static void* JK_Malloc( long iSize )
 	{
 		return malloc( iSize );
+		//m_iAllocSize += iSize;
 	}
 
 	static void JK_Free( void* pMem )
@@ -55,7 +57,6 @@ public:
 	}
 
 private:
-	
 };
 
 

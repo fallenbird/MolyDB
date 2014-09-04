@@ -14,16 +14,30 @@ CNetBase*			g_pNetBase;						// 网络接口
 #define NET_MSG WM_USER + 100
 
 
-void ProcessLTConnectMsg(int nConctID, MSG_BASE* pMsg)
-{
 
-	switch (pMsg->m_byProtocol)
+
+//-----------------------------------------------------------------------------------------------------------------------
+// Prototype	:		int	CMyAppDlg::ProcessLSMsg( char* pMsg )
+// Function		:		处理登陆服务器消息
+// Input  Param :		- 
+// Output Param :		-
+// Info			:		SXF	/ 2014.08.10 / 1.0
+//-----------------------------------------------------------------------------------------------------------------------
+int ServerPro(int nConctID, char* pMsg, int nLen)
+{
+	MSG_BASE* pMsgHead = (MSG_BASE*)pMsg;
+
+	JK_ASSERT(emc_CS_CATEGORY == pMsgHead->m_byCategory );
+
+	//解析消息头
+	switch ( pMsgHead->m_byProtocol )
 	{
+
 	case S2C_SVR_READY_CMD:
 		{
-			MSG_S2C_SVR_READY_CMD* pReadyMsg = (MSG_S2C_SVR_READY_CMD*)pMsg;
+			MSG_C2S_CLTREGISTER_SYN regmsg;
+			g_pNetBase->Send( (char*)&regmsg, sizeof(regmsg) );
 			printf("Connet server success!\n");
-			int i = pReadyMsg->sHighVer;
 		}break;
 
 
@@ -46,10 +60,16 @@ void ProcessLTConnectMsg(int nConctID, MSG_BASE* pMsg)
 				{
 					printf("can't find the value!\n");
 				}break;
-				
+
 			case egr_REMOVESUCCESS:
 				{
 					printf("delete success!\n");
+				}
+				break;
+
+			case egr_SVRNOTREADY:
+				{
+					printf("server's not ready yet!\n");
 				}
 				break;
 
@@ -66,38 +86,10 @@ void ProcessLTConnectMsg(int nConctID, MSG_BASE* pMsg)
 		}break;
 
 	default:
+		{
+
+		}
 		break;
-	}
-
-}
-
-
-
-//-----------------------------------------------------------------------------------------------------------------------
-// Prototype	:		int	CMyAppDlg::ProcessLSMsg( char* pMsg )
-// Function		:		处理登陆服务器消息
-// Input  Param :		- 
-// Output Param :		-
-// Info			:		SXF	/ 2014.08.10 / 1.0
-//-----------------------------------------------------------------------------------------------------------------------
-int ServerPro(int nConctID, char* pMsg, int nLen)
-{
-	MSG_BASE* pMsgHead = (MSG_BASE*)pMsg;
-
-	//解析消息头
-	switch (pMsgHead->m_byCategory)
-	{
-	case emc_CS_CATEGORY:
-		ProcessLTConnectMsg(nConctID, pMsgHead);
-		break;
-
-		//case HMsg_TLConnect:									// LoginServer
-		//	ProcessLTConnectMsg( nConctID, pMsg );
-		//	break;
-
-		//case HMsg_TWConnect:									// --World连接
-		//	ProcessTWConnectMsg( nConctID, pMsg );
-		//	break;
 
 	}
 	return 0;
@@ -152,7 +144,7 @@ void SendCmdMsg(unsigned int cmdtype, char argv[MAX_PARA_CNT][MAX_CMD_LEN], unsi
 			setPacket.m_usKeyLen = JK_SPRITF_S(setPacket.strKey, "%s", argv[0]);
 			setPacket.m_usValLen = JK_SPRITF_S(setPacket.strVal, "%s", argv[1]);
 			g_pNetBase->Send((char*)&setPacket, setPacket.GetMsgSize() );
-			
+
 			//int TCNT = 1; 
 			//while (  true )
 			//{
@@ -196,7 +188,7 @@ void SendCmdMsg(unsigned int cmdtype, char argv[MAX_PARA_CNT][MAX_CMD_LEN], unsi
 				return;
 			}
 			MSG_C2S_SELECT_ITEM_SYN setPacket;
-			strcpy_s(setPacket.strKey, 168, argv[0]);
+			strcpy_s(setPacket.strKey, MAX_KEY_LEN, argv[0]);
 			g_pNetBase->Send((char*)&setPacket, sizeof(MSG_C2S_SELECT_ITEM_SYN));
 		}break;
 
@@ -208,7 +200,7 @@ void SendCmdMsg(unsigned int cmdtype, char argv[MAX_PARA_CNT][MAX_CMD_LEN], unsi
 				return;
 			}
 			MSG_C2S_REMOVE_ITEM_SYN setPacket;
-			strcpy_s(setPacket.strKey, 168, argv[0]);
+			strcpy_s(setPacket.strKey, MAX_KEY_LEN, argv[0]);
 			g_pNetBase->Send((char*)&setPacket, sizeof(MSG_C2S_REMOVE_ITEM_SYN));
 		}
 		break;
