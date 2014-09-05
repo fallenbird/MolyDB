@@ -328,8 +328,11 @@ private:
 
 };
 
+template< typename T, bool m_bThread = false >
+class JK_Hashmap_iterator
+{
 
-
+};
 
 
 #endif
