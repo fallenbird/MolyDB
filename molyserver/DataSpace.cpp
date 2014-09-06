@@ -6,6 +6,7 @@
 #include "SlaveMgr.h"
 #include "NetMsg.h"
 
+
 DataSpace::DataSpace(): m_bReplicated(false)
 {
 
@@ -101,5 +102,4 @@ bool DataSpace::IsServerReady()
 	}
 	return true;
 }
-
 

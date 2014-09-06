@@ -37,6 +37,8 @@ template< typename T, bool m_bThread = false >
 class JK_Hashmap
 {
 
+	template< typename T, bool m_bThread = false > friend  class JK_Hashmap_iterator;
+
 private:
 	HashEntity**	m_table;
 	unsigned long	m_lSize;
@@ -48,6 +50,8 @@ public:
 	JK_Hashmap() : m_lSize(0), m_lUsed(0)
 	{
 	}
+
+	typedef JK_Hashmap_iterator<T, m_bThread> iterator;
 
 	inline void Reset()
 	{
@@ -326,11 +330,84 @@ private:
 		return NULL;
 	}
 
+	HashEntity* GetNextUsedBucket( void* key )
+	{
+		unsigned int hashidx = HashFunction( (unsigned char*)key );
+		hashidx %= m_lSize;
+		while( ++hashidx < m_lSize )
+		{
+			if ( !m_table[hashidx] )
+			{
+				return m_table[hashidx];
+			}
+		}
+		return true;
+	}
+
 };
 
-template< typename T, bool m_bThread = false >
+template< typename T, bool bThread >
 class JK_Hashmap_iterator
-{
+{ 
+public:
+	typedef T DATA_TYPE;
+
+
+	JK_Hashmap_iterator( HashEntity* pEntity, JK_Hashmap<T, bThread>* pHash )
+	{
+		JK_ASSERT( pEntity && pHash );
+		m_pCurrEntity = pEntity;
+		m_pHashPtr = pHash;
+	}
+
+	T& operator*() const  
+	{  
+		return *m_pCurrEntity;  
+	}
+
+
+	T* operator->() const  
+	{  
+		return m_pCurrEntity;  
+	}
+
+
+	JK_Hashmap_iterator<T, bThread>& operator++()
+	{
+		const HashEntity* old = m_pCurrEntity;
+		m_pCurrEntity = m_pCurrEntity->next;
+		if ( !m_pCurrEntity )
+		{
+			// find next bucket head
+			m_pCurrEntity = m_pHashPtr->GetNextUsedBucket( old->m_key );
+		}
+		return *this;
+	}
+
+
+	
+	JK_Hashmap_iterator<T, bThread>& operator++(int)
+	{
+		JK_Hashmap_iterator<T, bThread> tmp = *this;
+		++*this;  // operator++()
+		return tmp;
+	}
+
+
+	bool operator==( const JK_Hashmap_iterator<T, bThread>& it)
+	{
+		return m_pCurrEntity == it;
+	}
+
+
+	bool operator!=( const JK_Hashmap_iterator<T, bThread>& it)
+	{
+		return m_pCurrEntity != it;
+	}
+
+private:  
+	HashEntity*	m_pCurrEntity;
+	JK_Hashmap<T, bThread>* m_pHashPtr;
 
 };
 

@@ -2,7 +2,7 @@
 #include "Appender.h"
 #include "ServerConfigData.h"
 
-
+//#include <hash_map>
 
 MolyServer::MolyServer()
 {
@@ -54,7 +54,16 @@ bool MolyServer::InitServer( bool bSlave )
 		ServerConfigData::GetMasterPort(), 
 		ServerConfigData::GetLocalPort() );
 	m_runningSta = ers_RUNNING;
-
+	
+	//hash_map<int, string> mymap;
+	//mymap.insert(make_pair(8, "sxf"));
+	//mymap.insert(make_pair(9, "xf"));
+	//mymap.insert(make_pair(0, "f"));
+	//hash_map<int, string>::iterator itx = mymap.begin();
+	//if ( itx != mymap.end() )
+	//{
+	//	++itx;
+	//}
 	return true;
 }
 
