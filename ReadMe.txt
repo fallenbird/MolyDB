@@ -23,5 +23,6 @@ DONE
 0.0.5.8  2014-08-31 JakeSun   实现了消息包压缩，并解决了一个致命的内存BUG
 0.0.6.0  2014-09-02 JakeSun   完成了从append文件恢复内存数据
 0.0.6.5  2014-09-04 JakeSun   完成了replication
+0.0.6.6  2014-09-04 JakeSun   完成了Hash iterator，使容器和算法解耦
 
 
