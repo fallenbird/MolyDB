@@ -24,5 +24,5 @@ DONE
 0.0.6.0  2014-09-02 JakeSun   完成了从append文件恢复内存数据
 0.0.6.5  2014-09-04 JakeSun   完成了replication
 0.0.6.6  2014-09-06 JakeSun   完成了Hash iterator，使容器和算法解耦
-0.0.6.8  2014-09-07 JakeSun   完成内存分配器allocator, 并修正了一个内存泄漏BUG
+0.0.6.8  2014-09-07 JakeSun   完成内存分配器, 并修正了一个内存泄漏BUG
 
