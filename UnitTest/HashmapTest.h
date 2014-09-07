@@ -19,5 +19,5 @@ public:
 	void TestDoubleGet();
 
 private:
-	JK_Hashmap<char*>  m_configMap;
+	JK_Hashmap<char*, true>  m_configMap;
 };

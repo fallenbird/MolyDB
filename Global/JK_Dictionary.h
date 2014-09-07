@@ -15,6 +15,7 @@
 #define	REHASH_MIN_REFER	10
 #define	REHASH_MAX_REFER	2
 
+template<bool bThread>
 class JK_Dictionary
 {
 public:
@@ -200,7 +201,7 @@ private:
 
 
 private:
-	JK_Hashmap<char*>	m_hashtable[2];
+	JK_Hashmap<char*, bThread>	m_hashtable[2];
 	int					m_iRehashidx;		// rehashing not in progress if rehashidx == -1
 	int					m_Iterators;		// number of iterators currently running 
 };

@@ -11,6 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="JK_Allocator.h" />
     <ClInclude Include="JK_Array.h" />
     <ClInclude Include="JK_Assert.h" />
     <ClInclude Include="JK_Console.h" />

@@ -33,7 +33,7 @@ public:
 //template< typename T, bool bThread = false >
 //class __declspec(dllexport) JK_Hashmap
 
-template< typename T, bool m_bThread = false >
+template< typename T, bool m_bThread >
 class JK_Hashmap
 {
 

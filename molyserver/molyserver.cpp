@@ -1,6 +1,8 @@
 #include "molyserver.h"
 #include "Appender.h"
 #include "ServerConfigData.h"
+//#include <crtdbg.h>  
+
 
 //#include <hash_map>
 
@@ -24,11 +26,11 @@ int MolyServer::GetState()
 
 bool MolyServer::InitServer( bool bSlave )
 {
+	//_CrtSetDbgFlag(_CrtSetDbgFlag(_CRTDBG_REPORT_FLAG) | _CRTDBG_LEAK_CHECK_DF);  
 	m_serverIP = "127.0.0.1";;
 	m_serverPort = 3690;
 
 	// --init config
-	//ConfigManager::GetInstance().OpenConfigFile( "config.ini" );
 	ServerConfigData::LoadConfigData( ".\\config.ini");
 	if ( bSlave )
 	{

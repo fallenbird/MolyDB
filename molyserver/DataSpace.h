@@ -25,10 +25,10 @@ public:
 
 
 private:
-	JK_Dictionary	m_normalDict;
-	JK_Dictionary	m_expireDict;
-	bool			m_bSlave;
-	bool			m_bReplicated;
+	JK_Dictionary<true>	m_normalDict;
+	JK_Dictionary<true>	m_expireDict;
+	bool				m_bSlave;
+	bool				m_bReplicated;
 };
 
 

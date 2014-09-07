@@ -130,6 +130,8 @@ unsigned int Appender::AppendThread()
 			{
 				DISPMSG_DEBUG( "³Ö¾Ã»¯:%s",  (char*)pData );
 			}
+			JK_FREE(pData);
+			pData = NULL;
 		}
 		if (  m_fpAppendfile )
 		{
