@@ -98,6 +98,16 @@ public:
 	}
 
 
+	void  FetchKeys( char* fmt, int istart, int ilimit, char** keysarray, int& kescnt )
+	{
+		if (-1 == m_iRehashidx)
+		{
+			m_hashtable[0].FetchKeys( fmt, istart, ilimit, keysarray, kescnt);
+		}
+		m_hashtable[1].FetchKeys( fmt, istart, ilimit, keysarray, kescnt);
+	}
+
+
 
 private:
 
@@ -198,6 +208,7 @@ private:
 			i *= 2;
 		}
 	}
+
 
 
 private:

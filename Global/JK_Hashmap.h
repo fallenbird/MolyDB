@@ -277,6 +277,17 @@ public:
 		return hash;
 	}
 
+	void  FetchKeys( char* fmt, int istart, int ilimit, char** keysarray, int& kescnt )
+	{
+		bool bAll = (fmt[0] == '*' && fmt[1] == '\0');
+		iterator itr( Begin(), this );
+		//for ( ; itr != NULL; ++itr  )
+		//{
+		//	HashEntity* ptemp = *(itr);
+		//} 
+	}
+
+
 
 private:
 	void ReleaseEntity( HashEntity* pEntity )
@@ -330,6 +341,21 @@ private:
 		return NULL;
 	}
 
+	HashEntity* Begin()
+	{
+		if ( m_table )
+		{
+			return m_table[0];
+		}
+		return NULL;
+	}
+
+	HashEntity* End()
+	{
+		return NULL;
+	}
+
+
 	HashEntity* GetNextUsedBucket( void* key )
 	{
 		unsigned int hashidx = HashFunction( (unsigned char*)key );
@@ -360,9 +386,9 @@ public:
 		m_pHashPtr = pHash;
 	}
 
-	T& operator*() const  
+	HashEntity*	 operator*() const  
 	{  
-		return *m_pCurrEntity;  
+		return m_pCurrEntity;  
 	}
 
 

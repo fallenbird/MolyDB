@@ -24,6 +24,9 @@ public:
 	bool	IsServerReady();
 
 
+	// commands
+	void	FetchKeys( char* fmt, int istart, int ilimit, char** keysarray, int& kescnt );
+
 private:
 	JK_Dictionary<true>	m_normalDict;
 	JK_Dictionary<true>	m_expireDict;

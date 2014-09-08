@@ -103,3 +103,9 @@ bool DataSpace::IsServerReady()
 	return true;
 }
 
+
+void DataSpace::FetchKeys( char* fmt, int istart, int ilimit, char** keysarray, int& kescnt )
+{
+	m_normalDict.FetchKeys( fmt, istart, ilimit, keysarray, kescnt );
+}
+

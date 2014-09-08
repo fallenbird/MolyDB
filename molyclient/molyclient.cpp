@@ -48,22 +48,22 @@ int ServerPro(int nConctID, char* pMsg, int nLen)
 			{
 			case egr_INSERTSUCCESS:
 				{
-					printf("insert success!\n");
+					printf("set ok\n");
 				}break;
 
 			case egr_INSERTFAILD:
 				{
-					printf("insert failed!\n");
+					printf("set failed!\n");
 				}break;
 
 			case egr_CANTFINDVAL:
 				{
-					printf("can't find the value!\n");
+					printf("(nil)\n");
 				}break;
 
 			case egr_REMOVESUCCESS:
 				{
-					printf("delete success!\n");
+					printf("del ok\n");
 				}
 				break;
 
