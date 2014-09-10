@@ -5,6 +5,9 @@
 #include "JK_Lock.h"
 #include "JK_MemMgr.h"
 #include "JK_Assert.h"
+#include "JK_Utility.h"
+
+#include "Define.h"
 
 class HashEntity
 {
@@ -277,14 +280,21 @@ public:
 		return hash;
 	}
 
-	void  FetchKeys( char* fmt, int istart, int ilimit, char** keysarray, int& kescnt )
+	void  FetchKeys( char* fmt, int istart, int ilimit, char** keysarray, int& keyscnt )
 	{
+		HashEntity* ptemp;
+		keyscnt = 0;
 		bool bAll = (fmt[0] == '*' && fmt[1] == '\0');
-		iterator itr( Begin(), this );
-		//for ( ; itr != NULL; ++itr  )
-		//{
-		//	HashEntity* ptemp = *(itr);
-		//} 
+		iterator itr = Begin();
+		for ( ; itr != End() && keyscnt < ilimit; ++itr  )
+		{
+			ptemp = *(itr);
+			if ( ptemp )
+			{
+				JK_MEMCPY_S( keysarray[keyscnt], MAX_KEY_LEN, ptemp->m_key,MAX_KEY_LEN ); // TODO
+				++keyscnt;
+			}
+		} 
 	}
 
 
@@ -341,18 +351,21 @@ private:
 		return NULL;
 	}
 
-	HashEntity* Begin()
+	iterator Begin()
 	{
-		if ( m_table )
+		for ( unsigned long i=0; i<m_lSize; ++i)
 		{
-			return m_table[0];
+			if ( m_table[i] )
+			{
+				return iterator( m_table[i], this );
+			}
 		}
-		return NULL;
+		return End();
 	}
 
-	HashEntity* End()
+	iterator End()
 	{
-		return NULL;
+		return iterator( NULL, this);
 	}
 
 
@@ -367,7 +380,7 @@ private:
 				return m_table[hashidx];
 			}
 		}
-		return true;
+		return NULL;
 	}
 
 };
@@ -422,13 +435,13 @@ public:
 
 	bool operator==( const JK_Hashmap_iterator<T, bThread>& it)
 	{
-		return m_pCurrEntity == it;
+		return m_pCurrEntity == it.m_pCurrEntity;
 	}
 
 
 	bool operator!=( const JK_Hashmap_iterator<T, bThread>& it)
 	{
-		return m_pCurrEntity != it;
+		return m_pCurrEntity != it.m_pCurrEntity;
 	}
 
 private:  
