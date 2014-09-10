@@ -25,5 +25,5 @@ DONE
 0.0.6.5  2014-09-04 JakeSun   完成了replication
 0.0.6.6  2014-09-06 JakeSun   完成了Hash iterator，使容器和算法解耦
 0.0.6.8  2014-09-07 JakeSun   完成内存分配器, 并修正了一个内存泄漏BUG
-
+0.0.6.9  2014-09-11 JakeSun   完成KEYS命令，支持*?通配符匹配
 
