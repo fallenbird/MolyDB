@@ -67,6 +67,12 @@ int ServerPro(int nConctID, char* pMsg, int nLen)
 				}
 				break;
 
+			case egr_NOSUCHKEYS:
+				{
+					printf("(nil)\n");
+				}
+				break;
+
 			case egr_SVRNOTREADY:
 				{
 					printf("server's not ready yet!\n");
@@ -84,6 +90,16 @@ int ServerPro(int nConctID, char* pMsg, int nLen)
 			MSG_S2C_SELECT_ITEM_ACK* pReadyMsg = (MSG_S2C_SELECT_ITEM_ACK*)pMsg;
 			printf("%s\n", pReadyMsg->strVal);
 		}break;
+
+	case S2C_SELECT_KEYS_ACK:
+		{
+			MSG_S2C_SELECT_KEYS_ACK* pKeysMsg = (MSG_S2C_SELECT_KEYS_ACK*)pMsg;
+			for ( int i=0; i<pKeysMsg->m_iKeysCnt; ++i )
+			{
+				printf("%s\n", pKeysMsg->m_szKeys[i] );
+			}
+		}
+		break;
 
 	default:
 		{
@@ -202,6 +218,19 @@ void SendCmdMsg(unsigned int cmdtype, char argv[MAX_PARA_CNT][MAX_CMD_LEN], unsi
 			MSG_C2S_REMOVE_ITEM_SYN setPacket;
 			strcpy_s(setPacket.strKey, MAX_KEY_LEN, argv[0]);
 			g_pNetBase->Send((char*)&setPacket, sizeof(MSG_C2S_REMOVE_ITEM_SYN));
+		}
+		break;
+
+	case ect_COMMAND_KEYS:
+		{
+			if (1 != argc)
+			{
+				printf("incorrect number of arguments!\n");
+				return;
+			}
+			MSG_C2S_SELECT_KEYS_SYN keysMsg;
+			strcpy_s(keysMsg.m_szPattern, MAX_KEY_LEN, argv[0]);
+			g_pNetBase->Send((char*)&keysMsg, sizeof(MSG_C2S_SELECT_KEYS_SYN));
 		}
 		break;
 

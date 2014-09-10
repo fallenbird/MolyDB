@@ -19,7 +19,8 @@ enum enGmCommandType
 	ect_COMMAND_SET		= 2,
 	ect_COMMAND_DEL		= 3,
 	ect_COMMAND_GET		= 4,
-	ect_COMMAND_QUIT	= 5,
+	ect_COMMAND_KEYS	= 5,
+	ect_COMMAND_QUIT	= 15,
 };
 
 
@@ -94,6 +95,10 @@ public:
 		else if (!strcmp(cmdstr, "del"))
 		{
 			return ect_COMMAND_DEL;
+		}
+		else if (!strcmp(cmdstr, "keys"))
+		{
+			return ect_COMMAND_KEYS;
 		}
 		else if (!strcmp(cmdstr, "quit"))
 		{

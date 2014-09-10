@@ -31,6 +31,8 @@ enum elp_CS_PROTOCOL
 	C2S_REMOVE_ITEM_SYN		= 55,			// C2S:请求删除指定key
 	C2S_UPDATE_ITEM_SYN		= 57,			// C2S:请求更新指定key的值
 	C2S_SELECT_ITEM_SYN		= 59,			// C2S:请求查询指定key
+	C2S_SELECT_KEYS_SYN		= 61,			// C2S:请求KEYS
+	S2C_SELECT_KEYS_ACK		= 62,			// S2C:回复KEYS
 };
 
 
@@ -56,6 +58,7 @@ enum GENERALRESULT
 	egr_CANTFINDVAL			= 3,
 	egr_REMOVESUCCESS		= 4,
 	egr_SVRNOTREADY			= 5,
+	egr_NOSUCHKEYS			= 6,
 };
 
 #pragma pack(push,1)
@@ -189,6 +192,37 @@ public:
 		m_byProtocol = C2S_REMOVE_ITEM_SYN;
 	}
 	char			strKey[MAX_KEY_LEN];
+};
+
+
+// --Client-->Server ：请求KEYS
+class MSG_C2S_SELECT_KEYS_SYN : public MSG_BASE
+{
+public:
+	MSG_C2S_SELECT_KEYS_SYN()
+	{
+		m_byCategory = emc_CS_CATEGORY;
+		m_byProtocol = C2S_SELECT_KEYS_SYN;
+	}
+	char		m_szPattern[MAX_KEY_LEN];
+};
+
+
+// --Server-->Client ：reply KEYS command
+class MSG_S2C_SELECT_KEYS_ACK : public MSG_BASE
+{
+public:
+	MSG_S2C_SELECT_KEYS_ACK()
+	{
+		m_byCategory = emc_CS_CATEGORY;
+		m_byProtocol = S2C_SELECT_KEYS_ACK;
+	}
+	int			m_iKeysCnt;
+	char		m_szKeys[1024][MAX_KEY_LEN];
+	int GetMsgSize()
+	{
+		return sizeof(MSG_S2C_SELECT_KEYS_ACK)-( (1024-m_iKeysCnt)*MAX_KEY_LEN ); // --1 for "\0"
+	}
 };
 
 

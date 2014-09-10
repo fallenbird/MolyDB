@@ -104,7 +104,7 @@ bool DataSpace::IsServerReady()
 }
 
 
-void DataSpace::FetchKeys( char* fmt, int istart, int ilimit, char** keysarray, int& kescnt )
+void DataSpace::FetchKeys( char* fmt, int istart, int ilimit, char keysarray[1024][MAX_KEY_LEN], int& kescnt )
 {
 	m_normalDict.FetchKeys( fmt, istart, ilimit, keysarray, kescnt );
 }

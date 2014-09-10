@@ -89,11 +89,9 @@ void ClientAgent::OnRecv(BYTE *pMsg, WORD wSize)
 			case C2S_INSERT_ITEM_SYN:
 				{
 					MSG_C2S_INSERT_ITEM_SYN* pInsertMsg = (MSG_C2S_INSERT_ITEM_SYN*)pMsg;
-					if ( !DataSpace::GetInstance().IsServerReady() )
+					if ( !CheckSvrReady() )
 					{
-						MSG_S2C_GERERAL_RES_CMD genermsg;
-						genermsg.m_iRes = egr_SVRNOTREADY;
-						Send((BYTE*)&genermsg, sizeof(MSG_S2C_GERERAL_RES_CMD));
+						return;
 					}
 					if (DataSpace::GetInstance().InsertKV(pInsertMsg->strKey, pInsertMsg->m_usKeyLen, pInsertMsg->strVal, pInsertMsg->m_usValLen))
 					{
@@ -134,11 +132,9 @@ void ClientAgent::OnRecv(BYTE *pMsg, WORD wSize)
 				{
 					MSG_C2S_REMOVE_ITEM_SYN* pInsertMsg = (MSG_C2S_REMOVE_ITEM_SYN*)pMsg;
 
-					if ( !DataSpace::GetInstance().IsServerReady() )
+					if ( !CheckSvrReady() )
 					{
-						MSG_S2C_GERERAL_RES_CMD genermsg;
-						genermsg.m_iRes = egr_SVRNOTREADY;
-						Send((BYTE*)&genermsg, sizeof(MSG_S2C_GERERAL_RES_CMD));
+						return;
 					}
 					if ( !DataSpace::GetInstance().RemoveKV(pInsertMsg->strKey) )
 					{
@@ -154,6 +150,29 @@ void ClientAgent::OnRecv(BYTE *pMsg, WORD wSize)
 					}
 				}
 				break;
+
+			case C2S_SELECT_KEYS_SYN:
+				{
+					MSG_C2S_SELECT_KEYS_SYN* pKeysMsg = (MSG_C2S_SELECT_KEYS_SYN*)pMsg;
+
+					if ( !CheckSvrReady() )
+					{
+						return;
+					}
+
+					MSG_S2C_SELECT_KEYS_ACK ackmsg;
+					DataSpace::GetInstance().FetchKeys(pKeysMsg->m_szPattern, 0, 100, ackmsg.m_szKeys, ackmsg.m_iKeysCnt );
+					if ( 0 == ackmsg.m_iKeysCnt )
+					{
+						MSG_S2C_GERERAL_RES_CMD genermsg;
+						genermsg.m_iRes = egr_NOSUCHKEYS;
+						Send((BYTE*)&genermsg, sizeof(MSG_S2C_GERERAL_RES_CMD));
+					}
+					Send((BYTE*)&ackmsg, ackmsg.GetMsgSize() );
+
+				}
+				break;
+
 
 			default:
 				{
@@ -194,6 +213,18 @@ void ClientAgent::OnRecv(BYTE *pMsg, WORD wSize)
 		}
 		break;
 	}
+}
+
+bool ClientAgent::CheckSvrReady()
+{
+	if ( !DataSpace::GetInstance().IsServerReady() )
+	{
+		MSG_S2C_GERERAL_RES_CMD genermsg;
+		genermsg.m_iRes = egr_SVRNOTREADY;
+		Send((BYTE*)&genermsg, sizeof(MSG_S2C_GERERAL_RES_CMD));
+		return false;
+	}
+	return true;
 }
 
 

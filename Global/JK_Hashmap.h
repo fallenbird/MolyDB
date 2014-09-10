@@ -6,8 +6,8 @@
 #include "JK_MemMgr.h"
 #include "JK_Assert.h"
 #include "JK_Utility.h"
-
 #include "Define.h"
+
 
 class HashEntity
 {
@@ -280,7 +280,7 @@ public:
 		return hash;
 	}
 
-	void  FetchKeys( char* fmt, int istart, int ilimit, char** keysarray, int& keyscnt )
+	void  FetchKeys( char* fmt, int istart, int ilimit, char keysarray[1024][MAX_KEY_LEN], int& keyscnt )
 	{
 		HashEntity* ptemp;
 		keyscnt = 0;
@@ -289,9 +289,13 @@ public:
 		for ( ; itr != End() && keyscnt < ilimit; ++itr  )
 		{
 			ptemp = *(itr);
-			if ( ptemp )
+			if ( !ptemp )
 			{
-				JK_MEMCPY_S( keysarray[keyscnt], MAX_KEY_LEN, ptemp->m_key,MAX_KEY_LEN ); // TODO
+				continue;
+			}
+			if ( bAll || JK_Utility::jk_str_match( fmt, strlen(fmt), (char*)(ptemp->m_key), strlen( ((char*)ptemp->m_key)), 0 )  )
+			{
+				sprintf_s( keysarray[keyscnt], MAX_KEY_LEN, "%s", ptemp->m_key ); // TODO
 				++keyscnt;
 			}
 		} 
@@ -375,7 +379,7 @@ private:
 		hashidx %= m_lSize;
 		while( ++hashidx < m_lSize )
 		{
-			if ( !m_table[hashidx] )
+			if ( m_table[hashidx] )
 			{
 				return m_table[hashidx];
 			}
@@ -394,7 +398,7 @@ public:
 
 	JK_Hashmap_iterator( HashEntity* pEntity, JK_Hashmap<T, bThread>* pHash )
 	{
-		JK_ASSERT( pEntity && pHash );
+		JK_ASSERT( pHash );
 		m_pCurrEntity = pEntity;
 		m_pHashPtr = pHash;
 	}

@@ -98,11 +98,12 @@ public:
 	}
 
 
-	void  FetchKeys( char* fmt, int istart, int ilimit, char** keysarray, int& kescnt )
+	void  FetchKeys( char* fmt, int istart, int ilimit, char keysarray[1024][MAX_KEY_LEN], int& kescnt )
 	{
 		if (-1 == m_iRehashidx)
 		{
 			m_hashtable[0].FetchKeys( fmt, istart, ilimit, keysarray, kescnt);
+			return;
 		}
 		m_hashtable[1].FetchKeys( fmt, istart, ilimit, keysarray, kescnt);
 	}

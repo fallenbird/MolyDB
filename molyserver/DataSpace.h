@@ -25,7 +25,7 @@ public:
 
 
 	// commands
-	void	FetchKeys( char* fmt, int istart, int ilimit, char** keysarray, int& kescnt );
+	void	FetchKeys( char* fmt, int istart, int ilimit, char keysarray[1024][MAX_KEY_LEN], int& kescnt );
 
 private:
 	JK_Dictionary<true>	m_normalDict;
