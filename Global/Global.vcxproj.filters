@@ -13,5 +13,6 @@
     <ClInclude Include="JK_Utility.h" />
     <ClInclude Include="JK_LockFreeQueue.h" />
     <ClInclude Include="JK_Allocator.h" />
+    <ClInclude Include="JK_SList.h" />
   </ItemGroup>
 </Project>

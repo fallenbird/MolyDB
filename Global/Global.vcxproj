@@ -17,6 +17,7 @@
     <ClInclude Include="JK_Console.h" />
     <ClInclude Include="JK_Dictionary.h" />
     <ClInclude Include="JK_Hashmap.h" />
+    <ClInclude Include="JK_SList.h" />
     <ClInclude Include="JK_Lock.h" />
     <ClInclude Include="JK_LockFreeQueue.h" />
     <ClInclude Include="JK_MemMgr.h" />

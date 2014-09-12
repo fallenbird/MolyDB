@@ -214,3 +214,5 @@ pip-log.txt
 
 #molydb
 _Build/
+_Lib/Debug/Network.lib
+_Lib/Release/Network.lib

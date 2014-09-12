@@ -393,8 +393,6 @@ template< typename T, bool bThread >
 class JK_Hashmap_iterator
 { 
 public:
-	typedef T DATA_TYPE;
-
 
 	JK_Hashmap_iterator( HashEntity* pEntity, JK_Hashmap<T, bThread>* pHash )
 	{
