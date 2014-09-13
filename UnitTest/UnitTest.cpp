@@ -4,7 +4,7 @@
 #include "HashmapTest.h"
 #include "AppendCmdQueue.h"
 //#include <gtest/gtest.h>
-
+#include "DListTest.h"
 
 
 
@@ -15,6 +15,11 @@ int main(int argc, char* argv[])
 	//testing::InitGoogleTest(&argc, argv);	// --用来处理Test相关的命令行开关，如果不关注也可不加   
 	//RUN_ALL_TESTS();						// --看函数名就知道干啥了   
 	//std::cin.get();							// --只是让它暂停而已，不然一闪就没了   
+
+
+	// begin to test DList
+	DListTest dlist;
+	dlist.TestDList();
 
 	return 0;
 }

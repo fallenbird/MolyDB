@@ -95,15 +95,11 @@ void ClientAgent::OnRecv(BYTE *pMsg, WORD wSize)
 					}
 					if (DataSpace::GetInstance().InsertKV(pInsertMsg->strKey, pInsertMsg->m_usKeyLen, pInsertMsg->strVal, pInsertMsg->m_usValLen))
 					{
-						MSG_S2C_GERERAL_RES_CMD genermsg;
-						genermsg.m_iRes = egr_INSERTSUCCESS;
-						Send((BYTE*)&genermsg, sizeof(MSG_S2C_GERERAL_RES_CMD));
+						ReplyResult( egr_INSERTSUCCESS );
 					}
 					else
 					{
-						MSG_S2C_GERERAL_RES_CMD genermsg;
-						genermsg.m_iRes = egr_INSERTFAILD;
-						Send((BYTE*)&genermsg, sizeof(MSG_S2C_GERERAL_RES_CMD));
+						ReplyResult( egr_INSERTFAILD );
 					}
 				}
 				break;
@@ -114,9 +110,7 @@ void ClientAgent::OnRecv(BYTE *pMsg, WORD wSize)
 					char* strVal = (char*)DataSpace::GetInstance().GetValue(pInsertMsg->strKey);
 					if (NULL == strVal)
 					{
-						MSG_S2C_GERERAL_RES_CMD genermsg;
-						genermsg.m_iRes = egr_CANTFINDVAL;
-						Send((BYTE*)&genermsg, sizeof(MSG_S2C_GERERAL_RES_CMD));
+						ReplyResult( egr_CANTFINDVAL );
 					}
 					else
 					{
@@ -138,15 +132,11 @@ void ClientAgent::OnRecv(BYTE *pMsg, WORD wSize)
 					}
 					if ( !DataSpace::GetInstance().RemoveKV(pInsertMsg->strKey) )
 					{
-						MSG_S2C_GERERAL_RES_CMD genermsg;
-						genermsg.m_iRes = egr_CANTFINDVAL;
-						Send((BYTE*)&genermsg, sizeof(MSG_S2C_GERERAL_RES_CMD));
+						ReplyResult( egr_CANTFINDVAL );
 					}
 					else
 					{
-						MSG_S2C_GERERAL_RES_CMD genermsg;
-						genermsg.m_iRes = egr_REMOVESUCCESS;
-						Send((BYTE*)&genermsg, sizeof(MSG_S2C_GERERAL_RES_CMD));
+						ReplyResult( egr_REMOVESUCCESS );
 					}
 				}
 				break;
@@ -164,9 +154,7 @@ void ClientAgent::OnRecv(BYTE *pMsg, WORD wSize)
 					DataSpace::GetInstance().FetchKeys(pKeysMsg->m_szPattern, 0, 100, ackmsg.m_szKeys, ackmsg.m_iKeysCnt );
 					if ( 0 == ackmsg.m_iKeysCnt )
 					{
-						MSG_S2C_GERERAL_RES_CMD genermsg;
-						genermsg.m_iRes = egr_NOSUCHKEYS;
-						Send((BYTE*)&genermsg, sizeof(MSG_S2C_GERERAL_RES_CMD));
+						ReplyResult( egr_NOSUCHKEYS );
 					}
 					Send((BYTE*)&ackmsg, ackmsg.GetMsgSize() );
 
@@ -225,6 +213,14 @@ bool ClientAgent::CheckSvrReady()
 		return false;
 	}
 	return true;
+}
+
+
+void ClientAgent::ReplyResult( int iRes )
+{
+	MSG_S2C_GERERAL_RES_CMD genermsg;
+	genermsg.m_iRes = iRes;
+	Send((BYTE*)&genermsg, sizeof(MSG_S2C_GERERAL_RES_CMD));
 }
 
 

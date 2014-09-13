@@ -18,14 +18,6 @@ Dumper::~Dumper()
 
 int Dumper::LoadDumpFile(char* srcFileName)
 {
-
-	
-	//char magic[10];
-	//int j;
-	//long long now = mstime();
-	//rio rdb;
-	//uint64_t cksum;
-
 	char tmpfile[256];
 	JK_SPRITF_S(tmpfile, 256, "molydb_df-%d.dmf", (int)JK_GETPID() );
 	FILE *fp = NULL;
@@ -35,9 +27,6 @@ int Dumper::LoadDumpFile(char* srcFileName)
 		MOLYLOG(MOLY_LOG_ERORR, "Failed opening dump file, errno: %d!", errno);
 		return 1;
 	}
-
-	
-
 	return 0;
 }
 

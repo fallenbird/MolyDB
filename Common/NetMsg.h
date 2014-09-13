@@ -33,6 +33,11 @@ enum elp_CS_PROTOCOL
 	C2S_SELECT_ITEM_SYN		= 59,			// C2S:请求查询指定key
 	C2S_SELECT_KEYS_SYN		= 61,			// C2S:请求KEYS
 	S2C_SELECT_KEYS_ACK		= 62,			// S2C:回复KEYS
+
+	C2S_LPUSH_ITEM_SYN		= 71,			// C2S:lpush command
+	C2S_RPUSH_ITEM_SYN		= 73,			// C2S:lpush command
+	C2S_LPOP_ITEM_SYN		= 75,			// C2S:lpush command
+	C2S_RPOP_ITEM_SYN		= 77,			// C2S:lpush command
 };
 
 
@@ -164,7 +169,7 @@ public:
 		m_byCategory = emc_CS_CATEGORY;
 		m_byProtocol = C2S_SELECT_ITEM_SYN;
 	}
-	char			strKey[168];
+	char			strKey[MAX_KEY_LEN];
 };
 
 
@@ -183,20 +188,18 @@ public:
 
 
 // --Client-->Server ：请求删除一个key
-class MSG_C2S_REMOVE_ITEM_SYN : public MSG_BASE
+class MSG_C2S_REMOVE_ITEM_SYN : public MSG_C2S_SELECT_ITEM_SYN
 {
 public:
 	MSG_C2S_REMOVE_ITEM_SYN()
 	{
-		m_byCategory = emc_CS_CATEGORY;
 		m_byProtocol = C2S_REMOVE_ITEM_SYN;
 	}
-	char			strKey[MAX_KEY_LEN];
 };
 
 
 // --Client-->Server ：请求KEYS
-class MSG_C2S_SELECT_KEYS_SYN : public MSG_BASE
+class MSG_C2S_SELECT_KEYS_SYN : MSG_BASE
 {
 public:
 	MSG_C2S_SELECT_KEYS_SYN()
@@ -224,6 +227,51 @@ public:
 		return sizeof(MSG_S2C_SELECT_KEYS_ACK)-( (1024-m_iKeysCnt)*MAX_KEY_LEN ); // --1 for "\0"
 	}
 };
+
+
+// Client-->Server ：请求LPUSH
+class MSG_C2S_LPUSH_ITEM_SYN : public MSG_C2S_INSERT_ITEM_SYN
+{
+public:
+	MSG_C2S_LPUSH_ITEM_SYN()
+	{
+		m_byProtocol = C2S_LPUSH_ITEM_SYN;
+	}
+};
+
+
+// Client-->Server ：请求RPUSH
+class MSG_C2S_RPUSH_ITEM_SYN : public MSG_C2S_INSERT_ITEM_SYN
+{
+public:
+	MSG_C2S_RPUSH_ITEM_SYN()
+	{
+		m_byProtocol = C2S_RPUSH_ITEM_SYN;
+	}
+};
+
+
+// Client-->Server ：请求LPOP
+class MSG_C2S_LPOP_ITEM_SYN : public MSG_C2S_SELECT_ITEM_SYN
+{
+public:
+	MSG_C2S_LPOP_ITEM_SYN()
+	{
+		m_byProtocol = C2S_LPOP_ITEM_SYN;
+	}
+};
+
+
+// Client-->Server ：请求RPOP
+class MSG_C2S_RPOP_ITEM_SYN : public MSG_C2S_SELECT_ITEM_SYN
+{
+public:
+	MSG_C2S_RPOP_ITEM_SYN()
+	{
+		m_byProtocol = C2S_RPOP_ITEM_SYN;
+	}
+};
+
 
 
 // Slave-->Master ：register to master

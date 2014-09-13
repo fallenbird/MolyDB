@@ -92,6 +92,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AppendCmdQueueTest.h" />
+    <ClInclude Include="DListTest.h" />
     <ClInclude Include="HashmapTest.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -285,6 +285,7 @@ public:
 		HashEntity* ptemp;
 		keyscnt = 0;
 		bool bAll = (fmt[0] == '*' && fmt[1] == '\0');
+		lock_if_necessary();
 		iterator itr = Begin();
 		for ( ; itr != End() && keyscnt < ilimit; ++itr  )
 		{
@@ -298,7 +299,8 @@ public:
 				sprintf_s( keysarray[keyscnt], MAX_KEY_LEN, "%s", ptemp->m_key ); // TODO
 				++keyscnt;
 			}
-		} 
+		}
+		unlock_if_necessary();
 	}
 
 

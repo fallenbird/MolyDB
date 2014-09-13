@@ -25,5 +25,8 @@
     <ClInclude Include="AppendCmdQueueTest.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="DListTest.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

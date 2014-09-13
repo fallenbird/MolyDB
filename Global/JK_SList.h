@@ -6,25 +6,27 @@
 #include "JK_Lock.h"
 
 
-template< typename T, bool m_bThread >
 class JK_SListNode
 {
 public:
 	JK_SListNode():pNext( NULL ),m_pData(NULL)
 	{
 	}
-	T* m_pData;
-	JK_SListNode* pNext;
+	void*				m_pData;
+	JK_SListNode*		pNext;
 };
 
 
 template< typename T, bool m_bThread >
-class __declspec(dllexport) JK_SList
+class JK_SList
 {
-	typedef JK_SList_iterator<T, m_bThread> iterator;
+
+	template< typename T, bool m_bThread > friend  class JK_SList_iterator;
 
 public:
-	JK_SList():m_iCount( 0 ), m_pHead(NULL),m_pTail( NULL ),m_uiCount(0)
+	typedef JK_SList_iterator<T,m_bThread> iterator;
+
+	JK_SList():m_pHead(NULL),m_pTail( NULL ),m_uiCount(0)
 	{
 
 	}
@@ -34,7 +36,7 @@ public:
 		Destroy();
 	}
 
-	T*	Push( const T* pElement )
+	T*	Push( T* pElement )
 	{
 		JK_ASSERT( pElement );
 		if ( 0 == m_uiCount )
@@ -46,11 +48,11 @@ public:
 				unlock_if_necessary();
 				return NULL;
 			}
-			m_pData = pElement;
-			m_pTail = m_pHeadNode;
+			m_pHead->m_pData = pElement;
+			m_pTail = m_pHead;
 			++m_uiCount;
 			unlock_if_necessary();
-			return (m_pHead->m_data);
+			return (char*)(m_pHead->m_pData);
 		}
 		lock_if_necessary();
 		m_pTail->pNext = (JK_SListNode*)JK_MALLOC(sizeof(JK_SListNode));
@@ -59,11 +61,11 @@ public:
 			unlock_if_necessary();
 			return NULL;
 		}
-		m_pData = pElement;
 		m_pTail = m_pTail->pNext;
+		m_pTail->m_pData = pElement;
 		++m_uiCount;
 		unlock_if_necessary();
-		return (m_pTail->m_data);
+		return (char*)(m_pTail->m_pData);
 	}
 
 
@@ -76,12 +78,12 @@ public:
 			return NULL;
 		}
 		JK_SListNode* temp = m_pHead;
-		T* tempData = m_pHead->m_pData;
+		void* tempData = m_pHead->m_pData;
 		m_pHead = m_pHead->pNext;
-		JK_FREE( JK_SListNode );
+		JK_FREE( temp );
 		--m_uiCount;
 		unlock_if_necessary();
-		return tempData;
+		return (char*)tempData;
 	}
 
 	unsigned int GetSize()
@@ -116,12 +118,12 @@ private:
 	}
 
 private:
-	JK_SListNode<T, m_bThread>*	m_pHead;
-	JK_SListNode<T, m_bThread>*	m_pTail;
-	JK_Lock						m_lock;
-	unsigned int				m_uiCount;
+	JK_SListNode*	m_pHead;
+	JK_SListNode*	m_pTail;
+	JK_Lock			m_lock;
+	unsigned int	m_uiCount;
 
-}
+};
 
 
 
@@ -129,10 +131,8 @@ template< typename T, bool m_bThread >
 class JK_SList_iterator
 { 
 public:
-	typedef T DATA_TYPE;
 
-
-	JK_SList_iterator( JK_SListNode<T, m_bThread>* pHead )
+	JK_SList_iterator( JK_SListNode* pHead )
 	{
 		m_pCurrNode = pHead;
 	}
@@ -143,7 +143,7 @@ public:
 	}
 
 
-	JK_SListNode<T, m_bThread>* operator->() const  
+	JK_SListNode* operator->() const  
 	{  
 		return m_pCurrNode;  
 	}
@@ -156,7 +156,7 @@ public:
 	}
 
 
-	JK_Hashmap_iterator<T, m_bThread>& operator++(int)
+	JK_SList_iterator<T, m_bThread>& operator++(int)
 	{
 		JK_SList_iterator<T, m_bThread> tmp = *this;
 		++*this;
@@ -164,20 +164,20 @@ public:
 	}
 
 
-	bool operator==( const JK_Hashmap_iterator<T, bThread>& it)
+	bool operator==( const JK_SList_iterator<T, m_bThread>& it)
 	{
 		return m_pCurrNode == it.m_pCurrNode;
 	}
 
 
-	bool operator!=( const JK_Hashmap_iterator<T, bThread>& it)
+	bool operator!=( const JK_SList_iterator<T, m_bThread>& it)
 	{
 		return m_pCurrNode != it.m_pCurrNode;
 	}
 
 private:  
 
-	JK_SListNode<T, m_bThread>* m_pCurrNode;
+	JK_SListNode* m_pCurrNode;
 
 };
 

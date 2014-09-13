@@ -24,6 +24,7 @@ private:
 	int				m_iAgentType;
 
 	inline bool		CheckSvrReady(); 
+	inline void		ReplyResult( int iRes );
 
 };
 
