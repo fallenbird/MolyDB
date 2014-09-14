@@ -20,7 +20,15 @@ enum enGmCommandType
 	ect_COMMAND_DEL		= 3,
 	ect_COMMAND_GET		= 4,
 	ect_COMMAND_KEYS	= 5,
-	ect_COMMAND_QUIT	= 15,
+	ect_COMMAND_EXIST	= 6,
+
+	ect_COMMAND_LPUSH	= 11,
+	ect_COMMAND_RPUSH	= 12,
+	ect_COMMAND_LPOP	= 13,
+	ect_COMMAND_RPOP	= 14,
+	ect_COMMAND_LLEN	= 15,
+
+	ect_COMMAND_QUIT	= 95,
 };
 
 
@@ -99,6 +107,30 @@ public:
 		else if (!strcmp(cmdstr, "keys"))
 		{
 			return ect_COMMAND_KEYS;
+		}
+		else if (!strcmp(cmdstr, "exists"))
+		{
+			return ect_COMMAND_EXIST;
+		}
+		else if (!strcmp(cmdstr, "lpush"))
+		{
+			return ect_COMMAND_LPUSH;
+		}
+		else if (!strcmp(cmdstr, "rpush"))
+		{
+			return ect_COMMAND_RPUSH;
+		}
+		else if (!strcmp(cmdstr, "lpop"))
+		{
+			return ect_COMMAND_LPOP;
+		}
+		else if (!strcmp(cmdstr, "rpop"))
+		{
+			return ect_COMMAND_RPOP;
+		}
+		else if (!strcmp(cmdstr, "llen"))
+		{
+			return ect_COMMAND_LLEN;
 		}
 		else if (!strcmp(cmdstr, "quit"))
 		{

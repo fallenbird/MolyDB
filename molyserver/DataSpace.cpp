@@ -3,9 +3,12 @@
 #include "JK_Utility.h"
 #include "JK_MemMgr.h"
 #include "JK_Console.h"
+#include "JK_DList.h"
 #include "SlaveMgr.h"
 #include "NetMsg.h"
 
+
+typedef JK_DList<char, true> moly_list_type;
 
 DataSpace::DataSpace(): m_bReplicated(false)
 {
@@ -36,13 +39,23 @@ bool DataSpace::InsertKV( char* key, int keylen, char* val, int vallen, bool ops
 	void* pval = JK_MALLOC( vallen+1 );
 	JK_MEMCPY_S(pkey,keylen+1,key,keylen+1);
 	JK_MEMCPY_S(pval,vallen+1,val,vallen+1);
+	if ( m_normalDict.GetElement(pkey) )
+	{
+		m_normalDict.UpdateElement(pkey, pval );
+		if ( ops )
+		{
+			Operation	( LOG_CMD_STRING_UPD, pkey, pval );
+			Replication	( LOG_CMD_STRING_UPD, key, pval );
+		}
+		return true;
+	}
 
 	if (  m_normalDict.AddElement( pkey, pval ) )
 	{
 		if ( ops )
 		{
-			Operation( 101, pkey, pval );
-			Replication( 101, key, pval );
+			Operation	( LOG_CMD_STRING_ADD, pkey, pval );
+			Replication	( LOG_CMD_STRING_ADD, key, pval );
 		}
 		return true;
 	}
@@ -63,8 +76,8 @@ bool DataSpace::RemoveKV(void* key, bool ops )
 	{
 		if ( ops )
 		{
-			Operation( 102, key, "" );
-			Replication( 102, key, "" );
+			Operation	( LOG_CMD_STRING_DEL, key, "" );
+			Replication	( LOG_CMD_STRING_DEL, key, "" );
 		}
 		return true;
 	}
@@ -74,8 +87,8 @@ bool DataSpace::RemoveKV(void* key, bool ops )
 
 void DataSpace::Operation( int cmd, void* key, void* val )
 {
-	char* strTemp = (char*)JK_MALLOC(128);		// char[128]; 
-	JK_SPRITF_S( strTemp, 128, "%d %s %s \n", cmd, (char*)key, (char*)val );
+	char* strTemp = (char*)JK_MALLOC(MAX_CMD_LEN);		// char[128]; 
+	JK_SPRITF_S( strTemp, MAX_CMD_LEN, "%d %s %s \n", cmd, (char*)key, (char*)val );
 	AppendCmdQueue::Enqueue( strTemp );
 }
 
@@ -108,4 +121,203 @@ void DataSpace::FetchKeys( char* fmt, int istart, int ilimit, char keysarray[102
 {
 	m_normalDict.FetchKeys( fmt, istart, ilimit, keysarray, kescnt );
 }
+
+
+
+bool DataSpace::IsExists( char* key )
+{
+	return m_normalDict.IsExists( key );
+}
+
+
+
+bool DataSpace::ListPushLeft( char* key, int keylen, char* val, int vallen, bool ops /*= true */ )
+{
+	void* pkey = JK_MALLOC( keylen+1 );
+	if ( !pkey )
+	{
+		DISPMSG_ERROR( "malloc memory failed!\n");
+		return false;
+	}
+	void* pval = JK_MALLOC( vallen+1 );
+	if ( !pval )
+	{
+		DISPMSG_ERROR( "malloc memory failed!\n");
+		JK_FREE( pkey );
+		return false;
+	}
+	JK_MEMCPY_S(pkey,keylen+1,key,keylen+1);
+	JK_MEMCPY_S(pval,vallen+1,val,vallen+1);
+	moly_list_type* pDList = (moly_list_type*)m_normalDict.GetElement( pkey );
+	if ( pDList )
+	{
+		if ( NULL == pDList->LPush( (char*)pval ) )
+		{
+			JK_FREE( pkey );
+			JK_FREE( pval );
+			return false;
+		}
+		if ( ops )
+		{
+			Operation	( LOG_CMD_LIST_LPUSH, pkey, pval );
+			Replication	( LOG_CMD_LIST_LPUSH, key, pval );
+		}
+		return true;
+	}
+	pDList = JK_NEW(moly_list_type);
+	if ( !pDList )
+	{
+		DISPMSG_ERROR( "malloc memory failed!\n");
+		JK_FREE( pkey );
+		JK_FREE( pval );
+		return false;
+	}
+	if( NULL == pDList->LPush( (char*)pval ) )
+	{
+		JK_FREE( pkey );
+		JK_FREE( pval );
+		JK_DELETE( moly_list_type, pDList );
+		return false;
+	}
+	if ( !m_normalDict.AddElement(pkey, pDList ) )
+	{
+		JK_FREE( pkey );
+		JK_FREE( pval );
+		JK_DELETE( moly_list_type, pDList );
+		return false;
+	}
+	if ( ops )
+	{
+		Operation	( LOG_CMD_LIST_LPUSH, pkey, pval );
+		Replication	( LOG_CMD_LIST_LPUSH, key, pval );
+	}
+	return true;
+}
+
+
+bool DataSpace::ListPushRight( char* key, int keylen, char* val, int vallen, bool ops /*= true */ )
+{
+	void* pkey = JK_MALLOC( keylen+1 );
+	if ( !pkey )
+	{
+		DISPMSG_ERROR( "malloc memory failed!\n");
+		return false;
+	}
+	void* pval = JK_MALLOC( vallen+1 );
+	if ( !pval )
+	{
+		DISPMSG_ERROR( "malloc memory failed!\n");
+		JK_FREE( pkey );
+		return false;
+	}
+	JK_MEMCPY_S(pkey,keylen+1,key,keylen+1);
+	JK_MEMCPY_S(pval,vallen+1,val,vallen+1);
+	moly_list_type* pDList = (moly_list_type*)m_normalDict.GetElement( pkey );
+	if ( pDList )
+	{
+		if ( NULL == pDList->RPush( (char*)pval ) )
+		{
+			JK_FREE( pkey );
+			JK_FREE( pval );
+			return false;
+		}
+		if ( ops )
+		{
+			Operation	( LOG_CMD_LIST_RPUSH, pkey, pval );
+			Replication	( LOG_CMD_LIST_RPUSH, key, pval );
+		}
+		return true;
+	}
+	pDList = JK_NEW(moly_list_type);
+	if ( !pDList )
+	{
+		DISPMSG_ERROR( "malloc memory failed!\n");
+		JK_FREE( pkey );
+		JK_FREE( pval );
+		return false;
+	}
+	if( NULL == pDList->RPush( (char*)pval ) )
+	{
+		JK_FREE( pkey );
+		JK_FREE( pval );
+		JK_DELETE( moly_list_type, pDList );
+		return false;
+	}
+	if ( !m_normalDict.AddElement(pkey, pDList ) )
+	{
+		JK_FREE( pkey );
+		JK_FREE( pval );
+		JK_DELETE( moly_list_type, pDList );
+		return false;
+	}
+	if ( ops )
+	{
+		Operation	( LOG_CMD_LIST_RPUSH, pkey, pval );
+		Replication	( LOG_CMD_LIST_RPUSH, key, pval );
+	}
+	return true;
+}
+
+
+void* DataSpace::ListPopLeft( char* key, bool ops /*= true */ )
+{
+	moly_list_type* pDList = (moly_list_type*)m_normalDict.GetElement( key );
+	if ( !pDList )
+	{
+		return NULL;
+	}
+	void* ptemp = pDList->LPop();
+	if ( ptemp && ops )
+	{
+		Operation	( LOG_CMD_LIST_LPOP, key, "" );
+		Replication	( LOG_CMD_LIST_LPOP, key, "" );
+	}
+	return ptemp;
+}
+
+
+void* DataSpace::ListPopRight( char* key, bool ops /*= true */ )
+{
+	moly_list_type* pDList = (moly_list_type*)m_normalDict.GetElement( key );
+	if ( !pDList )
+	{
+		return NULL;
+	}
+	void* ptemp = pDList->RPop();
+	if ( ptemp && ops )
+	{
+		Operation	( LOG_CMD_LIST_RPOP, key, "" );
+		Replication	( LOG_CMD_LIST_RPOP, key, "" );
+	}
+	return ptemp;
+}
+
+
+int DataSpace::GetListLength( char* key )
+{
+	moly_list_type* pDList = (moly_list_type*)m_normalDict.GetElement( key );
+	if ( !pDList )
+	{
+		return NULL;
+	}
+	return pDList->GetSize();
+}
+
+
+bool DataSpace::UpdateKV( void* key, void* val, int vallen )
+{
+	void* pval = JK_MALLOC( vallen+1 );
+	if ( !pval )
+	{
+		DISPMSG_ERROR( "malloc memory failed!\n");
+		return false;
+	}
+	JK_MEMCPY_S(pval,vallen+1,val,vallen+1);
+	if( false == m_normalDict.UpdateElement( key, pval ) )
+	{
+		JK_FREE( pval );
+	}
+	return true;
+}
+
 

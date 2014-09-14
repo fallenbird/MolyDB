@@ -83,21 +83,47 @@ void Appender::HandleCmdLine( char* strLine, bool bOps )
 	JK_Utility::jk_str_split( cmdArray, strLine, " ");
 	switch ( atoi(cmdArray[0]) )
 	{
-	case 101:
+	case LOG_CMD_STRING_ADD:
 		{
 			DataSpace::GetInstance().InsertKV( cmdArray[1], strlen(cmdArray[1]), cmdArray[2], strlen(cmdArray[2]), bOps );
 		}
 		break;
 
-	case 102:
+	case LOG_CMD_STRING_DEL:
 		{
 			DataSpace::GetInstance().RemoveKV( cmdArray[1], bOps );
 		}
 		break;
 
-	case 103:
+	case LOG_CMD_STRING_UPD:
 		{
+			DataSpace::GetInstance().UpdateKV( cmdArray[1], cmdArray[2], strlen(cmdArray[2]) );
+		}
+		break;
 
+
+	case LOG_CMD_LIST_LPUSH:
+		{
+			DataSpace::GetInstance().ListPushLeft( cmdArray[1], strlen(cmdArray[1]), cmdArray[2], strlen(cmdArray[2]), bOps );
+		}
+		break;
+
+	case LOG_CMD_LIST_RPUSH:
+		{
+			DataSpace::GetInstance().ListPushRight( cmdArray[1], strlen(cmdArray[1]), cmdArray[2], strlen(cmdArray[2]), bOps );
+		}
+		break;
+
+	case LOG_CMD_LIST_LPOP:
+		{
+			DataSpace::GetInstance().ListPopLeft( cmdArray[1], bOps );
+		}
+		break;
+
+
+	case LOG_CMD_LIST_RPOP:
+		{
+			DataSpace::GetInstance().ListPopRight( cmdArray[1], bOps );
 		}
 		break;
 

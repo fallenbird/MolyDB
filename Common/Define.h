@@ -22,3 +22,14 @@
 
 // data
 #define MAX_KEY_LEN 64
+
+
+
+
+#define LOG_CMD_STRING_ADD	101
+#define LOG_CMD_STRING_DEL	102
+#define LOG_CMD_STRING_UPD	103
+#define LOG_CMD_LIST_LPUSH	201
+#define LOG_CMD_LIST_RPUSH	202
+#define LOG_CMD_LIST_LPOP	203
+#define LOG_CMD_LIST_RPOP	204

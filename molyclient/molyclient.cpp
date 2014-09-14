@@ -73,6 +73,12 @@ int ServerPro(int nConctID, char* pMsg, int nLen)
 				}
 				break;
 
+			case egr_KEYEXISTS:
+				{
+					printf("yes\n");
+				}
+				break;
+
 			case egr_SVRNOTREADY:
 				{
 					printf("server's not ready yet!\n");
@@ -139,8 +145,16 @@ int main(int argc, char* argv[])
 
 void PrintHelpInfo()
 {
-	printf("Set  设置K-V值\n");
-	printf("Get  根据key获取相应value\n");
+	printf("set	Set the string value of a key.\n");
+	printf("get	Get the value of a key.\n");
+	printf("del	Delete a key.\n");
+	printf("exists	Determine if a key exists.\n");
+	printf("keys	Prepend one or multiple values to a list.\n");
+	printf("lpush	Append one or multiple values to a list.\n");
+	printf("rpush	Find all keys matching the given pattern.\n");
+	printf("lpop	Remove and get the first element in a list.\n");
+	printf("rpop	Remove and get the last element in a list.\n");
+	printf("llen	Get the length of a list.\n");
 }
 
 
@@ -231,6 +245,86 @@ void SendCmdMsg(unsigned int cmdtype, char argv[MAX_PARA_CNT][MAX_CMD_LEN], unsi
 			MSG_C2S_SELECT_KEYS_SYN keysMsg;
 			strcpy_s(keysMsg.m_szPattern, MAX_KEY_LEN, argv[0]);
 			g_pNetBase->Send((char*)&keysMsg, sizeof(MSG_C2S_SELECT_KEYS_SYN));
+		}
+		break;
+
+	case ect_COMMAND_EXIST:
+		{
+			if (1 != argc)
+			{
+				printf("incorrect number of arguments!\n");
+				return;
+			}
+			MSG_C2S_EXISTS_KEY_SYN exmsg;
+			strcpy_s(exmsg.strKey, MAX_KEY_LEN, argv[0]);
+			g_pNetBase->Send((char*)&exmsg, sizeof(MSG_C2S_EXISTS_KEY_SYN));
+		}
+		break;
+
+	case ect_COMMAND_LPUSH:
+		{
+			if (2 != argc)
+			{
+				printf("incorrect number of arguments!\n");
+				return;
+			}
+			MSG_C2S_LPUSH_ITEM_SYN setPacket;
+			setPacket.m_usKeyLen = JK_SPRITF_S(setPacket.strKey, "%s", argv[0]);
+			setPacket.m_usValLen = JK_SPRITF_S(setPacket.strVal, "%s", argv[1]);
+			g_pNetBase->Send((char*)&setPacket, sizeof(MSG_C2S_LPUSH_ITEM_SYN));
+		}
+		break;
+
+	case ect_COMMAND_RPUSH:
+		{
+			if (2 != argc)
+			{
+				printf("incorrect number of arguments!\n");
+				return;
+			}
+			MSG_C2S_RPUSH_ITEM_SYN setPacket;
+			setPacket.m_usKeyLen = JK_SPRITF_S(setPacket.strKey, "%s", argv[0]);
+			setPacket.m_usValLen = JK_SPRITF_S(setPacket.strVal, "%s", argv[1]);
+			g_pNetBase->Send((char*)&setPacket, sizeof(MSG_C2S_RPUSH_ITEM_SYN));
+		}
+		break;
+
+	case ect_COMMAND_LPOP:
+		{
+			if (1 != argc)
+			{
+				printf("incorrect number of arguments!\n");
+				return;
+			}
+			MSG_C2S_LPOP_ITEM_SYN exmsg;
+			strcpy_s(exmsg.strKey, MAX_KEY_LEN, argv[0]);
+			g_pNetBase->Send((char*)&exmsg, sizeof(MSG_C2S_LPOP_ITEM_SYN));
+		}
+		break;
+
+	case ect_COMMAND_RPOP:
+		{
+			if (1 != argc)
+			{
+				printf("incorrect number of arguments!\n");
+				return;
+			}
+			MSG_C2S_RPOP_ITEM_SYN exmsg;
+			strcpy_s(exmsg.strKey, MAX_KEY_LEN, argv[0]);
+			g_pNetBase->Send((char*)&exmsg, sizeof(MSG_C2S_RPOP_ITEM_SYN));
+		}
+		break;
+
+	case ect_COMMAND_LLEN:
+		{
+			if (1 != argc)
+			{
+				printf("incorrect number of arguments!\n");
+				return;
+			}
+			MSG_C2S_LLEN_ITEM_SYN exmsg;
+			strcpy_s(exmsg.strKey, MAX_KEY_LEN, argv[0]);
+			g_pNetBase->Send((char*)&exmsg, sizeof(MSG_C2S_LLEN_ITEM_SYN));
 		}
 		break;
 

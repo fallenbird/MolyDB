@@ -202,11 +202,12 @@ public:
 		{
 			if (0 == strcmp((char*)(*ppEntity)->m_key, (char*)key))
 			{
+				unlock_if_necessary();
 				return false;
 			}
 			ppEntity = &( (*ppEntity)->next );
 		}
-		HashEntity* pTemp = (HashEntity*)JK_MALLOC( sizeof(HashEntity) );
+		HashEntity* pTemp = (HashEntity*)JK_NEW( HashEntity );
 		if( NULL == pTemp )
 		{
 			unlock_if_necessary();
@@ -219,6 +220,33 @@ public:
 		++m_lUsed;
 		unlock_if_necessary();
 		return true;
+	}
+
+
+	bool Update( void* key, void* val )
+	{
+		if( NULL == key )
+		{
+			return false;
+		}
+		unsigned int hashidx = HashFunction( (unsigned char*)key );
+		hashidx %= m_lSize;
+
+		lock_if_necessary();
+		HashEntity** ppEntity= &m_table[hashidx];
+		while( NULL != *ppEntity )
+		{
+			if (0 == strcmp((char*)(*ppEntity)->m_key, (char*)key))
+			{
+				JK_FREE((*ppEntity)->v.m_val );
+				(*ppEntity)->v.m_val = val;
+				unlock_if_necessary();
+				return true;
+			}
+			ppEntity = &( (*ppEntity)->next );
+		}
+		unlock_if_necessary();
+		return false;
 	}
 
 
@@ -245,12 +273,10 @@ public:
 				unlock_if_necessary();
 				return false;
 			}
-			//JK_ASSERT( NULL == m_table[hashidx]->next );
-			//JK_FREE( m_table[hashidx] );
 			ptmpEntity = m_table[hashidx];
 			m_table[hashidx] = m_table[hashidx]->next;
 			JK_FREE(ptmpEntity->v.m_val );
-			JK_FREE(ptmpEntity);
+			JK_DELETE(HashEntity, ptmpEntity);
 			--m_lUsed;
 			unlock_if_necessary();
 			return true;
@@ -259,7 +285,7 @@ public:
 		HashEntity* pTemp = pParent->next;
 		pParent->next = pParent->next->next;
 		JK_FREE( pTemp->v.m_val );
-		JK_FREE( pTemp );
+		JK_DELETE( HashEntity, pTemp );
 		pTemp = NULL;
 		--m_lUsed;
 		unlock_if_necessary();
@@ -301,6 +327,31 @@ public:
 			}
 		}
 		unlock_if_necessary();
+	}
+
+
+	bool IsExists( char* key )
+	{
+		if( NULL == key )
+		{
+			return false;
+		}
+		unsigned int hashidx = HashFunction( (unsigned char*)key );
+		hashidx %= m_lSize;
+
+		lock_if_necessary();
+		HashEntity** ppEntity= &m_table[hashidx];
+		while( NULL != *ppEntity )
+		{
+			if (0 == strcmp((char*)(*ppEntity)->m_key, (char*)key))
+			{
+				unlock_if_necessary();
+				return true;
+			}
+			ppEntity = &( (*ppEntity)->next );
+		}
+		unlock_if_necessary();
+		return false;
 	}
 
 

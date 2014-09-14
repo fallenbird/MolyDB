@@ -57,6 +57,19 @@ public:
 		return m_hashtable[1].Get(key);
 	}
 
+	bool UpdateElement( void* key, void* val )
+	{
+		if (-1 == m_iRehashidx)
+		{
+			return m_hashtable[0].Update (key, val );
+		}
+		if (true == m_hashtable[0].Update(key, val ))
+		{
+			return true;
+		}
+		return m_hashtable[1].Update(key, val );
+	}
+
 
 	bool RemoveElement( void* key )
 	{
@@ -108,6 +121,19 @@ public:
 		m_hashtable[1].FetchKeys( fmt, istart, ilimit, keysarray, kescnt);
 	}
 
+
+	bool IsExists( char* key )
+	{
+		if (-1 == m_iRehashidx)
+		{
+			return m_hashtable[0].IsExists(key);
+		}
+		if (true == m_hashtable[0].IsExists(key))
+		{
+			return true;
+		}
+		return m_hashtable[1].IsExists(key);
+	}
 
 
 private:

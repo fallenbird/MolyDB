@@ -34,10 +34,14 @@ enum elp_CS_PROTOCOL
 	C2S_SELECT_KEYS_SYN		= 61,			// C2S:请求KEYS
 	S2C_SELECT_KEYS_ACK		= 62,			// S2C:回复KEYS
 
-	C2S_LPUSH_ITEM_SYN		= 71,			// C2S:lpush command
-	C2S_RPUSH_ITEM_SYN		= 73,			// C2S:lpush command
-	C2S_LPOP_ITEM_SYN		= 75,			// C2S:lpush command
-	C2S_RPOP_ITEM_SYN		= 77,			// C2S:lpush command
+	C2S_EXISTS_KEY_SYN		= 71,			// C2S:是否存在
+
+	C2S_LPUSH_ITEM_SYN		= 81,			// C2S:lpush command
+	C2S_RPUSH_ITEM_SYN		= 83,			// C2S:lpush command
+	C2S_LPOP_ITEM_SYN		= 85,			// C2S:lpush command
+	C2S_RPOP_ITEM_SYN		= 87,			// C2S:lpush command
+	C2S_LLEN_ITEM_SYN		= 89,			// 
+
 };
 
 
@@ -64,6 +68,7 @@ enum GENERALRESULT
 	egr_REMOVESUCCESS		= 4,
 	egr_SVRNOTREADY			= 5,
 	egr_NOSUCHKEYS			= 6,
+	egr_KEYEXISTS			= 7,
 };
 
 #pragma pack(push,1)
@@ -228,6 +233,17 @@ public:
 	}
 };
 
+// Client-->Server ：key 是否存在
+class MSG_C2S_EXISTS_KEY_SYN : public MSG_C2S_SELECT_ITEM_SYN
+{
+public:
+	MSG_C2S_EXISTS_KEY_SYN()
+	{
+		m_byProtocol = C2S_EXISTS_KEY_SYN;
+	}
+};
+
+
 
 // Client-->Server ：请求LPUSH
 class MSG_C2S_LPUSH_ITEM_SYN : public MSG_C2S_INSERT_ITEM_SYN
@@ -269,6 +285,17 @@ public:
 	MSG_C2S_RPOP_ITEM_SYN()
 	{
 		m_byProtocol = C2S_RPOP_ITEM_SYN;
+	}
+};
+
+
+// Client-->Server ：请求LIST长度
+class MSG_C2S_LLEN_ITEM_SYN : public MSG_C2S_SELECT_ITEM_SYN
+{
+public:
+	MSG_C2S_LLEN_ITEM_SYN()
+	{
+		m_byProtocol = C2S_LLEN_ITEM_SYN;
 	}
 };
 

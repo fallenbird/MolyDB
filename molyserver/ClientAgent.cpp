@@ -33,7 +33,7 @@ void ClientAgent::OnAccept(DWORD connindex)
 	readyPacket.iEncKey = 666;
 	Send((BYTE*)&readyPacket, sizeof(MSG_S2C_SVR_READY_CMD));
 	//Send(connindex, (char*)&readyPacket, sizeof(MSG_S2C_SVR_READY_CMD));
-	
+
 }
 
 
@@ -58,7 +58,7 @@ void ClientAgent::OnDisconnect()
 		}
 		break;
 	}
-	
+
 }
 
 
@@ -161,6 +161,123 @@ void ClientAgent::OnRecv(BYTE *pMsg, WORD wSize)
 				}
 				break;
 
+			case C2S_EXISTS_KEY_SYN:
+				{
+					MSG_C2S_EXISTS_KEY_SYN* pKeysMsg = (MSG_C2S_EXISTS_KEY_SYN*)pMsg;
+
+					if ( !CheckSvrReady() )
+					{
+						return;
+					}
+					if( DataSpace::GetInstance().IsExists(pKeysMsg->strKey ) )
+					{
+						ReplyResult( egr_KEYEXISTS );
+					}
+					else
+					{
+						ReplyResult( egr_NOSUCHKEYS );
+					}
+				}
+				break;
+
+			case C2S_LPUSH_ITEM_SYN:
+				{
+					MSG_C2S_LPUSH_ITEM_SYN* pInsertMsg = (MSG_C2S_LPUSH_ITEM_SYN*)pMsg;
+
+					if ( !CheckSvrReady() )
+					{
+						return;
+					}
+					if (DataSpace::GetInstance().ListPushLeft(pInsertMsg->strKey, pInsertMsg->m_usKeyLen, pInsertMsg->strVal, pInsertMsg->m_usValLen))
+					{
+						ReplyResult( egr_INSERTSUCCESS );
+					}
+					else
+					{
+						ReplyResult( egr_INSERTFAILD );
+					}
+				}
+				break;
+
+
+			case C2S_RPUSH_ITEM_SYN:
+				{
+					MSG_C2S_RPUSH_ITEM_SYN* pInsertMsg = (MSG_C2S_RPUSH_ITEM_SYN*)pMsg;
+					if ( !CheckSvrReady() )
+					{
+						return;
+					}
+					if (DataSpace::GetInstance().ListPushRight(pInsertMsg->strKey, pInsertMsg->m_usKeyLen, pInsertMsg->strVal, pInsertMsg->m_usValLen))
+					{
+						ReplyResult( egr_INSERTSUCCESS );
+					}
+					else
+					{
+						ReplyResult( egr_INSERTFAILD );
+					}
+				}
+				break;
+
+			case C2S_LPOP_ITEM_SYN:
+				{
+					MSG_C2S_LPOP_ITEM_SYN* pInsertMsg = (MSG_C2S_LPOP_ITEM_SYN*)pMsg;
+					if ( !CheckSvrReady() )
+					{
+						return;
+					}
+
+					char* strVal = (char*)( DataSpace::GetInstance().ListPopLeft(pInsertMsg->strKey) );
+					if (NULL == strVal)
+					{
+						ReplyResult( egr_CANTFINDVAL );
+					}
+					else
+					{
+						MSG_S2C_SELECT_ITEM_ACK ackmsg;
+						strcpy_s(ackmsg.strKey, MAX_KEY_LEN, pInsertMsg->strKey);
+						strcpy_s(ackmsg.strVal, 1024, strVal);
+						Send((BYTE*)&ackmsg, sizeof(MSG_S2C_SELECT_ITEM_ACK));
+					}
+				}
+				break;
+
+			case C2S_RPOP_ITEM_SYN:
+				{
+					if ( !CheckSvrReady() )
+					{
+						return;
+					}
+					MSG_C2S_RPOP_ITEM_SYN* pInsertMsg = (MSG_C2S_RPOP_ITEM_SYN*)pMsg;
+					char* strVal = (char*)( DataSpace::GetInstance().ListPopRight(pInsertMsg->strKey) );
+					if (NULL == strVal)
+					{
+						ReplyResult( egr_CANTFINDVAL );
+					}
+					else
+					{
+						MSG_S2C_SELECT_ITEM_ACK ackmsg;
+						strcpy_s(ackmsg.strKey, MAX_KEY_LEN, pInsertMsg->strKey);
+						strcpy_s(ackmsg.strVal, 1024, strVal);
+						Send((BYTE*)&ackmsg, sizeof(MSG_S2C_SELECT_ITEM_ACK));
+					}
+				}
+				break;
+
+			case C2S_LLEN_ITEM_SYN:
+				{
+					if ( !CheckSvrReady() )
+					{
+						return;
+					}
+					MSG_C2S_LLEN_ITEM_SYN* pllMsg = (MSG_C2S_LLEN_ITEM_SYN*)pMsg;
+					int iLength = DataSpace::GetInstance().GetListLength(pllMsg->strKey);
+					MSG_S2C_SELECT_ITEM_ACK ackmsg;
+					strcpy_s(ackmsg.strKey, MAX_KEY_LEN, pllMsg->strKey);
+					JK_SPRITF_S( ackmsg.strVal, 1024, "%d", iLength );
+					Send((BYTE*)&ackmsg, sizeof(MSG_S2C_SELECT_ITEM_ACK));
+
+				}
+				break;
 
 			default:
 				{
@@ -188,7 +305,7 @@ void ClientAgent::OnRecv(BYTE *pMsg, WORD wSize)
 			case S2M_APPENDFILE_SYN:
 				{
 					// sync replication
-					
+
 				}
 				break;
 			}
