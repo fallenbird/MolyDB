@@ -28,3 +28,4 @@ DONE
 0.0.6.9  2014-09-11 JakeSun   完成KEYS命令，支持*?通配符匹配
 0.0.7.0  2014-09-12 JakeSun   多数据结构支持:单向链表
 0.0.7.1  2014-09-13 JakeSun   多数据结构支持:双端链表
+0.0.7.5  2014-09-14 JakeSun   完成了exists、lpush、rpush、lpop、rpop、llen等命令
