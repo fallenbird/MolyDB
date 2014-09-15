@@ -1,5 +1,4 @@
 
-
 #ifndef _JK_CMDOBJECT_L7A1H05_H_
 #define _JK_CMDOBJECT_L7A1H05_H_
 

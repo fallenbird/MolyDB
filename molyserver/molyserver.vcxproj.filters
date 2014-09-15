@@ -81,6 +81,9 @@
     <ClInclude Include="DataSpace.h">
       <Filter>DataEngin</Filter>
     </ClInclude>
+    <ClInclude Include="DataObject.h">
+      <Filter>DataEngin</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="DataEngin">

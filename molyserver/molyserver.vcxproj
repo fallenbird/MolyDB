@@ -108,6 +108,7 @@
     <ClInclude Include="ClientAgent.h" />
     <ClInclude Include="CmdObject.h" />
     <ClInclude Include="ConfigManager.h" />
+    <ClInclude Include="DataObject.h" />
     <ClInclude Include="DataSpace.h" />
     <ClInclude Include="Dumper.h" />
     <ClInclude Include="LogManager.h" />
