@@ -19,6 +19,7 @@ public:
 		unsigned int	m_ui64;
 		int				m_i64;
 	} v;
+	unsigned short		m_valType;
 	class HashEntity*	next;
 
 public:
