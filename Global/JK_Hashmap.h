@@ -9,6 +9,16 @@
 #include "Define.h"
 
 
+enum eValueType
+{
+	evt_NONE	= 0,
+	evt_STR		= 1,
+	evt_LIST	= 2,
+	evt_HASH	= 3,
+};
+
+
+
 class HashEntity
 {
 public:
@@ -28,6 +38,7 @@ public:
 		m_key = NULL;
 		v.m_val = 0;
 		next = NULL;
+		m_valType = 0;
 	}
 };
 
