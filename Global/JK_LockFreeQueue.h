@@ -169,8 +169,8 @@ public:
 		{ 
 			targetNode = m_tailNode; 
 		}
-		while( __InlineInterlockedCompareExchangePointer( (PVOID*)&targetNode->next, (PVOID)pNode, 0 ) != targetNode->next );
-		__InlineInterlockedCompareExchangePointer((PVOID*)&m_tailNode, (PVOID)pNode, targetNode ); 
+		while( _InlineInterlockedCompareExchangePointer( (PVOID*)&targetNode->next, (PVOID)pNode, 0 ) != targetNode->next );
+		_InlineInterlockedCompareExchangePointer((PVOID*)&m_tailNode, (PVOID)pNode, targetNode ); 
 	}
 
 
@@ -184,8 +184,8 @@ public:
 			{
 				return NULL; 
 			}
-		}while (  __InlineInterlockedCompareExchangePointer((PVOID*)&(m_headNode->next), tempNode->next, tempNode ) != tempNode ); 
-		__InlineInterlockedCompareExchangePointer( (PVOID*)&(m_tailNode), m_headNode, tempNode );
+		}while (  _InlineInterlockedCompareExchangePointer((PVOID*)&(m_headNode->next), tempNode->next, tempNode ) != tempNode ); 
+		_InlineInterlockedCompareExchangePointer( (PVOID*)&(m_tailNode), m_headNode, tempNode );
 		void* temVal = tempNode->value;
 		delete tempNode;
 		return temVal; 
