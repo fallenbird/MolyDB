@@ -1,4 +1,4 @@
-
+﻿
 “One step each day get closer to the dream —— MolyDB”  ————JakeSun
 
 DONE
@@ -29,3 +29,4 @@ DONE
 0.0.7.0  2014-09-12 JakeSun   多数据结构支持:单向链表
 0.0.7.1  2014-09-13 JakeSun   多数据结构支持:双端链表
 0.0.7.5  2014-09-14 JakeSun   完成了exists、lpush、rpush、lpop、rpop、llen等命令
+0.0.7.6  2017-10-17 JakeSun   继续开始完善，创建dev分支
