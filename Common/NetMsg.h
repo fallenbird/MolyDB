@@ -37,10 +37,11 @@ enum elp_CS_PROTOCOL
 	C2S_EXISTS_KEY_SYN		= 71,			// C2S:是否存在
 
 	C2S_LPUSH_ITEM_SYN		= 81,			// C2S:lpush command
-	C2S_RPUSH_ITEM_SYN		= 83,			// C2S:lpush command
-	C2S_LPOP_ITEM_SYN		= 85,			// C2S:lpush command
-	C2S_RPOP_ITEM_SYN		= 87,			// C2S:lpush command
-	C2S_LLEN_ITEM_SYN		= 89,			// 
+	C2S_RPUSH_ITEM_SYN		= 83,			// C2S:rpush command
+	C2S_LPOP_ITEM_SYN		= 85,			// C2S:lpop command
+	C2S_RPOP_ITEM_SYN		= 87,			// C2S:rpop command
+	C2S_LLEN_ITEM_SYN		= 89,			// C2S:llen command
+	C2S_EXPIRE_KEY_SYN		= 91,			// C2S:expire command
 
 };
 
@@ -299,6 +300,17 @@ public:
 	}
 };
 
+// Client-->Server ：設置过期键
+class MSG_C2S_EXPIRE_KEY_SYN : public MSG_C2S_SELECT_ITEM_SYN
+{
+public:
+	MSG_C2S_EXPIRE_KEY_SYN()
+	{
+		m_byProtocol = C2S_EXPIRE_KEY_SYN;
+		m_iSeconds = 0;
+	}
+	unsigned int m_iSeconds;
+};
 
 
 // Slave-->Master ：register to master

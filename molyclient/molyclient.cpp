@@ -328,6 +328,20 @@ void SendCmdMsg(unsigned int cmdtype, char argv[MAX_PARA_CNT][MAX_CMD_LEN], unsi
 		}
 		break;
 
+	case ect_COMMAND_EXPIRE:
+		{
+			if (2 != argc)
+			{
+				printf("incorrect number of arguments!\n");
+				return;
+			}
+			MSG_C2S_EXPIRE_KEY_SYN exmsg;
+			strcpy_s(exmsg.strKey, MAX_KEY_LEN, argv[0]);
+			exmsg.m_iSeconds = atoi(argv[1]);
+			g_pNetBase->Send((char*)&exmsg, sizeof(MSG_C2S_EXPIRE_KEY_SYN));
+		}
+		break;
+
 	default:
 		break;
 	}

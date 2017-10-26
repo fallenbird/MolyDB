@@ -30,3 +30,4 @@ DONE
 0.0.7.1  2014-09-13 JakeSun   多数据结构支持:双端链表
 0.0.7.5  2014-09-14 JakeSun   完成了exists、lpush、rpush、lpop、rpop、llen等命令
 0.0.7.6  2017-10-17 JakeSun   继续开始完善，创建dev分支
+0.0.7.7  2017-10-26 JakeSun   增加expire(过期键)命令

@@ -27,7 +27,7 @@ enum enGmCommandType
 	ect_COMMAND_LPOP	= 13,
 	ect_COMMAND_RPOP	= 14,
 	ect_COMMAND_LLEN	= 15,
-
+	ect_COMMAND_EXPIRE	= 16,
 	ect_COMMAND_QUIT	= 95,
 };
 
@@ -135,6 +135,9 @@ public:
 		else if (!strcmp(cmdstr, "quit"))
 		{
 			return ect_COMMAND_QUIT;
+		}
+		else if (!strcmp(cmdstr, "expire")) {
+			return ect_COMMAND_EXPIRE;
 		}
 		else 
 		{
