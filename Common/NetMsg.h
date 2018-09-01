@@ -127,9 +127,11 @@ public:
 		m_byCategory = emc_CS_CATEGORY;
 		m_byProtocol = S2C_SVR_READY_CMD;
 	}
-	SHORT		sHighVer;					// --∏ﬂ∞Ê±æ∫≈
-	SHORT		sLowVer;					// --µÕ∞Ê±æ∫≈
-	int			iEncKey;					// --√‹‘ø
+	SHORT			sHighVer;					// --∏ﬂ∞Ê±æ∫≈
+	SHORT			sLowVer;					// --µÕ∞Ê±æ∫≈
+	int				iEncKey;					// --√‹‘ø
+	char			svrIp[MAX_KEY_LEN];			// --server ip
+	unsigned int	svrPort;					// --server ∂Àø⁄
 };
 
 

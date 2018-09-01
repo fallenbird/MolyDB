@@ -31,6 +31,7 @@ void ClientAgent::OnAccept(DWORD connindex)
 	readyPacket.sHighVer = 7;
 	readyPacket.sLowVer = 8;
 	readyPacket.iEncKey = 666;
+	//readyPacket.svrIp = 
 	Send((BYTE*)&readyPacket, sizeof(MSG_S2C_SVR_READY_CMD));
 	//Send(connindex, (char*)&readyPacket, sizeof(MSG_S2C_SVR_READY_CMD));
 

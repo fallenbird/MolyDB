@@ -125,7 +125,12 @@ int main(int argc, char* argv[])
 {
 	g_pNetBase = new CNetBase;
 	g_pNetBase->InitNet(MAX_CONNECT_NUM, ServerPro, NULL, NET_MSG);
-	if (!g_pNetBase->ConncetToServer(0, "127.0.0.1", 3690))
+	int svrPort = 3690;
+	if (2 == argc &&   atoi(argv[1]) >0 )
+	{	
+		svrPort = atoi(argv[1]);
+	}
+	if (!g_pNetBase->ConncetToServer(0, "127.0.0.1", svrPort))
 	{
 		printf("Can't connent the molydb server!\n");
 		Sleep(2000);

@@ -334,7 +334,7 @@ public:
 			}
 			if ( bAll || JK_Utility::jk_str_match( fmt, strlen(fmt), (char*)(ptemp->m_key), strlen( ((char*)ptemp->m_key)), 0 )  )
 			{
-				sprintf_s( keysarray[keyscnt], MAX_KEY_LEN, "%s", ptemp->m_key ); // TODO
+				sprintf_s( keysarray[keyscnt], MAX_KEY_LEN, "%s", (char*)ptemp->m_key ); // TODO
 				++keyscnt;
 			}
 		}

@@ -200,7 +200,7 @@ int Appender::WriteAppendFile( void* pdata )
 			return 1;
 		}
 	}
-	fprintf( m_fpAppendfile, "%s", pdata );
+	fprintf( m_fpAppendfile, "%s", (char*)pdata );
 	return 0;
 }
 

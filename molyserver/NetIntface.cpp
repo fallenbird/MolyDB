@@ -82,11 +82,11 @@ int NetInterface::initInterface( int iMaster, char* strMasterIP, unsigned short 
 
 	if( 1 == iMaster )
 	{
-		DISPMSG_SUCCESS( "Master start success!\n" );
+		DISPMSG_SUCCESS( "Master start success!  Port:%d\n", uslocalPort );
 	}
 	else
 	{
-		DISPMSG_SUCCESS( "Slave start success!\n" );
+		DISPMSG_SUCCESS( "Slave start success!  Port:%d\n", uslocalPort );
 	}
 	return 1;
 }

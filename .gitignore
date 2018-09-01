@@ -11,6 +11,10 @@ tmp/
 *.bak
 *.swp
 *~.nib
+*.db
+*.opendb
+*.db-shm
+*.db-wal
 local.properties
 .classpath
 .settings/
