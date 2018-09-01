@@ -97,7 +97,7 @@ void Appender::HandleCmdLine( char* strLine, bool bOps )
 
 	case LOG_CMD_STRING_UPD:
 		{
-			DataSpace::GetInstance().UpdateKV( cmdArray[1], cmdArray[2], strlen(cmdArray[2]) );
+			DataSpace::GetInstance().UpdateKV( cmdArray[1], cmdArray[2], strlen(cmdArray[2]), bOps);
 		}
 		break;
 

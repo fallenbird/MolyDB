@@ -54,6 +54,7 @@ char* NetworkObject::GetIP()
 	}
 }
 
+
 int NetworkObject::GetNetIdx()
 {
 	if( m_pSession )

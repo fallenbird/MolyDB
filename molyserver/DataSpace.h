@@ -14,9 +14,9 @@ public:
 	bool	InitDB( bool bSlave );
 	void	UpdateDB( int iUpdateMS );
 	bool	InsertKV( char* key, int keylen, char* val, int vallen, bool ops = true );
+	bool	UpdateKV(void* key, void* val, int vallen, bool ops = true);
+	bool	RemoveKV(void* key, bool ops = true);
 	void*	GetValue( void* key );
-	bool	RemoveKV( void* key, bool ops = true );
-	bool	UpdateKV( void* key, void* val, int vallen ); 
 	void	Operation( int cmd, void* key, void* val );
 	void	Replication( int cmd, void* key, void* val );
 	bool	IsExists( char* key );

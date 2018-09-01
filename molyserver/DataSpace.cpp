@@ -304,7 +304,7 @@ int DataSpace::GetListLength( char* key )
 }
 
 
-bool DataSpace::UpdateKV( void* key, void* val, int vallen )
+bool DataSpace::UpdateKV( void* key, void* val, int vallen, bool ops /*= true */)
 {
 	void* pval = JK_MALLOC( vallen+1 );
 	if ( !pval )
@@ -316,6 +316,12 @@ bool DataSpace::UpdateKV( void* key, void* val, int vallen )
 	if( false == m_normalDict.UpdateElement( key, pval ) )
 	{
 		JK_FREE( pval );
+		return false;
+	}
+	if (ops)
+	{
+		Operation(LOG_CMD_STRING_UPD, key, pval);
+		Replication(LOG_CMD_STRING_UPD, key, pval);
 	}
 	return true;
 }
