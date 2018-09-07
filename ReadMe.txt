@@ -31,4 +31,4 @@ DONE
 0.0.7.5  2014-09-14 JakeSun   完成了exists、lpush、rpush、lpop、rpop、llen等命令
 0.0.7.6  2017-10-17 JakeSun   继续开始完善，创建dev分支
 0.0.7.7  2017-10-26 JakeSun   增加最小优先堆，实现expire(过期键)命令
-0.0.7.8  2018-09-01 JakeSun	 增加启动参数功能
+0.0.7.8  2018-09-01 JakeSun   增加启动参数功能
