@@ -85,6 +85,16 @@ int ServerPro(int nConctID, char* pMsg, int nLen)
 				}
 				break;
 
+			case egr_EXPIRESUCCESS: 
+			{
+				printf("expire key set ok!\n");
+			}break;
+
+			case egr_EXPIREFAILD: 
+			{
+				printf("expire key set failed, no such key!\n");
+			}break;
+
 			default:
 				break;
 			}
@@ -346,6 +356,14 @@ void SendCmdMsg(unsigned int cmdtype, char argv[MAX_PARA_CNT][MAX_CMD_LEN], unsi
 			g_pNetBase->Send((char*)&exmsg, sizeof(MSG_C2S_EXPIRE_KEY_SYN));
 		}
 		break;
+
+	case ect_COMMAND_HSET: 
+	{
+		MSG_C2S_HSET_ITEM_SYN  hsetMsg;
+		g_pNetBase->Send((char*)&hsetMsg, sizeof(MSG_C2S_HSET_ITEM_SYN));
+		
+	}
+	break;
 
 	default:
 		break;

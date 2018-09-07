@@ -280,6 +280,41 @@ void ClientAgent::OnRecv(BYTE *pMsg, WORD wSize)
 				}
 				break;
 
+			case C2S_EXPIRE_KEY_SYN:{
+					if (!CheckSvrReady())
+					{
+						return;
+					}
+					MSG_C2S_EXPIRE_KEY_SYN*  pllMsg = (MSG_C2S_EXPIRE_KEY_SYN*)pMsg;
+					bool bExpire = DataSpace::GetInstance().ExpireKey(pllMsg->strKey, pllMsg->m_iSeconds);
+					if (bExpire) 
+					{
+						ReplyResult(egr_EXPIRESUCCESS);
+					}
+					else 
+					{
+						ReplyResult(egr_EXPIREFAILD);
+					}
+			}break;
+
+			case C2S_HSET_ITEM_SYN: {
+				if (!CheckSvrReady())
+				{
+					return;
+				}
+				MSG_C2S_HSET_ITEM_SYN*  pllMsg = (MSG_C2S_HSET_ITEM_SYN*)pMsg;
+				bool bExpire = DataSpace::GetInstance().HashSet(pllMsg->strKey, pllMsg->m_iSeconds);
+				if (bExpire)
+				{
+					ReplyResult(egr_EXPIRESUCCESS);
+				}
+				else
+				{
+					ReplyResult(egr_EXPIREFAILD);
+				}
+			}break;
+
+
 			default:
 				{
 					DISPMSG_ERROR("Error protocol type, cat[%d], pro[%d]", pMsgBase->m_byCategory, pMsgBase->m_byProtocol );

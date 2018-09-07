@@ -18,13 +18,7 @@
 
 #define MAX_FILENAME_LEN 256
 
-
-
-// data
 #define MAX_KEY_LEN 64
-
-
-
 
 #define LOG_CMD_STRING_ADD	101
 #define LOG_CMD_STRING_DEL	102

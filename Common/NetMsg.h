@@ -43,6 +43,8 @@ enum elp_CS_PROTOCOL
 	C2S_LLEN_ITEM_SYN		= 89,			// C2S:llen command
 	C2S_EXPIRE_KEY_SYN		= 91,			// C2S:expire command
 
+	C2S_HSET_ITEM_SYN		= 111,			// C2S:hash set command
+
 };
 
 
@@ -70,6 +72,8 @@ enum GENERALRESULT
 	egr_SVRNOTREADY			= 5,
 	egr_NOSUCHKEYS			= 6,
 	egr_KEYEXISTS			= 7,
+	egr_EXPIRESUCCESS		= 8,
+	egr_EXPIREFAILD			= 9,
 };
 
 #pragma pack(push,1)
@@ -313,6 +317,21 @@ public:
 	}
 	unsigned int m_iSeconds;
 };
+
+
+// Client-->Server ：設置哈希数据结构
+class MSG_C2S_HSET_ITEM_SYN : public MSG_C2S_SELECT_ITEM_SYN
+{
+public:
+	MSG_C2S_HSET_ITEM_SYN()
+	{
+		m_byProtocol = C2S_HSET_ITEM_SYN;
+		m_iSeconds = 0;
+	}
+	unsigned int m_iSeconds;
+};
+
+
 
 
 // Slave-->Master ：register to master

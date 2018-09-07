@@ -1,3 +1,5 @@
+
+#include <time.h>
 #include "DataSpace.h"
 #include "AppendCmdQueue.h"
 #include "JK_Utility.h"
@@ -23,12 +25,33 @@ DataSpace::~DataSpace()
 bool	DataSpace::InitDB( bool bSlave )
 {
 	m_bSlave = bSlave;
-	return m_normalDict.InitDictionary() && m_expireDict.InitDictionary();
+	return m_normalDict.InitDictionary();
 }
 
 void	DataSpace::UpdateDB(int iUpdateMS )
 {
 	m_normalDict.UpdateDict(iUpdateMS);
+	
+	// --检查过期键
+	while (true) 
+	{
+		DataUnit* pTmpUnit = m_expireQueue.findMin();
+		if (NULL == pTmpUnit)
+		{
+			return;
+		}
+		int tmpTime = (int)time((time_t*)NULL);
+		if (pTmpUnit->m_iValue > tmpTime  )
+		{
+			break;
+		}
+		// --过期键堆弹出
+		DataUnit removeUnit = m_expireQueue.deleteMin();
+
+		// --数据库删除过期键
+		RemoveKV(removeUnit.m_szKey);
+	}
+
 }
 
 
@@ -304,6 +327,7 @@ int DataSpace::GetListLength( char* key )
 }
 
 
+
 bool DataSpace::UpdateKV( void* key, void* val, int vallen, bool ops /*= true */)
 {
 	void* pval = JK_MALLOC( vallen+1 );
@@ -326,4 +350,32 @@ bool DataSpace::UpdateKV( void* key, void* val, int vallen, bool ops /*= true */
 	return true;
 }
 
+bool DataSpace::ExpireKey(char * key, int seconds)
+{
+	// --验证是否有该key
+	if (NULL == m_normalDict.GetElement(key)) 
+	{
+		return false;
+	}
+	int tmpTime = (int)time((time_t*)NULL);
+	tmpTime += seconds;
+	DataUnit expireUnit;
+	strcpy_s(expireUnit.m_szKey, strlen(key) + 1, key);
+	expireUnit.m_iValue = tmpTime;
+	// ---TEST
+	//expireUnit.m_iValue = seconds;
+	m_expireQueue.insert(expireUnit);
+	return true;
+}
 
+
+bool DataSpace::HashSet(char * key, int seconds)
+{
+	DataUnit dataUnit = m_expireQueue.deleteMin();
+	if ( NULL == dataUnit.m_szKey ) 
+	{
+		int i = 9;
+	}
+
+	return true;
+}

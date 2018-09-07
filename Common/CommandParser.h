@@ -16,18 +16,26 @@ enum enGmCommandType
 {
 	ect_COMMAND_NONE	= 0,
 	ect_COMMAND_HELP	= 1,
+
+	//--KEY类
 	ect_COMMAND_SET		= 2,
 	ect_COMMAND_DEL		= 3,
 	ect_COMMAND_GET		= 4,
 	ect_COMMAND_KEYS	= 5,
 	ect_COMMAND_EXIST	= 6,
+	ect_COMMAND_EXPIRE	= 7,
 
+	//--LIST类
 	ect_COMMAND_LPUSH	= 11,
 	ect_COMMAND_RPUSH	= 12,
 	ect_COMMAND_LPOP	= 13,
 	ect_COMMAND_RPOP	= 14,
 	ect_COMMAND_LLEN	= 15,
-	ect_COMMAND_EXPIRE	= 16,
+
+	//--HASH类
+	ect_COMMAND_HSET	= 21,
+
+	//--SERVER类
 	ect_COMMAND_QUIT	= 95,
 };
 
@@ -139,6 +147,14 @@ public:
 		else if (!strcmp(cmdstr, "expire")) {
 			return ect_COMMAND_EXPIRE;
 		}
+
+
+		else if (!strcmp(cmdstr, "hset"))
+		{
+			return ect_COMMAND_HSET;
+		}
+
+
 		else 
 		{
 			return ect_COMMAND_NONE;

@@ -1,6 +1,9 @@
 #ifndef _SESSION_H_
 #define _SESSION_H_
 
+
+#pragma warning(disable:4996)
+
 #include <windows.h>
 
 #define SEND_POSTED			1

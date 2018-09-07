@@ -4,6 +4,8 @@
 
 #include "JK_Dictionary.h"
 #include "JK_Singleton.h"
+#include "JK_PriorityQueue.h"
+
 
 class DataSpace : public JK_Singleton<DataSpace>
 {
@@ -27,6 +29,11 @@ public:
 	void*	ListPopLeft	 ( char* key, bool ops = true );
 	void*	ListPopRight ( char* key, bool ops = true );
 	int		GetListLength( char* key );
+	bool	ExpireKey(char* key, int seconds);
+
+
+	// ----HASH----
+	bool	HashSet( char* key, int seconds );
 
 	void	SetRepState( bool bRep ){ m_bReplicated = bRep; }
 	bool	IsServerReady();
@@ -37,7 +44,9 @@ public:
 
 private:
 	JK_Dictionary<true>	m_normalDict;
-	JK_Dictionary<true>	m_expireDict;
+	JK_PriorityQueue	m_expireQueue;
+
+	//JK_Hashmap<int, true>  m_expireMap;
 	bool				m_bSlave;
 	bool				m_bReplicated;
 };
