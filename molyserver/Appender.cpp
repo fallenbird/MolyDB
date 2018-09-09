@@ -63,7 +63,7 @@ int Appender::ReplicateAppendFile( ClientAgent* pAgent )
 	{
 		JK_MEMCPY_S( ackmsg.m_CmdArray[ackmsg.m_iCmdCnt], MAX_CMD_LEN, linebuf, MAX_CMD_LEN );
 		++ackmsg.m_iCmdCnt;
-		if ( ackmsg.m_iCmdCnt > 100 )
+		if ( ackmsg.m_iCmdCnt > 10 )
 		{
 			pAgent->Send( (BYTE*)&ackmsg, ackmsg.GetMsgSize() );
 			ackmsg.m_iCmdCnt = 0;

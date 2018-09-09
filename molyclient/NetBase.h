@@ -28,7 +28,7 @@ public:
 	bool	GetData( char* pData, int& iLen );
 
 	void	SaveSendData( char* pData, int iLen );
-//	void	Send();
+
 
 	char	m_strTmep[256];
 	bool	m_bConnect;
@@ -67,6 +67,8 @@ public:
 	void CloseConnect( int iConnectID );
 	void Send( char* pData, int iLen, int iConnectID = 0);
 	void ClearNet();
+	char* GetIP();
+	DWORD GetPort();
 
 private:
 	RECVFUN	m_pRecvFunc;

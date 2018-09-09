@@ -24,7 +24,11 @@ public:
 	BOOL			SendEx( DWORD dwNumberOfMessages, BYTE **ppMsg, WORD *pwSize );
 	VOID			Redirect( NetworkObject *pNetworkObject );
 	char*			GetIP();
+	u_short			GetPort();
 	int				GetNetIdx();
+
+	VOID			SetSession(Session *pSession);
+
 
 private:
 	virtual VOID	OnAccept( DWORD dwNetworkIndex ) {}
@@ -33,7 +37,9 @@ private:
 	virtual VOID	OnConnect( BOOL bSuccess, DWORD dwNetworkIndex ) {}
 	virtual VOID	OnLogString( char *pszLog ) {}
 
-	inline VOID		SetSession( Session *pSession ) { m_pSession = pSession; }
+
 
 	Session			*m_pSession;
+	char			m_szIP[32];
+	u_short			m_usPort;
 };

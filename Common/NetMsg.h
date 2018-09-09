@@ -240,6 +240,7 @@ public:
 	}
 };
 
+
 // Client-->Server ：key 是否存在
 class MSG_C2S_EXISTS_KEY_SYN : public MSG_C2S_SELECT_ITEM_SYN
 {
@@ -249,7 +250,6 @@ public:
 		m_byProtocol = C2S_EXISTS_KEY_SYN;
 	}
 };
-
 
 
 // Client-->Server ：请求LPUSH
@@ -305,6 +305,7 @@ public:
 		m_byProtocol = C2S_LLEN_ITEM_SYN;
 	}
 };
+
 
 // Client-->Server ：設置过期键
 class MSG_C2S_EXPIRE_KEY_SYN : public MSG_C2S_SELECT_ITEM_SYN

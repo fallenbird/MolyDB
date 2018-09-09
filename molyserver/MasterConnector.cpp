@@ -12,7 +12,7 @@ void MasterConnector::OnAccept( DWORD connindex )
 
 void MasterConnector::OnDisconnect()
 {
-
+	DISPMSG_ERROR("Master[%s:%d] disconnected!\n", GetIP(), GetPort());
 }
 
 

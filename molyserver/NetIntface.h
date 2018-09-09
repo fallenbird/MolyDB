@@ -19,6 +19,7 @@ private:
 	static NetworkObject* CreateAcceptedObject();
 	static void DestroyAcceptedObject( NetworkObject *pNetworkObject );
 	static void DestroyConnectedObject( NetworkObject *pNetworkObject );
+	void ConnectMaster();
 
 public:
 	int initInterface( int iMaster, char* strMasterIP, unsigned short usMasterPort, unsigned short uslocalPort );

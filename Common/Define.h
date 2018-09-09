@@ -1,5 +1,7 @@
 
-
+//network
+#define MAX_IP_LEN 32
+#define MAX_PACK_SIZE 4096
 
 // log level
 #define MOLY_LOG_DEBUG 0

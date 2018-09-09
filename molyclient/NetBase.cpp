@@ -1,11 +1,13 @@
 #include <stdio.h>
-#include "NetBase.h"
 #include "assert.h"
+#include "Define.h"
+#include "NetBase.h"
 #include "JK_Utility.h"
 
 #define PROTOCOL_HEAD_LEN 2
 
 #pragma comment( lib, "ws2_32.lib" )
+#pragma warning(disable:4996)
 
 //extern DWORD	g_dwTotalSendNum;			// 总发包数
 //extern DWORD	g_dwTotalRecvNum;			// 总收包数
@@ -318,8 +320,28 @@ bool CNetBase::ConncetToServer( int iConnectID, const char *pIPAddress, int iPor
 }
 
 
+char* CNetBase::GetIP() 
+{
+	if( NULL == m_pConnectHandles )
+	{
+		return NULL;
+	}
+	return m_pConnectHandles->m_strIP;
+}
+
+
+DWORD CNetBase::GetPort() 
+{
+	if (NULL == m_pConnectHandles)
+	{
+		return NULL;
+	}
+	return m_pConnectHandles->m_dwPort;
+}
+
 void CNetBase::Send(  char* pData, int iLen, int iConnectID )
 {	
+	assert(iLen <= MAX_PACK_SIZE);
 	m_pConnectHandles[iConnectID].SaveSendData( pData, iLen );
 }
 

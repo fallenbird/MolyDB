@@ -4,14 +4,20 @@
 #include "NetBase.h"
 #include "NetMsg.h "
 #include <stdio.h>
+#include "JK_Console.h"
 #include "CommandParser.h"
 #include "JK_Assert.h"
 #include "JK_Utility.h"
 
-CNetBase*			g_pNetBase;						// 网络接口
+					// 网络接口
 
 #define MAX_CONNECT_NUM 50
 #define NET_MSG WM_USER + 100
+#define CHECK_PARA_CNT(cnt,argc) if(cnt!=argc){DISPMSG_ERROR("incorrect number of arguments!\n");return;}
+
+
+CNetBase*		g_pNetBase;
+JK_Console		g_ConsoleMgr;
 
 
 
@@ -37,7 +43,7 @@ int ServerPro(int nConctID, char* pMsg, int nLen)
 		{
 			MSG_C2S_CLTREGISTER_SYN regmsg;
 			g_pNetBase->Send( (char*)&regmsg, sizeof(regmsg) );
-			printf("Connet server success!\n");
+			DISPMSG_SUCCESS("Connet server[%s:%d] success!\n", g_pNetBase->GetIP(), g_pNetBase->GetPort() );
 		}break;
 
 
@@ -48,12 +54,12 @@ int ServerPro(int nConctID, char* pMsg, int nLen)
 			{
 			case egr_INSERTSUCCESS:
 				{
-					printf("set ok\n");
+					DISPMSG_SUCCESS("set ok\n");
 				}break;
 
 			case egr_INSERTFAILD:
 				{
-					printf("set failed!\n");
+					DISPMSG_ERROR("set failed!\n");
 				}break;
 
 			case egr_CANTFINDVAL:
@@ -63,7 +69,7 @@ int ServerPro(int nConctID, char* pMsg, int nLen)
 
 			case egr_REMOVESUCCESS:
 				{
-					printf("del ok\n");
+					DISPMSG_SUCCESS("del ok\n");
 				}
 				break;
 
@@ -81,18 +87,18 @@ int ServerPro(int nConctID, char* pMsg, int nLen)
 
 			case egr_SVRNOTREADY:
 				{
-					printf("server's not ready yet!\n");
+					DISPMSG_ERROR("server's not ready yet!\n");
 				}
 				break;
 
 			case egr_EXPIRESUCCESS: 
 			{
-				printf("expire key set ok!\n");
+				DISPMSG_SUCCESS("expire key set ok!\n");
 			}break;
 
 			case egr_EXPIREFAILD: 
 			{
-				printf("expire key set failed, no such key!\n");
+				DISPMSG_ERROR("expire key set failed, no such key!\n");
 			}break;
 
 			default:
@@ -179,12 +185,7 @@ void SendCmdMsg(unsigned int cmdtype, char argv[MAX_PARA_CNT][MAX_CMD_LEN], unsi
 	{
 	case ect_COMMAND_SET:
 		{
-			if (2 != argc)
-			{
-				printf("incorrect number of arguments!\n");
-				return;
-			}
-
+			CHECK_PARA_CNT(2,argc);
 			MSG_C2S_INSERT_ITEM_SYN setPacket;
 			setPacket.m_usKeyLen = JK_SPRITF_S(setPacket.strKey, "%s", argv[0]);
 			setPacket.m_usValLen = JK_SPRITF_S(setPacket.strVal, "%s", argv[1]);
@@ -227,11 +228,7 @@ void SendCmdMsg(unsigned int cmdtype, char argv[MAX_PARA_CNT][MAX_CMD_LEN], unsi
 
 	case ect_COMMAND_GET:
 		{
-			if (1 != argc)
-			{
-				printf("incorrect number of arguments!\n");
-				return;
-			}
+			CHECK_PARA_CNT(1, argc);
 			MSG_C2S_SELECT_ITEM_SYN setPacket;
 			strcpy_s(setPacket.strKey, MAX_KEY_LEN, argv[0]);
 			g_pNetBase->Send((char*)&setPacket, sizeof(MSG_C2S_SELECT_ITEM_SYN));
@@ -239,11 +236,7 @@ void SendCmdMsg(unsigned int cmdtype, char argv[MAX_PARA_CNT][MAX_CMD_LEN], unsi
 
 	case ect_COMMAND_DEL:
 		{
-			if (1 != argc)
-			{
-				printf("incorrect number of arguments!\n");
-				return;
-			}
+			CHECK_PARA_CNT(1, argc);
 			MSG_C2S_REMOVE_ITEM_SYN setPacket;
 			strcpy_s(setPacket.strKey, MAX_KEY_LEN, argv[0]);
 			g_pNetBase->Send((char*)&setPacket, sizeof(MSG_C2S_REMOVE_ITEM_SYN));
@@ -252,11 +245,7 @@ void SendCmdMsg(unsigned int cmdtype, char argv[MAX_PARA_CNT][MAX_CMD_LEN], unsi
 
 	case ect_COMMAND_KEYS:
 		{
-			if (1 != argc)
-			{
-				printf("incorrect number of arguments!\n");
-				return;
-			}
+			CHECK_PARA_CNT(1, argc);
 			MSG_C2S_SELECT_KEYS_SYN keysMsg;
 			strcpy_s(keysMsg.m_szPattern, MAX_KEY_LEN, argv[0]);
 			g_pNetBase->Send((char*)&keysMsg, sizeof(MSG_C2S_SELECT_KEYS_SYN));
@@ -265,11 +254,7 @@ void SendCmdMsg(unsigned int cmdtype, char argv[MAX_PARA_CNT][MAX_CMD_LEN], unsi
 
 	case ect_COMMAND_EXIST:
 		{
-			if (1 != argc)
-			{
-				printf("incorrect number of arguments!\n");
-				return;
-			}
+			CHECK_PARA_CNT(1, argc);
 			MSG_C2S_EXISTS_KEY_SYN exmsg;
 			strcpy_s(exmsg.strKey, MAX_KEY_LEN, argv[0]);
 			g_pNetBase->Send((char*)&exmsg, sizeof(MSG_C2S_EXISTS_KEY_SYN));
@@ -278,11 +263,7 @@ void SendCmdMsg(unsigned int cmdtype, char argv[MAX_PARA_CNT][MAX_CMD_LEN], unsi
 
 	case ect_COMMAND_LPUSH:
 		{
-			if (2 != argc)
-			{
-				printf("incorrect number of arguments!\n");
-				return;
-			}
+			CHECK_PARA_CNT(2, argc);
 			MSG_C2S_LPUSH_ITEM_SYN setPacket;
 			setPacket.m_usKeyLen = JK_SPRITF_S(setPacket.strKey, "%s", argv[0]);
 			setPacket.m_usValLen = JK_SPRITF_S(setPacket.strVal, "%s", argv[1]);
@@ -292,11 +273,7 @@ void SendCmdMsg(unsigned int cmdtype, char argv[MAX_PARA_CNT][MAX_CMD_LEN], unsi
 
 	case ect_COMMAND_RPUSH:
 		{
-			if (2 != argc)
-			{
-				printf("incorrect number of arguments!\n");
-				return;
-			}
+			CHECK_PARA_CNT(2, argc);
 			MSG_C2S_RPUSH_ITEM_SYN setPacket;
 			setPacket.m_usKeyLen = JK_SPRITF_S(setPacket.strKey, "%s", argv[0]);
 			setPacket.m_usValLen = JK_SPRITF_S(setPacket.strVal, "%s", argv[1]);
@@ -306,11 +283,7 @@ void SendCmdMsg(unsigned int cmdtype, char argv[MAX_PARA_CNT][MAX_CMD_LEN], unsi
 
 	case ect_COMMAND_LPOP:
 		{
-			if (1 != argc)
-			{
-				printf("incorrect number of arguments!\n");
-				return;
-			}
+			CHECK_PARA_CNT(1, argc);
 			MSG_C2S_LPOP_ITEM_SYN exmsg;
 			strcpy_s(exmsg.strKey, MAX_KEY_LEN, argv[0]);
 			g_pNetBase->Send((char*)&exmsg, sizeof(MSG_C2S_LPOP_ITEM_SYN));
@@ -319,11 +292,7 @@ void SendCmdMsg(unsigned int cmdtype, char argv[MAX_PARA_CNT][MAX_CMD_LEN], unsi
 
 	case ect_COMMAND_RPOP:
 		{
-			if (1 != argc)
-			{
-				printf("incorrect number of arguments!\n");
-				return;
-			}
+			CHECK_PARA_CNT(1, argc);
 			MSG_C2S_RPOP_ITEM_SYN exmsg;
 			strcpy_s(exmsg.strKey, MAX_KEY_LEN, argv[0]);
 			g_pNetBase->Send((char*)&exmsg, sizeof(MSG_C2S_RPOP_ITEM_SYN));
@@ -332,11 +301,7 @@ void SendCmdMsg(unsigned int cmdtype, char argv[MAX_PARA_CNT][MAX_CMD_LEN], unsi
 
 	case ect_COMMAND_LLEN:
 		{
-			if (1 != argc)
-			{
-				printf("incorrect number of arguments!\n");
-				return;
-			}
+			CHECK_PARA_CNT(1, argc);
 			MSG_C2S_LLEN_ITEM_SYN exmsg;
 			strcpy_s(exmsg.strKey, MAX_KEY_LEN, argv[0]);
 			g_pNetBase->Send((char*)&exmsg, sizeof(MSG_C2S_LLEN_ITEM_SYN));
@@ -345,11 +310,7 @@ void SendCmdMsg(unsigned int cmdtype, char argv[MAX_PARA_CNT][MAX_CMD_LEN], unsi
 
 	case ect_COMMAND_EXPIRE:
 		{
-			if (2 != argc)
-			{
-				printf("incorrect number of arguments!\n");
-				return;
-			}
+			CHECK_PARA_CNT(2, argc);
 			MSG_C2S_EXPIRE_KEY_SYN exmsg;
 			strcpy_s(exmsg.strKey, MAX_KEY_LEN, argv[0]);
 			exmsg.m_iSeconds = atoi(argv[1]);
@@ -386,7 +347,7 @@ unsigned int CommondThread()
 		{
 		case ect_COMMAND_NONE:
 			{
-				printf("illegal command！\n");
+				DISPMSG_ERROR("illegal command！\n");
 			}
 			break;
 

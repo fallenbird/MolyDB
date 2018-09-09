@@ -38,24 +38,24 @@ void ClientAgent::OnAccept(DWORD connindex)
 }
 
 
-void ClientAgent::OnDisconnect()
+VOID ClientAgent::OnDisconnect()
 {
 	switch (m_iAgentType )
 	{
 	case 1:
 		{
-			DISPMSG_ERROR( "Client[%s] disconnected!\n", GetIP() );
+			DISPMSG_ERROR( "Client[%s:%d] disconnected!\n", GetIP(),GetPort() );
 		}
 		break;
 
 	case 2:
 		{
-			DISPMSG_ERROR( "Slave[%s] disconnected!\n", GetIP() );
+			DISPMSG_ERROR( "Slave[%s:%d] disconnected!\n", GetIP(), GetPort());
 		}
 		break;
 	default:
 		{
-			DISPMSG_ERROR( "Agent[%s] disconnected!\n", GetIP() );
+			DISPMSG_ERROR( "Agent[%s:%d] disconnected!\n", GetIP(), GetPort());
 		}
 		break;
 	}
@@ -68,7 +68,11 @@ void ClientAgent::OnConnect(BOOL bSuccess, DWORD dwNetworkIndex)
 
 }
 
-
+BOOL ClientAgent::Send(BYTE *pMsg, WORD wSize) 
+{
+	assert(wSize <= MAX_PACK_SIZE);
+	return NetworkObject::Send(pMsg, wSize);
+}
 
 
 void ClientAgent::OnRecv(BYTE *pMsg, WORD wSize)
@@ -82,7 +86,7 @@ void ClientAgent::OnRecv(BYTE *pMsg, WORD wSize)
 			{
 			case C2S_CLTREGISTER_SYN:
 				{
-					DISPMSG_SUCCESS( "Accept client[%s] success!\n", GetIP() );
+					DISPMSG_SUCCESS( "Accept client[%s:%d] success!\n", GetIP(),GetPort() );
 					m_iAgentType = 1;
 				}
 				break;

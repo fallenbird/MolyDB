@@ -1,11 +1,12 @@
 #include <assert.h>
-
 #include "NetworkObject.h"
 #include "Session.h"
 
 NetworkObject::NetworkObject()
 {
 	m_pSession = NULL;
+	memset(m_szIP, 0, 32);
+	m_usPort = 0;
 }
 
 NetworkObject::~NetworkObject()
@@ -50,9 +51,23 @@ char* NetworkObject::GetIP()
 	}
 	else
 	{
-		return NULL;
+		return m_szIP;
 	}
 }
+
+u_short NetworkObject::GetPort()
+{
+	if (m_pSession)
+	{
+		return m_pSession->GetPort();
+	}
+	else
+	{
+		return m_usPort;
+	}
+}
+
+
 
 
 int NetworkObject::GetNetIdx()
@@ -65,4 +80,16 @@ int NetworkObject::GetNetIdx()
 	{
 		return -1;
 	}
+}
+
+
+VOID NetworkObject::SetSession(Session *pSession)
+{
+	if (NULL == pSession && NULL != m_pSession)
+	{
+		char* tmpIp = m_pSession->GetIP();
+		memcpy_s(m_szIP, 32, tmpIp, 16);
+		m_usPort = m_pSession->GetPort();
+	}
+	m_pSession = pSession;
 }

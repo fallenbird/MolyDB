@@ -78,6 +78,7 @@ public:
 	inline SOCKET			GetSocket()		{ return m_socket; }					///< 取得socket.
 	inline SOCKADDR*		GetSockAddr()	{ return (SOCKADDR*)&m_sockaddr; }		///< 取得socketaddr.
 	inline char*			GetIP() { return inet_ntoa( m_sockaddr.sin_addr ); }	///< 取得IP
+	inline u_short			GetPort() { return  m_sockaddr.sin_port; }
 
 	inline DWORD			GetIdleTick() const	{ return m_dwTimeOut? m_dwLastSyncTick + m_dwTimeOut : 0; }
 	inline BOOL				IsOnIdle()

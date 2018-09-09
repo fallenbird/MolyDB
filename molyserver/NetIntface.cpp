@@ -1,3 +1,4 @@
+#include "Define.h"
 #include "NetIntface.h"
 #include "JK_MemMgr.h"
 #include "ClientAgent.h"
@@ -54,7 +55,7 @@ int NetInterface::initInterface( int iMaster, char* strMasterIP, unsigned short 
 	desc.dwSendBufferSize			= 60000;
 	desc.dwRecvBufferSize			= 60000;
 	desc.dwTimeOut					= 1000 * 60 * 20;
-	desc.dwMaxPacketSize			= 4096;
+	desc.dwMaxPacketSize			= MAX_PACK_SIZE;
 	desc.dwNumberOfIoThreads		= 1;
 	desc.dwNumberOfAcceptThreads	= 1;
 	desc.dwNumberOfConnectThreads	= 1;
@@ -89,6 +90,10 @@ int NetInterface::initInterface( int iMaster, char* strMasterIP, unsigned short 
 		DISPMSG_SUCCESS( "Slave start success!  Port:%d\n", uslocalPort );
 	}
 	return 1;
+}
+
+void NetInterface::ConnectMaster()
+{
 }
 
 
