@@ -26,6 +26,9 @@ enum elp_CS_PROTOCOL
 	S2C_GERERAL_RES_CMD		= 4,			// S2C:服务器通用通知
 	S2C_SELECT_ITEM_ACK		= 6,			// S2C:查询回复
 
+	C2S_HEARTBEAT_SYN		= 11,			// C2S:心跳
+	S2C_HEARTBEAT_ACK		= 12,			// S2C:心跳
+
 	C2S_CLTREGISTER_SYN		= 31,			// C2S:登记
 	C2S_INSERT_ITEM_SYN		= 51,			// C2S:请求插入key-value pair
 	C2S_REMOVE_ITEM_SYN		= 55,			// C2S:请求删除指定key
@@ -44,6 +47,8 @@ enum elp_CS_PROTOCOL
 	C2S_EXPIRE_KEY_SYN		= 91,			// C2S:expire command
 
 	C2S_HSET_ITEM_SYN		= 111,			// C2S:hash set command
+
+	C2S_PAGERECORD_SYN		= 121,			// C2S:记录PV
 
 };
 
@@ -137,6 +142,31 @@ public:
 	char			svrIp[MAX_KEY_LEN];			// --server ip
 	unsigned int	svrPort;					// --server 端口
 };
+
+
+// Client-->Server ：heartbeat
+class MSG_C2S_HEARTBEAT_SYN : public MSG_BASE
+{
+public:
+	MSG_C2S_HEARTBEAT_SYN()
+	{
+		m_byCategory = emc_CS_CATEGORY;
+		m_byProtocol = C2S_HEARTBEAT_SYN;
+	}
+};
+
+
+// Server-->Client ：heartbeat
+class MSG_S2C_HEARTBEAT_ACK : public MSG_BASE
+{
+public:
+	MSG_S2C_HEARTBEAT_ACK()
+	{
+		m_byCategory = emc_CS_CATEGORY;
+		m_byProtocol = S2C_HEARTBEAT_ACK;
+	}
+};
+
 
 
 // Client-->Server ：register to server
@@ -320,6 +350,23 @@ public:
 };
 
 
+
+// Client-->Server ：設置过期键
+class MSG_C2S_PAGERECORD_SYN : public  MSG_BASE
+{
+public:
+	MSG_C2S_PAGERECORD_SYN()
+	{
+		m_byProtocol = C2S_PAGERECORD_SYN;
+	}
+	char strAppKey[64];
+};
+
+
+
+
+
+
 // Client-->Server ：設置哈希数据结构
 class MSG_C2S_HSET_ITEM_SYN : public MSG_C2S_SELECT_ITEM_SYN
 {
@@ -394,6 +441,10 @@ public:
 		return sizeof(MSG_M2S_APPENDCOMMAND_CMD)-( (MAX_CMD_LEN-m_byLen) ) + 1; // --1 for "\0"
 	}
 };
+
+
+
+
 
 
 #pragma pack(pop)

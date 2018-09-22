@@ -4,7 +4,7 @@
 #include "NetBase.h"
 #include "JK_Utility.h"
 
-#define PROTOCOL_HEAD_LEN 2
+#define PROTOCOL_HEAD_LEN 4
 
 #pragma comment( lib, "ws2_32.lib" )
 #pragma warning(disable:4996)
@@ -146,7 +146,7 @@ bool ConnectInfo::IsHavdData()
 	else
 	{
 		PacketHeader* pHeader = (PacketHeader*)&m_pMemPool[m_iStartPtr];
-		if (pHeader->wSize + PROTOCOL_HEAD_LEN > curDatalen)		//断包
+		if (pHeader->dwSize + PROTOCOL_HEAD_LEN > curDatalen)		//断包
 		{
 			return false;
 		}
@@ -175,19 +175,19 @@ bool ConnectInfo::GetData( char* pData, int& iLen )
 	{
 		PacketHeader* pHeader = (PacketHeader*)&m_pMemPool[m_iStartPtr];
 		//if( pHeader->wSize + 4 > curDatalen )		//断包
-		if (pHeader->wSize + PROTOCOL_HEAD_LEN  > curDatalen)		//断包
+		if (pHeader->dwSize + PROTOCOL_HEAD_LEN  > curDatalen)		//断包
 		{
 			return false;
 		}
 		else
 		{
 			EnterCriticalSection( &m_RecvCritSect );
-			memcpy(pData, &m_pMemPool[m_iStartPtr + PROTOCOL_HEAD_LEN], pHeader->wSize);
+			memcpy(pData, &m_pMemPool[m_iStartPtr + PROTOCOL_HEAD_LEN], pHeader->dwSize);
 			//memcpy( pData, &m_pMemPool[m_iStartPtr+4], pHeader->wSize );
 
-			m_iStartPtr += pHeader->wSize + PROTOCOL_HEAD_LEN;
+			m_iStartPtr += pHeader->dwSize + PROTOCOL_HEAD_LEN;
 			//m_iStartPtr += pHeader->wSize  + 4;
-			iLen = pHeader->wSize;
+			iLen = pHeader->dwSize;
 
 			LeaveCriticalSection( &m_RecvCritSect );
 			return true;
@@ -217,9 +217,9 @@ void ConnectInfo::SaveSendData( char* pData, int iLen )
 	}
 
 	// --同上 [SXF 2012/07/23 15:01:14]
-	memcpy(&m_pSendMemPool[m_SendLen], &iLen, sizeof(unsigned short));
-	memcpy(&m_pSendMemPool[m_SendLen + sizeof(unsigned short)], pData, iLen);
-	m_SendLen += iLen + sizeof(unsigned short);
+	memcpy(&m_pSendMemPool[m_SendLen], &iLen, sizeof(unsigned int));
+	memcpy(&m_pSendMemPool[m_SendLen + sizeof(unsigned int)], pData, iLen);
+	m_SendLen += iLen + sizeof(unsigned int);
 
 	// --发包监视
 	//g_dwTotalSendNum++;
@@ -299,6 +299,12 @@ bool CNetBase::ConncetToServer( int iConnectID, const char *pIPAddress, int iPor
 	{
 		return false;
 	}
+
+
+	///--- 测试
+	//Send( "324242424", 10 );
+	//---CESHI 
+
 	unsigned   long   ul   =   1;   
 	int ret   =   ioctlsocket(m_pConnectHandles[iConnectID].m_Socket,   FIONBIO,   (unsigned   long*)&ul);   
 	if(ret==SOCKET_ERROR)   

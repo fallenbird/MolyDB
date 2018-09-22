@@ -5,7 +5,7 @@
 #define	 MAXNETPOOL		1024*1024//256*1024
 struct PacketHeader
 {
-	WORD wSize;
+	unsigned int dwSize;
 };
 
 void NetProcess(WPARAM wParam,LPARAM lParam);

@@ -28,8 +28,8 @@ void ClientAgent::OnAccept(DWORD connindex)
 
 	// --¸øClientÖÕ¶Ë·¢ËÍ×´Ì¬
 	MSG_S2C_SVR_READY_CMD readyPacket;
-	readyPacket.sHighVer = 7;
-	readyPacket.sLowVer = 8;
+	readyPacket.sHighVer = 5;
+	readyPacket.sLowVer = 4;
 	readyPacket.iEncKey = 666;
 	//readyPacket.svrIp = 
 	Send((BYTE*)&readyPacket, sizeof(MSG_S2C_SVR_READY_CMD));
@@ -84,6 +84,13 @@ void ClientAgent::OnRecv(BYTE *pMsg, WORD wSize)
 		{
 			switch (pMsgBase->m_byProtocol)
 			{
+			case C2S_HEARTBEAT_SYN: 
+			{
+				MSG_S2C_HEARTBEAT_ACK ackMsg;
+				Send((BYTE*)&ackMsg, sizeof(MSG_S2C_HEARTBEAT_ACK));
+			}
+			break;
+
 			case C2S_CLTREGISTER_SYN:
 				{
 					DISPMSG_SUCCESS( "Accept client[%s:%d] success!\n", GetIP(),GetPort() );
@@ -316,6 +323,18 @@ void ClientAgent::OnRecv(BYTE *pMsg, WORD wSize)
 				{
 					ReplyResult(egr_EXPIREFAILD);
 				}
+			}break;
+
+			case C2S_PAGERECORD_SYN: {
+
+				if (!CheckSvrReady())
+				{
+					return;
+				}
+				MSG_C2S_PAGERECORD_SYN*  pllMsg = (MSG_C2S_PAGERECORD_SYN*)pMsg;
+				m_iPageView++;
+				DISPMSG_SUCCESS("APPKEY[%s] PV[%d] UV[%d]\n", pllMsg->strAppKey, m_iPageView, m_iPageView);
+
 			}break;
 
 

@@ -147,6 +147,7 @@ int main(int argc, char* argv[])
 		svrPort = atoi(argv[1]);
 	}
 	if (!g_pNetBase->ConncetToServer(0, "127.0.0.1", svrPort))
+	//if (!g_pNetBase->ConncetToServer(0, "192.168.200.93", 9000))
 	{
 		printf("Can't connent the molydb server!\n");
 		Sleep(2000);
@@ -175,6 +176,7 @@ void PrintHelpInfo()
 	printf("rpush	Find all keys matching the given pattern.\n");
 	printf("lpop	Remove and get the first element in a list.\n");
 	printf("rpop	Remove and get the last element in a list.\n");
+	printf("llen	Get the length of a list.\n");
 	printf("llen	Get the length of a list.\n");
 }
 

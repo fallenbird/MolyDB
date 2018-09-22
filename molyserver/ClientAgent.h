@@ -26,6 +26,8 @@ private:
 	inline bool		CheckSvrReady(); 
 	inline void		ReplyResult( int iRes );
 
+	int				m_iPageView = 0;
+
 };
 
 
