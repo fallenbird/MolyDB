@@ -1,4 +1,4 @@
-// molyclient.cpp : Defines the entry point for the console application.
+ï»¿// molyclient.cpp : Defines the entry point for the console application.
 //
 
 #include "NetBase.h"
@@ -9,7 +9,7 @@
 #include "JK_Assert.h"
 #include "JK_Utility.h"
 
-					// ÍøÂç½Ó¿Ú
+					// ç½‘ç»œæ¥å£
 
 #define MAX_CONNECT_NUM 50
 #define NET_MSG WM_USER + 100
@@ -24,7 +24,7 @@ JK_Console		g_ConsoleMgr;
 
 //-----------------------------------------------------------------------------------------------------------------------
 // Prototype	:		int	CMyAppDlg::ProcessLSMsg( char* pMsg )
-// Function		:		´¦ÀíµÇÂ½·şÎñÆ÷ÏûÏ¢
+// Function		:		å¤„ç†ç™»é™†æœåŠ¡å™¨æ¶ˆæ¯
 // Input  Param :		- 
 // Output Param :		-
 // Info			:		SXF	/ 2014.08.10 / 1.0
@@ -35,7 +35,7 @@ int ServerPro(int nConctID, char* pMsg, int nLen)
 
 	JK_ASSERT(emc_CS_CATEGORY == pMsgHead->m_byCategory );
 
-	//½âÎöÏûÏ¢Í·
+	//è§£ææ¶ˆæ¯å¤´
 	switch ( pMsgHead->m_byProtocol )
 	{
 
@@ -147,7 +147,7 @@ int main(int argc, char* argv[])
 		svrPort = atoi(argv[1]);
 	}
 	if (!g_pNetBase->ConncetToServer(0, "127.0.0.1", svrPort))
-	//if (!g_pNetBase->ConncetToServer(0, "192.168.200.93", 9000))
+	//if (!g_pNetBase->ConncetToServer(0, "116.62.110.233", 3690))
 	{
 		printf("Can't connent the molydb server!\n");
 		Sleep(2000);
@@ -206,7 +206,7 @@ void SendCmdMsg(unsigned int cmdtype, char argv[MAX_PARA_CNT][MAX_CMD_LEN], unsi
 			//		Sleep(1);
 			//	}
 			//	DWORD dwEndTM = GetTickCount();
-			//	printf( "×Ü¹²ºÄÊ±: %d Ãë!\n", (dwEndTM-dwBegTM)/1000 );
+			//	printf( "æ€»å…±è€—æ—¶: %d ç§’!\n", (dwEndTM-dwBegTM)/1000 );
 
 			//	Sleep(3000);
 
@@ -219,10 +219,10 @@ void SendCmdMsg(unsigned int cmdtype, char argv[MAX_PARA_CNT][MAX_CMD_LEN], unsi
 			//		Sleep(1);
 			//	}
 			//	dwEndTM = GetTickCount();
-			//	printf( "×Ü¹²ºÄÊ±: %d Ãë!\n", (dwEndTM-dwBegTM)/1000 );
+			//	printf( "æ€»å…±è€—æ—¶: %d ç§’!\n", (dwEndTM-dwBegTM)/1000 );
 			//	++TCNT;
 			//	Sleep( 1000 );
-			//	printf( "µÚ %d ÂÖ²âÊÔ¼´½«¿ªÊ¼!\n", TCNT );
+			//	printf( "ç¬¬ %d è½®æµ‹è¯•å³å°†å¼€å§‹!\n", TCNT );
 			//	Sleep( 5000 );
 			//}
 
@@ -349,7 +349,7 @@ unsigned int CommondThread()
 		{
 		case ect_COMMAND_NONE:
 			{
-				DISPMSG_ERROR("illegal command£¡\n");
+				DISPMSG_ERROR("illegal commandï¼\n");
 			}
 			break;
 
