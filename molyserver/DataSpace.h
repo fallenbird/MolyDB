@@ -18,9 +18,13 @@ public:
 	bool	InsertKV( char* key, int keylen, char* val, int vallen, bool ops = true );
 	bool	UpdateKV(void* key, void* val, int vallen, bool ops = true);
 	bool	RemoveKV(void* key, bool ops = true);
-	void*	GetValue( void* key );
+	void*	GetValue( void* key, eValueType valtype);
 	void	Operation( int cmd, void* key, void* val );
 	void	Replication( int cmd, void* key, void* val );
+
+	void	Operation(int cmd, void* element, void* key,  void* val);
+	void	Replication(int cmd, void* element, void* key, void* val);
+
 	bool	IsExists( char* key );
 
 
@@ -33,7 +37,9 @@ public:
 
 
 	// ----HASH----
-	bool	HashSet( char* key, int seconds );
+	bool	HashSet(char* map, int keylen, char* key, int vallen, char* val, bool ops = true);
+	char*	HashGet(char* map, char* key );
+
 
 	void	SetRepState( bool bRep ){ m_bReplicated = bRep; }
 	bool	IsServerReady();
@@ -46,7 +52,7 @@ private:
 	JK_Dictionary<true>	m_normalDict;
 	JK_PriorityQueue	m_expireQueue;
 
-	//JK_Hashmap<int, true>  m_expireMap;
+	//JK_Dictionary<int, true>  m_expireMap;
 	bool				m_bSlave;
 	bool				m_bReplicated;
 };

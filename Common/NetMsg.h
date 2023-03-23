@@ -47,6 +47,7 @@ enum elp_CS_PROTOCOL
 	C2S_EXPIRE_KEY_SYN		= 91,			// C2S:expire command
 
 	C2S_HSET_ITEM_SYN		= 111,			// C2S:hash set command
+	C2S_HGET_ITEM_SYN		= 112,
 
 	C2S_PAGERECORD_SYN		= 121,			// C2S:记录PV
 
@@ -79,6 +80,8 @@ enum GENERALRESULT
 	egr_KEYEXISTS			= 7,
 	egr_EXPIRESUCCESS		= 8,
 	egr_EXPIREFAILD			= 9,
+	egr_HSETSUCCESS			= 21,
+	egr_HSETFAILD			= 22,
 };
 
 #pragma pack(push,1)
@@ -193,7 +196,7 @@ public:
 	}
 	unsigned short	m_usKeyLen;
 	unsigned short	m_usValLen;
-	char			strKey[168];
+	char			strKey[MAX_KEY_LEN];
 	char			strVal[1024];
 	int GetMsgSize()
 	{
@@ -368,17 +371,40 @@ public:
 
 
 // Client-->Server ：設置哈希数据结构
-class MSG_C2S_HSET_ITEM_SYN : public MSG_C2S_SELECT_ITEM_SYN
+class MSG_C2S_HSET_ITEM_SYN : public MSG_BASE
 {
 public:
 	MSG_C2S_HSET_ITEM_SYN()
 	{
+		m_byCategory = emc_CS_CATEGORY;
 		m_byProtocol = C2S_HSET_ITEM_SYN;
-		m_iSeconds = 0;
 	}
-	unsigned int m_iSeconds;
+	char			strMap[MAX_KEY_LEN];
+	char			strKey[MAX_KEY_LEN];
+	unsigned short	m_usKeyLen;
+	unsigned short	m_usValLen;
+	char			strVal[1024];
+
+	int GetMsgSize()
+	{
+		return sizeof(MSG_C2S_HSET_ITEM_SYN) - ((1024 - m_usValLen)) + 1; // --1 for "\0"
+	}
 };
 
+
+
+// Client-->Server ：获取哈希数据结构
+class MSG_C2S_HGET_ITEM_SYN : public  MSG_BASE
+{
+public:
+	MSG_C2S_HGET_ITEM_SYN()
+	{
+		m_byCategory = emc_CS_CATEGORY;
+		m_byProtocol = C2S_HGET_ITEM_SYN;
+	}
+	char			strMap[MAX_KEY_LEN];
+	char			strKey[MAX_KEY_LEN];
+};
 
 
 

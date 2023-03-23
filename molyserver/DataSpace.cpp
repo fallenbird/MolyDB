@@ -11,6 +11,7 @@
 
 
 typedef JK_DList<char, true> moly_list_type;
+typedef JK_Hashmap<char*, true> moly_hash_type;
 
 DataSpace::DataSpace(): m_bReplicated(false)
 {
@@ -62,7 +63,7 @@ bool DataSpace::InsertKV( char* key, int keylen, char* val, int vallen, bool ops
 	void* pval = JK_MALLOC( vallen+1 );
 	JK_MEMCPY_S(pkey,keylen+1,key,keylen+1);
 	JK_MEMCPY_S(pval,vallen+1,val,vallen+1);
-	if ( m_normalDict.GetElement(pkey) )
+	if ( m_normalDict.GetElement(pkey, evt_STR ) )
 	{
 		m_normalDict.UpdateElement(pkey, pval );
 		if ( ops )
@@ -73,7 +74,7 @@ bool DataSpace::InsertKV( char* key, int keylen, char* val, int vallen, bool ops
 		return true;
 	}
 
-	if (  m_normalDict.AddElement( pkey, pval ) )
+	if (  m_normalDict.AddElement( pkey, pval, evt_STR) )
 	{
 		if ( ops )
 		{
@@ -87,12 +88,18 @@ bool DataSpace::InsertKV( char* key, int keylen, char* val, int vallen, bool ops
 	return false;
 }
 
-void* DataSpace::GetValue(void* key)
+void* DataSpace::GetValue(void* key, eValueType valtype)
 {
-	return m_normalDict.GetElement(key);
+	return m_normalDict.GetElement(key, valtype);
 }
 
 
+/// <summary>
+/// TODO:if hash type, release hash node first
+/// </summary>
+/// <param name="key"></param>
+/// <param name="ops"></param>
+/// <returns></returns>
 bool DataSpace::RemoveKV(void* key, bool ops )
 {
 	if ( m_normalDict.RemoveElement(key) )
@@ -115,6 +122,12 @@ void DataSpace::Operation( int cmd, void* key, void* val )
 	AppendCmdQueue::Enqueue( strTemp );
 }
 
+void DataSpace::Operation(int cmd, void* element, void* key, void* val)
+{
+	char* strTemp = (char*)JK_MALLOC(MAX_CMD_LEN);		// char[128]; 
+	JK_SPRITF_S(strTemp, MAX_CMD_LEN, "%d %s %s %s \n", cmd, (char*)element, (char*)key, (char*)val);
+	AppendCmdQueue::Enqueue(strTemp);
+}
 
 
 void DataSpace::Replication( int cmd, void* key, void* val )
@@ -127,6 +140,18 @@ void DataSpace::Replication( int cmd, void* key, void* val )
 	cmdMsg.m_byLen = JK_SPRITF_S( cmdMsg.m_strCmd, MAX_CMD_LEN, "%d %s %s \n", cmd, (char*)key, (char*)val );
 	SlaveMgr::GetInstance().BroadAllSlave( (BYTE*)&cmdMsg, cmdMsg.GetMsgSize() );
 }
+
+void DataSpace::Replication(int cmd, void* element, void* key, void* val)
+{
+	if (m_bSlave)
+	{
+		return;
+	}
+	MSG_M2S_APPENDCOMMAND_CMD cmdMsg;
+	cmdMsg.m_byLen = JK_SPRITF_S(cmdMsg.m_strCmd, MAX_CMD_LEN, "%d %s %s %s \n", cmd, (char*)element, (char*)key, (char*)val);
+	SlaveMgr::GetInstance().BroadAllSlave((BYTE*)&cmdMsg, cmdMsg.GetMsgSize());
+}
+
 
 
 
@@ -171,7 +196,7 @@ bool DataSpace::ListPushLeft( char* key, int keylen, char* val, int vallen, bool
 	}
 	JK_MEMCPY_S(pkey,keylen+1,key,keylen+1);
 	JK_MEMCPY_S(pval,vallen+1,val,vallen+1);
-	moly_list_type* pDList = (moly_list_type*)m_normalDict.GetElement( pkey );
+	moly_list_type* pDList = (moly_list_type*)m_normalDict.GetElement( pkey, evt_LIST );
 	if ( pDList )
 	{
 		if ( NULL == pDList->LPush( (char*)pval ) )
@@ -202,7 +227,7 @@ bool DataSpace::ListPushLeft( char* key, int keylen, char* val, int vallen, bool
 		JK_DELETE( moly_list_type, pDList );
 		return false;
 	}
-	if ( !m_normalDict.AddElement(pkey, pDList ) )
+	if ( !m_normalDict.AddElement(pkey, pDList, evt_LIST) )
 	{
 		JK_FREE( pkey );
 		JK_FREE( pval );
@@ -235,7 +260,7 @@ bool DataSpace::ListPushRight( char* key, int keylen, char* val, int vallen, boo
 	}
 	JK_MEMCPY_S(pkey,keylen+1,key,keylen+1);
 	JK_MEMCPY_S(pval,vallen+1,val,vallen+1);
-	moly_list_type* pDList = (moly_list_type*)m_normalDict.GetElement( pkey );
+	moly_list_type* pDList = (moly_list_type*)m_normalDict.GetElement( pkey, evt_LIST );
 	if ( pDList )
 	{
 		if ( NULL == pDList->RPush( (char*)pval ) )
@@ -254,7 +279,7 @@ bool DataSpace::ListPushRight( char* key, int keylen, char* val, int vallen, boo
 	pDList = JK_NEW(moly_list_type);
 	if ( !pDList )
 	{
-		DISPMSG_ERROR( "malloc memory failed!\n");
+		DISPMSG_ERROR( "malloc list memory failed!\n");
 		JK_FREE( pkey );
 		JK_FREE( pval );
 		return false;
@@ -266,7 +291,7 @@ bool DataSpace::ListPushRight( char* key, int keylen, char* val, int vallen, boo
 		JK_DELETE( moly_list_type, pDList );
 		return false;
 	}
-	if ( !m_normalDict.AddElement(pkey, pDList ) )
+	if ( !m_normalDict.AddElement(pkey, pDList, evt_LIST) )
 	{
 		JK_FREE( pkey );
 		JK_FREE( pval );
@@ -284,7 +309,7 @@ bool DataSpace::ListPushRight( char* key, int keylen, char* val, int vallen, boo
 
 void* DataSpace::ListPopLeft( char* key, bool ops /*= true */ )
 {
-	moly_list_type* pDList = (moly_list_type*)m_normalDict.GetElement( key );
+	moly_list_type* pDList = (moly_list_type*)m_normalDict.GetElement( key, evt_LIST );
 	if ( !pDList )
 	{
 		return NULL;
@@ -301,7 +326,7 @@ void* DataSpace::ListPopLeft( char* key, bool ops /*= true */ )
 
 void* DataSpace::ListPopRight( char* key, bool ops /*= true */ )
 {
-	moly_list_type* pDList = (moly_list_type*)m_normalDict.GetElement( key );
+	moly_list_type* pDList = (moly_list_type*)m_normalDict.GetElement( key , evt_LIST);
 	if ( !pDList )
 	{
 		return NULL;
@@ -318,7 +343,7 @@ void* DataSpace::ListPopRight( char* key, bool ops /*= true */ )
 
 int DataSpace::GetListLength( char* key )
 {
-	moly_list_type* pDList = (moly_list_type*)m_normalDict.GetElement( key );
+	moly_list_type* pDList = (moly_list_type*)m_normalDict.GetElement( key , evt_LIST);
 	if ( !pDList )
 	{
 		return NULL;
@@ -353,7 +378,8 @@ bool DataSpace::UpdateKV( void* key, void* val, int vallen, bool ops /*= true */
 bool DataSpace::ExpireKey(char * key, int seconds)
 {
 	// --验证是否有该key
-	if (NULL == m_normalDict.GetElement(key)) 
+	///TODO: any 
+	if (NULL == m_normalDict.GetElement(key, evt_STR ))
 	{
 		return false;
 	}
@@ -369,13 +395,76 @@ bool DataSpace::ExpireKey(char * key, int seconds)
 }
 
 
-bool DataSpace::HashSet(char * key, int seconds)
+bool DataSpace::HashSet(char * map,int keylen, char* key, int vallen, char* val, bool ops )
 {
-	DataUnit dataUnit = m_expireQueue.deleteMin();
-	if ( NULL == dataUnit.m_szKey ) 
+	int maplen = strlen(map);
+	void* pmap = JK_MALLOC(maplen + 1);
+	void* pkey = JK_MALLOC(keylen + 1);
+	void* pval = JK_MALLOC(vallen + 1);
+
+	moly_hash_type* pHash = (moly_hash_type*)m_normalDict.GetElement(map, evt_HASH );
+	bool bIsNewHash = false;
+	
+	if (!pHash )
 	{
-		int i = 9;
+		pHash = JK_NEW(moly_hash_type);
+		if (!pHash)
+		{
+			JK_FREE(pmap);
+			JK_FREE(pkey);
+			JK_FREE(pval);
+			DISPMSG_ERROR("malloc hash memory failed!\n");
+			return false;
+		}
+
+		bIsNewHash = true;
+		pHash->Init(DICT_INITIAL_SIZE);
 	}
 
+	JK_MEMCPY_S(pmap, maplen + 1, map, maplen + 1);
+	JK_MEMCPY_S(pkey, keylen + 1, key, keylen + 1);
+	JK_MEMCPY_S(pval, vallen + 1, val, vallen + 1);
+
+	bool bRes = pHash->Add(pkey, pval, evt_HASH );
+	if (!bRes) 
+	{
+		JK_FREE(pmap);
+		JK_FREE(pkey);
+		JK_FREE(pval);
+		if (bIsNewHash)
+		{
+			JK_DELETE(moly_hash_type, pHash);
+		}
+		return false;
+	}
+
+	if (!m_normalDict.AddElement(pmap, pHash, evt_HASH))
+	{
+		JK_FREE(pmap);
+		JK_FREE(pkey);
+		JK_FREE(pval);
+		if (bIsNewHash)
+		{
+			JK_DELETE(moly_hash_type, pHash);
+		}
+		return false;
+	}
+	if (ops)
+	{
+		Operation(LOG_CMD_HASH_SET, map, pkey, pval);
+		Replication(LOG_CMD_HASH_SET, map, pkey, pval);
+	}
 	return true;
+}
+
+
+
+char* DataSpace::HashGet(char* map, char* key )
+{
+	moly_hash_type* pHash = (moly_hash_type*)m_normalDict.GetElement(map, evt_HASH );
+	if (!pHash)
+	{
+		return NULL;
+	}
+	return (char*)pHash->Get(key, evt_HASH );
 }

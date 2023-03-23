@@ -119,7 +119,7 @@ void ClientAgent::OnRecv(BYTE *pMsg, WORD wSize)
 			case C2S_SELECT_ITEM_SYN:
 				{
 					MSG_C2S_SELECT_ITEM_SYN* pInsertMsg = (MSG_C2S_SELECT_ITEM_SYN*)pMsg;
-					char* strVal = (char*)DataSpace::GetInstance().GetValue(pInsertMsg->strKey);
+					char* strVal = (char*)DataSpace::GetInstance().GetValue(pInsertMsg->strKey, evt_STR );
 					if (NULL == strVal)
 					{
 						ReplyResult( egr_CANTFINDVAL );
@@ -314,14 +314,34 @@ void ClientAgent::OnRecv(BYTE *pMsg, WORD wSize)
 					return;
 				}
 				MSG_C2S_HSET_ITEM_SYN*  pllMsg = (MSG_C2S_HSET_ITEM_SYN*)pMsg;
-				bool bExpire = DataSpace::GetInstance().HashSet(pllMsg->strKey, pllMsg->m_iSeconds);
+				bool bExpire = DataSpace::GetInstance().HashSet(pllMsg->strMap, pllMsg->m_usKeyLen, pllMsg->strKey, pllMsg->m_usValLen, pllMsg->strVal );
 				if (bExpire)
 				{
-					ReplyResult(egr_EXPIRESUCCESS);
+					ReplyResult(egr_HSETSUCCESS);
 				}
 				else
 				{
-					ReplyResult(egr_EXPIREFAILD);
+					ReplyResult(egr_HSETFAILD);
+				}
+			}break;
+
+			case C2S_HGET_ITEM_SYN: {
+				if (!CheckSvrReady())
+				{
+					return;
+				}
+				MSG_C2S_HGET_ITEM_SYN* pllMsg = (MSG_C2S_HGET_ITEM_SYN*)pMsg;
+				char* value = DataSpace::GetInstance().HashGet(pllMsg->strMap, pllMsg->strKey );
+				if (value)
+				{
+					MSG_S2C_SELECT_ITEM_ACK ackmsg;
+					strcpy_s(ackmsg.strKey, MAX_KEY_LEN, pllMsg->strKey);
+					strcpy_s(ackmsg.strVal, 1024, value);
+					Send((BYTE*)&ackmsg, sizeof(MSG_S2C_SELECT_ITEM_ACK));
+				}
+				else
+				{
+					ReplyResult(egr_CANTFINDVAL);
 				}
 			}break;
 

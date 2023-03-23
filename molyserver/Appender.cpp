@@ -127,6 +127,13 @@ void Appender::HandleCmdLine( char* strLine, bool bOps )
 		}
 		break;
 
+
+	case LOG_CMD_HASH_SET:
+		{
+			DataSpace::GetInstance().HashSet(cmdArray[1], strlen(cmdArray[2]), cmdArray[2], strlen(cmdArray[3]), cmdArray[3], bOps);
+		}
+		break;
+
 	default:
 		{
 			DISPMSG_ERROR( "Error command : %s \n", cmdArray[0]);

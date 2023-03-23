@@ -34,6 +34,7 @@ enum enGmCommandType
 
 	//--HASH¿‡
 	ect_COMMAND_HSET	= 21,
+	ect_COMMAND_HGET	= 22,
 
 	//--SERVER¿‡
 	ect_COMMAND_QUIT	= 95,
@@ -153,7 +154,10 @@ public:
 		{
 			return ect_COMMAND_HSET;
 		}
-
+		else if (!strcmp(cmdstr, "hget"))
+		{
+			return ect_COMMAND_HGET;
+		}
 
 		else 
 		{

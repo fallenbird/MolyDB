@@ -178,7 +178,7 @@ public:
 	}
 
 	
-	void* Get( void* key )
+	void* Get( void* key, eValueType valtype )
 	{
 		if( NULL == key  || 0 == m_lUsed )
 		{
@@ -188,9 +188,9 @@ public:
 		hashidx %= m_lSize;
 		lock_if_necessary();
 		HashEntity** ppEntity= &m_table[hashidx];
-		HashEntity* pEntity = GetEntity( m_table[hashidx],  key );
+		HashEntity* pEntity = GetEntity( m_table[hashidx],  key, valtype);
 		unlock_if_necessary();
-		if( NULL == pEntity )
+		if( NULL == pEntity  )
 		{
 			return NULL;
 		}
@@ -199,7 +199,7 @@ public:
 
 
 
-	bool Add( void* key, void* val )
+	bool Add( void* key, void* val, eValueType valtype)
 	{
 		if( NULL == key )
 		{
@@ -227,6 +227,7 @@ public:
 		}
 		pTemp->m_key = key;
 		pTemp->v.m_val = val;
+		pTemp->m_valType = valtype;
 		pTemp->next = NULL;
 		*ppEntity = pTemp;
 		++m_lUsed;
@@ -423,16 +424,23 @@ private:
 		}
 	}
 
-	HashEntity* GetEntity( HashEntity* pEntity, void* key  )
+	HashEntity* GetEntity( HashEntity* pEntity, void* key, eValueType valtype)
 	{
 		HashEntity* pTempEntity = pEntity;
 		while( NULL != pTempEntity )
 		{
-			if ( 0 == strcmp( (char*)pTempEntity->m_key, (char*)key ) )
+			if (pTempEntity->m_valType != valtype) 
 			{
-				return pTempEntity;
+				pTempEntity = pTempEntity->next;
+				continue;
 			}
-			pTempEntity = pTempEntity->next;
+
+			if ( 0 != strcmp( (char*)pTempEntity->m_key, (char*)key ) )
+			{
+				pTempEntity = pTempEntity->next;
+				continue;
+			}
+			return pTempEntity;
 		}
 		return NULL;
 	}

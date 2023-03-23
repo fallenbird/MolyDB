@@ -34,27 +34,27 @@ public:
 		return m_hashtable[0].Init(DICT_INITIAL_SIZE);
 	}
 
-	bool AddElement( void* key, void* val )
+	bool AddElement( void* key, void* val, eValueType valtype)
 	{
 		if (-1 == m_iRehashidx)
 		{
-			return m_hashtable[0].Add(key, val);
+			return m_hashtable[0].Add(key, val, valtype);
 		}
-		return m_hashtable[1].Add(key, val);
+		return m_hashtable[1].Add(key, val, valtype);
 	}
 
-	void* GetElement(void* key )
+	void* GetElement(void* key , eValueType valtype)
 	{
 		if (-1 == m_iRehashidx)
 		{
-			return m_hashtable[0].Get(key);
+			return m_hashtable[0].Get(key, valtype);
 		}
-		void* tempVal = m_hashtable[0].Get(key);
+		void* tempVal = m_hashtable[0].Get(key, valtype);
 		if (NULL != tempVal )
 		{
 			return tempVal;
 		}
-		return m_hashtable[1].Get(key);
+		return m_hashtable[1].Get(key, valtype);
 	}
 
 	bool UpdateElement( void* key, void* val )

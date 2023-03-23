@@ -101,6 +101,17 @@ int ServerPro(int nConctID, char* pMsg, int nLen)
 				DISPMSG_ERROR("expire key set failed, no such key!\n");
 			}break;
 
+			case egr_HSETFAILD:
+			{
+				DISPMSG_SUCCESS("hash set failed!\n");
+			}break;
+
+			case egr_HSETSUCCESS:
+			{
+				DISPMSG_SUCCESS("hash set ok!\n");
+			}break;
+
+
 			default:
 				break;
 			}
@@ -322,9 +333,23 @@ void SendCmdMsg(unsigned int cmdtype, char argv[MAX_PARA_CNT][MAX_CMD_LEN], unsi
 
 	case ect_COMMAND_HSET: 
 	{
+		CHECK_PARA_CNT(3, argc);
 		MSG_C2S_HSET_ITEM_SYN  hsetMsg;
-		g_pNetBase->Send((char*)&hsetMsg, sizeof(MSG_C2S_HSET_ITEM_SYN));
-		
+		strcpy_s(hsetMsg.strMap, MAX_KEY_LEN, argv[0]);
+		hsetMsg.m_usKeyLen = JK_SPRITF_S(hsetMsg.strKey, "%s", argv[1]);
+		hsetMsg.m_usValLen = JK_SPRITF_S(hsetMsg.strVal, "%s", argv[2]);
+		g_pNetBase->Send((char*)&hsetMsg, hsetMsg.GetMsgSize());
+	}
+	break;
+
+	case ect_COMMAND_HGET:
+	{
+		CHECK_PARA_CNT(2, argc);
+		MSG_C2S_HGET_ITEM_SYN  hgetMsg;
+		strcpy_s(hgetMsg.strMap, MAX_KEY_LEN, argv[0]);
+		strcpy_s(hgetMsg.strKey, MAX_KEY_LEN, argv[1]);
+		g_pNetBase->Send((char*)&hgetMsg, sizeof(MSG_C2S_HGET_ITEM_SYN));
+
 	}
 	break;
 
