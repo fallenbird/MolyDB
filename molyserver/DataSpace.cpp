@@ -6,12 +6,14 @@
 #include "JK_MemMgr.h"
 #include "JK_Console.h"
 #include "JK_DList.h"
+#include "JK_SkipList.h"
 #include "SlaveMgr.h"
 #include "NetMsg.h"
 
 
 typedef JK_DList<char, true> moly_list_type;
 typedef JK_Hashmap<char*, true> moly_hash_type;
+typedef JK_SkipList<char, true>moly_zset_type;
 
 DataSpace::DataSpace(): m_bReplicated(false)
 {
@@ -467,4 +469,40 @@ char* DataSpace::HashGet(char* map, char* key )
 		return NULL;
 	}
 	return (char*)pHash->Get(key, evt_HASH );
+}
+
+
+
+bool DataSpace::ZSetAdd(char* key, unsigned int score, unsigned int vallen, char* value, bool ops )
+{
+	void* pval = JK_MALLOC(vallen + 1);
+	JK_MEMCPY_S(pval, vallen + 1, value, vallen + 1);
+	
+	moly_zset_type* pZSet = (moly_zset_type*)m_normalDict.GetElement(key, evt_ZSET);
+	if (NULL != pZSet) 
+	{
+		return pZSet->InsertNode(score, value);
+	}
+	moly_zset_type* newZSet = JK_NEW(moly_zset_type);
+	if ( !newZSet) 
+	{
+		JK_FREE(pval);
+		return false;
+	}
+	bool result =  newZSet->InsertNode(score, value);
+	if (!result) 
+	{
+		JK_FREE(pval);
+		JK_DELETE(moly_zset_type, newZSet );
+		return false;
+	}
+
+	if (!m_normalDict.AddElement(key, newZSet, evt_ZSET))
+	{
+		JK_FREE(pval);
+		JK_DELETE(moly_zset_type, newZSet);
+		return false;
+	}
+	return true;
+		
 }

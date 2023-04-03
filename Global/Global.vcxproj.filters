@@ -16,5 +16,6 @@
     <ClInclude Include="JK_SList.h" />
     <ClInclude Include="JK_DList.h" />
     <ClInclude Include="JK_PriorityQueue.h" />
+    <ClInclude Include="JK_SkipList.h" />
   </ItemGroup>
 </Project>

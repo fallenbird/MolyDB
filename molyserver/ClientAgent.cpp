@@ -345,7 +345,30 @@ void ClientAgent::OnRecv(BYTE *pMsg, WORD wSize)
 				}
 			}break;
 
-			case C2S_PAGERECORD_SYN: {
+
+			case C2S_ZADD_ITEM_SYN: {
+				if (!CheckSvrReady())
+				{
+					return;
+				}
+				MSG_C2S_ZADD_ITEM_SYN* pllMsg = (MSG_C2S_ZADD_ITEM_SYN*)pMsg;
+				bool bRes = DataSpace::GetInstance().ZSetAdd(pllMsg->strKey, pllMsg->m_usScore, pllMsg->m_usValLen,  pllMsg->strVal );
+				if (bRes)
+				{
+					MSG_S2C_SELECT_ITEM_ACK ackmsg;
+					strcpy_s(ackmsg.strKey, MAX_KEY_LEN, pllMsg->strKey);
+					strcpy_s(ackmsg.strVal, 1024, pllMsg->strVal);
+					Send((BYTE*)&ackmsg, sizeof(MSG_S2C_SELECT_ITEM_ACK));
+				}
+				else
+				{
+					ReplyResult(egr_CANTFINDVAL);
+				}
+			}break;
+
+
+
+			case C2S_ZRANGE_ITEM_SYN: {
 
 				if (!CheckSvrReady())
 				{

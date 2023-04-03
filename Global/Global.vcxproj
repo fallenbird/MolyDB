@@ -19,6 +19,7 @@
     <ClInclude Include="JK_DList.h" />
     <ClInclude Include="JK_Hashmap.h" />
     <ClInclude Include="JK_PriorityQueue.h" />
+    <ClInclude Include="JK_SkipList.h" />
     <ClInclude Include="JK_SList.h" />
     <ClInclude Include="JK_Lock.h" />
     <ClInclude Include="JK_LockFreeQueue.h" />

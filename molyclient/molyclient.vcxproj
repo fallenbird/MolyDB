@@ -84,10 +84,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CommandMgr.cpp" />
     <ClCompile Include="molyclient.cpp" />
     <ClCompile Include="NetBase.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CommandMgr.h" />
     <ClInclude Include="NetBase.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

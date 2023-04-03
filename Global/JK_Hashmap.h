@@ -15,6 +15,7 @@ enum eValueType
 	evt_STR		= 1,
 	evt_LIST	= 2,
 	evt_HASH	= 3,
+	evt_ZSET	= 4,
 };
 
 
