@@ -353,6 +353,30 @@ void SendCmdMsg(unsigned int cmdtype, char argv[MAX_PARA_CNT][MAX_CMD_LEN], unsi
 	}
 	break;
 
+	case ect_COMMAND_ZADD:
+	{
+		CHECK_PARA_CNT(3, argc);
+		MSG_C2S_ZADD_ITEM_SYN  tmpMsg;
+		strcpy_s(tmpMsg.strKey, MAX_KEY_LEN, argv[0]);
+		tmpMsg.m_usScore = atoi(argv[1]);
+		tmpMsg.m_usValLen = JK_SPRITF_S(tmpMsg.strVal, "%s", argv[2]);
+		g_pNetBase->Send((char*)&tmpMsg, tmpMsg.GetMsgSize() );
+	}
+	break;
+
+
+	case ect_COMMAND_ZRANGE:
+	{
+		CHECK_PARA_CNT(3, argc);
+		MSG_C2S_ZRANGE_ITEM_SYN  tmpMsg;
+		strcpy_s(tmpMsg.strKey, MAX_KEY_LEN, argv[0]);
+		tmpMsg.m_usStart = atoi(argv[1]);
+		tmpMsg.m_usStop	 = atoi(argv[2]);
+		g_pNetBase->Send((char*)&tmpMsg, sizeof(MSG_C2S_ZRANGE_ITEM_SYN));
+	}
+	break;
+
+
 	default:
 		break;
 	}

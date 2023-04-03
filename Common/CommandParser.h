@@ -36,6 +36,11 @@ enum enGmCommandType
 	ect_COMMAND_HSET	= 21,
 	ect_COMMAND_HGET	= 22,
 
+	//--ZSET¿‡
+	ect_COMMAND_ZADD	= 31,
+	ect_COMMAND_ZREVRANK= 32,
+	ect_COMMAND_ZRANGE	= 33,
+
 	//--SERVER¿‡
 	ect_COMMAND_QUIT	= 95,
 };
@@ -49,8 +54,6 @@ public:
 
 	void static ParseCommandStr(char* cmdstr, unsigned int& cmdType, char argv[MAX_PARA_CNT][MAX_CMD_LEN], unsigned int& argc)
 	{
-		//char buffer[MAX_CMD_LEN];
-		//strcpy_s(buffer, MAX_CMD_LEN, pMsg);
 		char seps[] = " ,;:\t";
 		char* next_token;
 
@@ -75,17 +78,6 @@ public:
 		{
 			strcpy_s(argv[i], MAX_CMD_LEN, str);
 			i++;
-			//if (cmdType == TYPE_NOTIFY && i == 3 && strcmp(next_token, ""))
-			//{
-			//	strcat_s(argv[3], next_token);
-			//	argc = 4;
-			//	return;
-			//}
-			//if (i == MAX_PARAMETERS_COUNT)
-			//{
-			//	argc = i;
-			//	return;
-			//}
 			str = strtok_s(NULL, seps, &next_token);
 		}
 		argc = i;
@@ -157,6 +149,19 @@ public:
 		else if (!strcmp(cmdstr, "hget"))
 		{
 			return ect_COMMAND_HGET;
+		}
+
+		else if (!strcmp(cmdstr, "zadd"))
+		{
+			return ect_COMMAND_ZADD;
+		}
+		else if (!strcmp(cmdstr, "zrevrank"))
+		{
+			return ect_COMMAND_ZREVRANK;
+		}
+		else if (!strcmp(cmdstr, "zrange"))
+		{
+			return ect_COMMAND_ZRANGE;
 		}
 
 		else 

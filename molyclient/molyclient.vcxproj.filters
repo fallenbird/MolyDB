@@ -8,6 +8,9 @@
     <Filter Include="NetBase">
       <UniqueIdentifier>{67d43659-9309-438a-ac1d-0cff1b891229}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Comand">
+      <UniqueIdentifier>{7989ce4c-1697-451a-af22-60608635c9bb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="molyclient.cpp">
@@ -16,10 +19,16 @@
     <ClCompile Include="NetBase.cpp">
       <Filter>NetBase</Filter>
     </ClCompile>
+    <ClCompile Include="CommandMgr.cpp">
+      <Filter>Comand</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="NetBase.h">
       <Filter>NetBase</Filter>
+    </ClInclude>
+    <ClInclude Include="CommandMgr.h">
+      <Filter>Comand</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

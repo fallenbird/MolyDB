@@ -40,6 +40,9 @@ public:
 	bool	HashSet(char* map, int keylen, char* key, int vallen, char* val, bool ops = true);
 	char*	HashGet(char* map, char* key );
 
+	// ----ZSET-----
+	bool	ZSetAdd(char* key, unsigned int score, unsigned int vallen, char* value, bool ops = true  );
+	char*	ZSetRange( char* key, unsigned int start, unsigned int stop );
 
 	void	SetRepState( bool bRep ){ m_bReplicated = bRep; }
 	bool	IsServerReady();

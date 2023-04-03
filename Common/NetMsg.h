@@ -49,6 +49,10 @@ enum elp_CS_PROTOCOL
 	C2S_HSET_ITEM_SYN		= 111,			// C2S:hash set command
 	C2S_HGET_ITEM_SYN		= 112,
 
+	C2S_ZADD_ITEM_SYN		= 121,			// C2S:hash set command
+	C2S_ZRANGE_ITEM_SYN		= 122,
+
+
 	C2S_PAGERECORD_SYN		= 121,			// C2S:记录PV
 
 };
@@ -353,7 +357,6 @@ public:
 };
 
 
-
 // Client-->Server ：設置过期键
 class MSG_C2S_PAGERECORD_SYN : public  MSG_BASE
 {
@@ -364,10 +367,6 @@ public:
 	}
 	char strAppKey[64];
 };
-
-
-
-
 
 
 // Client-->Server ：設置哈希数据结构
@@ -392,7 +391,6 @@ public:
 };
 
 
-
 // Client-->Server ：获取哈希数据结构
 class MSG_C2S_HGET_ITEM_SYN : public  MSG_BASE
 {
@@ -405,6 +403,45 @@ public:
 	char			strMap[MAX_KEY_LEN];
 	char			strKey[MAX_KEY_LEN];
 };
+
+
+
+// Client-->Server ：設置哈希数据结构
+class MSG_C2S_ZADD_ITEM_SYN : public MSG_BASE
+{
+public:
+	MSG_C2S_ZADD_ITEM_SYN()
+	{
+		m_byCategory = emc_CS_CATEGORY;
+		m_byProtocol = C2S_ZADD_ITEM_SYN;
+	}
+	char			strKey[MAX_KEY_LEN];
+	unsigned short	m_usScore;
+	unsigned short	m_usValLen;
+	char			strVal[1024];
+
+	int GetMsgSize()
+	{
+		return sizeof(MSG_C2S_ZADD_ITEM_SYN) - ((1024 - m_usValLen)) + 1; // --1 for "\0"
+	}
+
+};
+
+
+// Client-->Server ：設置哈希数据结构
+class MSG_C2S_ZRANGE_ITEM_SYN : public MSG_BASE
+{
+public:
+	MSG_C2S_ZRANGE_ITEM_SYN()
+	{
+		m_byCategory = emc_CS_CATEGORY;
+		m_byProtocol = C2S_ZRANGE_ITEM_SYN;
+	}
+	char			strKey[MAX_KEY_LEN];
+	unsigned short	m_usStart;
+	unsigned short	m_usStop;
+};
+
 
 
 
