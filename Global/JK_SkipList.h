@@ -39,24 +39,31 @@ public:
 	JK_SkipList( int maxlv = MAX_SKIPLIST_LEVEL ) :m_pHead(NULL), m_pTail(NULL), m_uiSize(0)
 	{
 		srand((unsigned)time(0));
-		m_pHead = new JK_SkipListNode();
-		m_pTail = new JK_SkipListNode();
-
-		m_pHead->m_pRight = m_pTail;
-		m_pHead->m_pLeft = NULL;
-		m_pHead->m_pUp = NULL;
-		m_pHead->m_pDown = NULL;
-		m_pHead->m_iKey = 0;
-		m_pHead->m_pValue = NULL;
-
-		m_pTail->m_pRight = NULL;
-		m_pTail->m_pLeft = m_pHead;
-		m_pTail->m_pUp = NULL;
-		m_pTail->m_pDown = NULL;
-		m_pTail->m_iKey = 0;
-		m_pTail->m_pValue = NULL;
 
 		m_iMaxLevel = maxlv;
+		int iLevel = 1;
+
+		m_pHead = new JK_SkipListNode();
+		m_pTail = new JK_SkipListNode();
+		m_pHead->m_pRight = m_pTail;
+		m_pTail->m_pLeft  = m_pHead;
+
+		JK_SkipListNode* pHead = m_pHead;
+		JK_SkipListNode* pTail = m_pTail;
+
+		// create level of head & tail
+		while ( iLevel < m_iMaxLevel )
+		{
+			pHead->m_pUp = new JK_SkipListNode();
+			pTail->m_pUp = new JK_SkipListNode();
+
+			pHead = pHead->m_pUp;
+			pTail = pTail->m_pUp;
+
+			pHead->m_pRight = pTail;
+			pTail->m_pLeft = pHead;
+			iLevel++;
+		}
 	}
 
 
@@ -68,7 +75,6 @@ public:
 
 	bool InsertNode( unsigned int key, T* pVal ) 
 	{
-
 		// 查找适合插入的位子
 		JK_SkipListNode* pNode = FindNode(key);
 
@@ -89,7 +95,7 @@ public:
 
 		// 再使用随机数决定是否要向更高level攀升
 		unsigned int iLevel = 0;
-		while ( rand() < 0.5) {
+		while ( randomLevel() ) {
 
 			// 如果新元素的级别已经达到跳跃表的最大高度，则新建空白层
 			if (iLevel >= m_iMaxLevel ) {
@@ -158,6 +164,8 @@ public:
 
 
 private:
+
+
 	JK_SkipListNode* FindNode( unsigned int key )
 	{
 		// begin from head
@@ -189,6 +197,16 @@ private:
 	void addEmptyLevel() 
 	{
 
+	}
+
+	bool randomLevel() 
+	{
+		int tmp = rand() % 2;
+		if (tmp >= 1) 
+		{
+			return true;
+		}
+		return false;
 	}
 
 

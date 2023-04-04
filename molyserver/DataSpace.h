@@ -25,6 +25,9 @@ public:
 	void	Operation(int cmd, void* element, void* key,  void* val);
 	void	Replication(int cmd, void* element, void* key, void* val);
 
+	void	Operation(int cmd, void* key, int score, void* val);
+	void	Replication(int cmd, void* key, int score, void* val);
+
 	bool	IsExists( char* key );
 
 

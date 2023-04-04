@@ -132,6 +132,14 @@ void DataSpace::Operation(int cmd, void* element, void* key, void* val)
 }
 
 
+void DataSpace::Operation(int cmd,  void* key, int score, void* val)
+{
+	char* strTemp = (char*)JK_MALLOC(MAX_CMD_LEN);		// char[128]; 
+	JK_SPRITF_S(strTemp, MAX_CMD_LEN, "%d %s %d %s \n", cmd, (char*)key, score, (char*)val);
+	AppendCmdQueue::Enqueue(strTemp);
+}
+
+
 void DataSpace::Replication( int cmd, void* key, void* val )
 {
 	if ( m_bSlave )
@@ -155,6 +163,16 @@ void DataSpace::Replication(int cmd, void* element, void* key, void* val)
 }
 
 
+void DataSpace::Replication(int cmd, void* key, int score, void* val)
+{
+	if (m_bSlave)
+	{
+		return;
+	}
+	MSG_M2S_APPENDCOMMAND_CMD cmdMsg;
+	cmdMsg.m_byLen = JK_SPRITF_S(cmdMsg.m_strCmd, MAX_CMD_LEN, "%d %s %d %s \n", cmd, (char*)key, score, (char*)val);
+	SlaveMgr::GetInstance().BroadAllSlave((BYTE*)&cmdMsg, cmdMsg.GetMsgSize());
+}
 
 
 bool DataSpace::IsServerReady()
@@ -481,7 +499,19 @@ bool DataSpace::ZSetAdd(char* key, unsigned int score, unsigned int vallen, char
 	moly_zset_type* pZSet = (moly_zset_type*)m_normalDict.GetElement(key, evt_ZSET);
 	if (NULL != pZSet) 
 	{
-		return pZSet->InsertNode(score, value);
+		if (pZSet->InsertNode(score, value)) 
+		{
+			if (ops)
+			{
+				Operation(LOG_CMD_ZSET_ADD, key, score, value);
+				Replication(LOG_CMD_ZSET_ADD, key, score, value);
+			}
+			return true;
+		}
+		else 
+		{
+			return false;
+		}
 	}
 	moly_zset_type* newZSet = JK_NEW(moly_zset_type);
 	if ( !newZSet) 
@@ -502,6 +532,12 @@ bool DataSpace::ZSetAdd(char* key, unsigned int score, unsigned int vallen, char
 		JK_FREE(pval);
 		JK_DELETE(moly_zset_type, newZSet);
 		return false;
+	}
+
+	if (ops)
+	{
+		Operation(LOG_CMD_ZSET_ADD, key, score, value);
+		Replication(LOG_CMD_ZSET_ADD, key, score, value);
 	}
 	return true;
 		

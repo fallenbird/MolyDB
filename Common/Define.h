@@ -31,3 +31,5 @@
 #define LOG_CMD_LIST_RPOP	204
 
 #define LOG_CMD_HASH_SET	301
+
+#define LOG_CMD_ZSET_ADD	401
