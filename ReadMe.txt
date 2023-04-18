@@ -34,3 +34,4 @@ DONE
 0.0.7.8  2018-09-01 JakeSun   增加启动参数功能
 0.0.8.0  2018-10-10 JakeSun   支持LIST基础数据类型，及其相关CAUD命令
 0.0.8.2  2018-10-11 JakeSun   支持HASH基础数据类型，及其相关CAUD命令
+0.0.8.5  2023-04-18 JakeSun   支持ZSet基础数据类型(底层基于SkipList)，机器相关ZAdd，ZRange等命令
