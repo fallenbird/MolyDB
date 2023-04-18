@@ -17,7 +17,7 @@ public:
 	JK_SkipListNode() :m_iKey(0), m_pValue(NULL), m_pLeft(NULL), m_pRight(NULL), m_pUp(NULL), m_pDown(NULL)
 	{
 	}
-	unsigned int		m_iKey;
+	int					m_iKey;
 	void*				m_pValue;
 	JK_SkipListNode*	m_pLeft;
 	JK_SkipListNode*	m_pRight;
@@ -45,11 +45,13 @@ public:
 
 		m_pHead = new JK_SkipListNode();
 		m_pTail = new JK_SkipListNode();
+		m_pTail->m_iKey = -1;
 		m_pHead->m_pRight = m_pTail;
 		m_pTail->m_pLeft  = m_pHead;
 
 		JK_SkipListNode* pHead = m_pHead;
 		JK_SkipListNode* pTail = m_pTail;
+		m_pHeadTop = m_pHead;
 
 		// create level of head & tail
 		while ( iLevel < m_iMaxLevel )
@@ -57,11 +59,18 @@ public:
 			pHead->m_pUp = new JK_SkipListNode();
 			pTail->m_pUp = new JK_SkipListNode();
 
+			pTail->m_pUp->m_iKey = -1;
+
+			pHead->m_pUp->m_pDown = pHead;
+			pTail->m_pUp->m_pDown = pTail;
+
 			pHead = pHead->m_pUp;
 			pTail = pTail->m_pUp;
 
 			pHead->m_pRight = pTail;
 			pTail->m_pLeft = pHead;
+
+			m_pHeadTop = pHead;
 			iLevel++;
 		}
 	}
@@ -97,9 +106,9 @@ public:
 		unsigned int iLevel = 0;
 		while ( randomLevel() ) {
 
-			// 如果新元素的级别已经达到跳跃表的最大高度，则新建空白层
+			// 如果新元素的级别已经达到跳跃表的最大高度，
 			if (iLevel >= m_iMaxLevel ) {
-				addEmptyLevel();
+				break;
 			}
 
 			// 从p向左扫描含有高层节点的节点
@@ -108,6 +117,7 @@ public:
 			}
 			pNode = pNode->m_pUp;
 
+			
 			// 新增和q指针指向的节点含有相同key值的节点对象
 			// 这里需要注意的是除底层节点之外的节点对象是不需要value值的
 			JK_SkipListNode* zNode = new JK_SkipListNode();
@@ -119,6 +129,8 @@ public:
 			zNode->m_pDown = newNode;
 			newNode->m_pUp = zNode;
 			newNode = zNode;
+			pNode = zNode;
+
 			++iLevel;
 		}
 		++m_uiSize;
@@ -180,12 +192,12 @@ private:
 	JK_SkipListNode* FindNode( unsigned int key )
 	{
 		// begin from head
-		JK_SkipListNode* p = m_pHead;
+		JK_SkipListNode* p = m_pHeadTop;
 		while (true) 
 		{
 			// query from left to right, right key, 
 			// until the right node's key is greater than the key we want 
-			while ( p->m_pRight->m_iKey <= key && p->m_pRight != m_pTail )
+			while ( p->m_pRight->m_iKey <= (int)key && !isTail( p->m_pRight ) )
 			{
 				p = p->m_pRight;
 			}
@@ -205,15 +217,19 @@ private:
 	}
 
 
-	void addEmptyLevel() 
+	JK_SkipListNode* addEmptyLevel(JK_SkipListNode* pNode )
 	{
-
+		JK_SkipListNode* zNode = new JK_SkipListNode();
+		zNode->m_iKey = pNode->key;
+		zNode->m_pDown = pNode;
+		pNode->m_pUp = zNode;
+		return zNode;
 	}
 
 	bool randomLevel() 
 	{
-		int tmp = rand() % 2;
-		if (tmp >= 1) 
+		int tmp = rand() % 3;
+		if (tmp >= 2) 
 		{
 			return true;
 		}
@@ -232,10 +248,24 @@ private:
 		return iterator(m_pTail);
 	}
 
+	bool isTail(JK_SkipListNode* pNode )
+	{
+		if (NULL == pNode) 
+		{
+			return false;
+		}
+		if (-1 == pNode->m_iKey) 
+		{
+			return true;
+		}
+		return false;
+	}
+
 
 private:
 	JK_SkipListNode*	m_pHead;		// head node ptr
 	JK_SkipListNode*	m_pTail;		// tail node ptr
+	JK_SkipListNode*	m_pHeadTop;		// head top level node ptr
 	JK_Lock				m_lock;			// lock 
 	unsigned int		m_uiSize;		// size of skiplist
 	unsigned int		m_iMaxLevel;	// max level of skiplist

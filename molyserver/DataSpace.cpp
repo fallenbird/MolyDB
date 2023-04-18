@@ -546,7 +546,7 @@ bool DataSpace::ZSetAdd( char* key, unsigned int score, unsigned int vallen, cha
 		
 }
 
-bool DataSpace::ZSetRange(KVPair* kvPair, int& icount, char* key, unsigned int start, unsigned int stop)
+bool DataSpace::ZSetRange(KVPair* kvPair, unsigned int& icount, char* key, unsigned int start, unsigned int stop)
 {
 	moly_zset_type* pZSet = (moly_zset_type*)m_normalDict.GetElement(key, evt_ZSET);
 	if (NULL == pZSet || pZSet->GetSize()<1   )

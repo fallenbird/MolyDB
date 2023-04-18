@@ -462,8 +462,8 @@ public:
 		m_byCategory = emc_CS_CATEGORY;
 		m_byProtocol = S2C_ZRANGE_ITEM_ACK;
 	}
-	int			m_iKeysCnt;
-	pair		m_szPairs[1024];
+	unsigned int	m_iKeysCnt;
+	pair			m_szPairs[1024];
 	int GetMsgSize()
 	{
 		int msgSize = sizeof(MSG_S2C_ZRANGE_ACK) - ((1024 - m_iKeysCnt) * sizeof(pair));

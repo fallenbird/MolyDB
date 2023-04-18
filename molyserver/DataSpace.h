@@ -50,7 +50,7 @@ public:
 
 	// ----ZSET-----
 	bool	ZSetAdd( char* key, unsigned int score, unsigned int vallen, char* value, bool ops = true  );
-	bool	ZSetRange(KVPair* kvPair, int& icount,  char* key, unsigned int start, unsigned int stop);
+	bool	ZSetRange(KVPair* kvPair, unsigned int& icount,  char* key, unsigned int start, unsigned int stop);
 
 	void	SetRepState( bool bRep ){ m_bReplicated = bRep; }
 	bool	IsServerReady();
