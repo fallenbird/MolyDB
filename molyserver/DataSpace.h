@@ -6,6 +6,11 @@
 #include "JK_Singleton.h"
 #include "JK_PriorityQueue.h"
 
+struct KVPair
+{
+	int score;
+	char value[MAX_KEY_LEN];
+};
 
 class DataSpace : public JK_Singleton<DataSpace>
 {
@@ -44,8 +49,8 @@ public:
 	char*	HashGet(char* map, char* key );
 
 	// ----ZSET-----
-	bool	ZSetAdd(char* key, unsigned int score, unsigned int vallen, char* value, bool ops = true  );
-	char*	ZSetRange( char* key, unsigned int start, unsigned int stop );
+	bool	ZSetAdd( char* key, unsigned int score, unsigned int vallen, char* value, bool ops = true  );
+	bool	ZSetRange(KVPair* kvPair, int& icount,  char* key, unsigned int start, unsigned int stop);
 
 	void	SetRepState( bool bRep ){ m_bReplicated = bRep; }
 	bool	IsServerReady();

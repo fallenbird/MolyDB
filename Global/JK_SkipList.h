@@ -41,7 +41,7 @@ public:
 		srand((unsigned)time(0));
 
 		m_iMaxLevel = maxlv;
-		int iLevel = 1;
+		unsigned int iLevel = 1;
 
 		m_pHead = new JK_SkipListNode();
 		m_pTail = new JK_SkipListNode();
@@ -88,10 +88,10 @@ public:
 		JK_SkipListNode* newNode = new JK_SkipListNode();
 		newNode->m_iKey = key;
 		newNode->m_pLeft = pNode;
+		newNode->m_pValue = pVal;
 		newNode->m_pRight = pNode->m_pRight;
 		pNode->m_pRight->m_pLeft = newNode;
 		pNode->m_pRight = newNode;
-
 
 		// 再使用随机数决定是否要向更高level攀升
 		unsigned int iLevel = 0;
@@ -144,7 +144,18 @@ public:
 
 	unsigned int GetSize()
 	{
-		return m_uiCount;
+		return m_uiSize;
+	}
+
+	JK_SkipListNode* GetHead() 
+	{
+		return m_pHead;
+	}
+
+
+	JK_SkipListNode* GetTail()
+	{
+		return m_pTail;
 	}
 
 
@@ -233,18 +244,18 @@ private:
 
 
 template< typename T, bool m_bThread >
-class JK_SList_iterator
+class JK_SkipList_iterator
 {
 public:
 
-	JK_SList_iterator(JK_SkipListNode* pHead)
+	JK_SkipList_iterator(JK_SkipListNode* pHead)
 	{
 		m_pCurrNode = pHead;
 	}
 
-	T* operator*() const
+	JK_SkipListNode* operator*() const
 	{
-		return m_pCurrNode->m_pData;
+		return m_pCurrNode;
 	}
 
 
@@ -254,28 +265,28 @@ public:
 	}
 
 
-	JK_SList_iterator<T, m_bThread>& operator++()
+	JK_SkipList_iterator<T, m_bThread>& operator++()
 	{
-		m_pCurrNode = m_pCurrNode->pNext;
+		m_pCurrNode = m_pCurrNode->m_pRight;
 		return *this;
 	}
 
 
-	JK_SList_iterator<T, m_bThread>& operator++(int)
+	JK_SkipList_iterator<T, m_bThread>& operator++(int)
 	{
-		JK_SList_iterator<T, m_bThread> tmp = *this;
+		JK_SkipList_iterator<T, m_bThread> tmp = *this;
 		++* this;
 		return tmp;
 	}
 
 
-	bool operator==(const JK_SList_iterator<T, m_bThread>& it)
+	bool operator==(const JK_SkipList_iterator<T, m_bThread>& it)
 	{
 		return m_pCurrNode == it.m_pCurrNode;
 	}
 
 
-	bool operator!=(const JK_SList_iterator<T, m_bThread>& it)
+	bool operator!=(const JK_SkipList_iterator<T, m_bThread>& it)
 	{
 		return m_pCurrNode != it.m_pCurrNode;
 	}

@@ -134,6 +134,22 @@ int ServerPro(int nConctID, char* pMsg, int nLen)
 		}
 		break;
 
+	case S2C_ZRANGE_ITEM_ACK:
+	{
+		MSG_S2C_ZRANGE_ACK* ackmsg = (MSG_S2C_ZRANGE_ACK*)pMsg;
+		if (ackmsg->m_iKeysCnt <= 0) 
+		{
+			printf("(nil)");
+			break;
+		}
+		printf("\n");
+		for (int i = 0; i < ackmsg->m_iKeysCnt; ++i)
+		{
+			printf(" %d ) \"%s\" \n", ackmsg->m_szPairs[i].score, ackmsg->m_szPairs[i].value );
+		}
+		printf("\n");
+	}
+
 	default:
 		{
 

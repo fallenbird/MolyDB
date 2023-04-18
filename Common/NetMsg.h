@@ -51,7 +51,7 @@ enum elp_CS_PROTOCOL
 
 	C2S_ZADD_ITEM_SYN		= 121,			// C2S:hash set command
 	C2S_ZRANGE_ITEM_SYN		= 122,
-
+	S2C_ZRANGE_ITEM_ACK		= 123,
 
 	C2S_PAGERECORD_SYN		= 121,			// C2S:记录PV
 
@@ -428,6 +428,7 @@ public:
 };
 
 
+
 // Client-->Server ：設置哈希数据结构
 class MSG_C2S_ZRANGE_ITEM_SYN : public MSG_BASE
 {
@@ -442,6 +443,33 @@ public:
 	unsigned short	m_usStop;
 };
 
+
+
+// --Server-->Client ：reply KEYS command
+class MSG_S2C_ZRANGE_ACK : public MSG_BASE
+{
+
+public:
+	struct pair
+	{
+		int score;
+		char value[MAX_KEY_LEN];
+	};
+
+
+	MSG_S2C_ZRANGE_ACK()
+	{
+		m_byCategory = emc_CS_CATEGORY;
+		m_byProtocol = S2C_ZRANGE_ITEM_ACK;
+	}
+	int			m_iKeysCnt;
+	pair		m_szPairs[1024];
+	int GetMsgSize()
+	{
+		int msgSize = sizeof(MSG_S2C_ZRANGE_ACK) - ((1024 - m_iKeysCnt) * sizeof(pair));
+		return msgSize;
+	}
+};
 
 
 

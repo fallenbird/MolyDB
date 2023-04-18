@@ -137,7 +137,7 @@ void Appender::HandleCmdLine( char* strLine, bool bOps )
 
 	case LOG_CMD_ZSET_ADD:
 	{
-		DataSpace::GetInstance().ZSetAdd(cmdArray[1], atoi(cmdArray[2]), strlen(cmdArray[3]), cmdArray[3], bOps);
+		DataSpace::GetInstance().ZSetAdd( cmdArray[1], atoi(cmdArray[2]), strlen(cmdArray[3]), cmdArray[3], bOps);
 	}
 	break;
 

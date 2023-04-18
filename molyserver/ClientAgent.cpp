@@ -374,9 +374,18 @@ void ClientAgent::OnRecv(BYTE *pMsg, WORD wSize)
 				{
 					return;
 				}
-				MSG_C2S_PAGERECORD_SYN*  pllMsg = (MSG_C2S_PAGERECORD_SYN*)pMsg;
-				m_iPageView++;
-				DISPMSG_SUCCESS("APPKEY[%s] PV[%d] UV[%d]\n", pllMsg->strAppKey, m_iPageView, m_iPageView);
+				MSG_C2S_ZRANGE_ITEM_SYN*  pRangeMsg = (MSG_C2S_ZRANGE_ITEM_SYN*)pMsg;
+
+				MSG_S2C_ZRANGE_ACK ackMsg;
+				KVPair  tmpKVPair[1024];
+				ackMsg.m_iKeysCnt = 0;
+				DataSpace::GetInstance().ZSetRange(tmpKVPair, ackMsg.m_iKeysCnt, pRangeMsg->strKey, pRangeMsg->m_usStart, pRangeMsg->m_usStop );
+				if(ackMsg.m_iKeysCnt >0 )
+				{
+					memcpy_s(ackMsg.m_szPairs, sizeof(MSG_S2C_ZRANGE_ACK::pair)* ackMsg.m_iKeysCnt, tmpKVPair, sizeof(KVPair)* ackMsg.m_iKeysCnt);
+
+				}
+				Send((BYTE*)&ackMsg, ackMsg.GetMsgSize() );
 
 			}break;
 

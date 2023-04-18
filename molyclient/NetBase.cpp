@@ -82,7 +82,7 @@ void NetProcess(WPARAM wParam,LPARAM lParam)
 }
 
 //--------------------------------------------------------------------------------------
-ConnectInfo::ConnectInfo() : m_bConnect(false),m_bIsClosed(false)
+ConnectInfo::ConnectInfo() : m_bConnect(false),m_bIsClosed(false), m_hWnd(NULL), m_dwThreadHandle(NULL), m_pRecvFunc(NULL)
 {
 	InitializeCriticalSection( &m_SendCritSect );
 	InitializeCriticalSection( &m_RecvCritSect );
@@ -114,6 +114,7 @@ bool ConnectInfo::SaveData( char* pData, int iLen )
 	{
 		//MessageBox( NULL, "ÍøÂç´íÎó »º´æ²»¹»",NULL, MB_OK );
 		assert( "ÍøÂç»º´æ²»×ã£¡" );
+		LeaveCriticalSection(&m_RecvCritSect);
 		return false;
 	}
 	else
@@ -132,7 +133,7 @@ bool ConnectInfo::SaveData( char* pData, int iLen )
 
 bool ConnectInfo::IsHavdData()
 {
-	int curDatalen = m_iEndPtr - m_iStartPtr;
+	unsigned int curDatalen = m_iEndPtr - m_iStartPtr;
 	if( curDatalen == 0 )
 	{
 		return false;
@@ -160,7 +161,7 @@ bool ConnectInfo::IsHavdData()
 // --[SXF 2012/08/08 16:27:08]
 bool ConnectInfo::GetData( char* pData, int& iLen )
 {
-	int curDatalen = m_iEndPtr - m_iStartPtr;
+	unsigned int curDatalen = m_iEndPtr - m_iStartPtr;
 	if( curDatalen == 0 )
 	{
 		return false;
@@ -174,7 +175,6 @@ bool ConnectInfo::GetData( char* pData, int& iLen )
 	else
 	{
 		PacketHeader* pHeader = (PacketHeader*)&m_pMemPool[m_iStartPtr];
-		//if( pHeader->wSize + 4 > curDatalen )		//¶Ï°ü
 		if (pHeader->dwSize + PROTOCOL_HEAD_LEN  > curDatalen)		//¶Ï°ü
 		{
 			return false;
@@ -183,12 +183,9 @@ bool ConnectInfo::GetData( char* pData, int& iLen )
 		{
 			EnterCriticalSection( &m_RecvCritSect );
 			memcpy(pData, &m_pMemPool[m_iStartPtr + PROTOCOL_HEAD_LEN], pHeader->dwSize);
-			//memcpy( pData, &m_pMemPool[m_iStartPtr+4], pHeader->wSize );
 
 			m_iStartPtr += pHeader->dwSize + PROTOCOL_HEAD_LEN;
-			//m_iStartPtr += pHeader->wSize  + 4;
 			iLen = pHeader->dwSize;
-
 			LeaveCriticalSection( &m_RecvCritSect );
 			return true;
 		}
@@ -213,6 +210,7 @@ void ConnectInfo::SaveSendData( char* pData, int iLen )
 	{
 		//MessageBox( NULL, "·¢ËÍ»º³åÂú",NULL,MB_OK );
 		printf( "·¢ËÍ»º³åÂú" );
+		LeaveCriticalSection(&m_SendCritSect);
 		return;
 	}
 
@@ -232,7 +230,7 @@ void ConnectInfo::SaveSendData( char* pData, int iLen )
 
 
 // --[SXF 2012/08/08 16:27:08]
-CNetBase::CNetBase(void) : m_iMaxConnectCount( 0 )
+CNetBase::CNetBase(void) : m_iMaxConnectCount( 0 ), m_pConnectHandles(NULL), m_pRecvFunc(NULL)
 {
 }
 

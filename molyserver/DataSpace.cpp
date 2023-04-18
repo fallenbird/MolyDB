@@ -491,15 +491,18 @@ char* DataSpace::HashGet(char* map, char* key )
 
 
 
-bool DataSpace::ZSetAdd(char* key, unsigned int score, unsigned int vallen, char* value, bool ops )
+bool DataSpace::ZSetAdd( char* key, unsigned int score, unsigned int vallen, char* value, bool ops )
 {
+	int keylen = strlen(key);
 	void* pval = JK_MALLOC(vallen + 1);
+	void* pkey = JK_MALLOC(keylen + 1);
+	JK_MEMCPY_S(pkey, keylen + 1, key, keylen + 1);
 	JK_MEMCPY_S(pval, vallen + 1, value, vallen + 1);
 	
 	moly_zset_type* pZSet = (moly_zset_type*)m_normalDict.GetElement(key, evt_ZSET);
 	if (NULL != pZSet) 
 	{
-		if (pZSet->InsertNode(score, value)) 
+		if (pZSet->InsertNode(score, (char*)pval ) )
 		{
 			if (ops)
 			{
@@ -519,7 +522,7 @@ bool DataSpace::ZSetAdd(char* key, unsigned int score, unsigned int vallen, char
 		JK_FREE(pval);
 		return false;
 	}
-	bool result =  newZSet->InsertNode(score, value);
+	bool result =  newZSet->InsertNode(score,  (char*)pval );
 	if (!result) 
 	{
 		JK_FREE(pval);
@@ -527,7 +530,7 @@ bool DataSpace::ZSetAdd(char* key, unsigned int score, unsigned int vallen, char
 		return false;
 	}
 
-	if (!m_normalDict.AddElement(key, newZSet, evt_ZSET))
+	if (!m_normalDict.AddElement(pkey, newZSet, evt_ZSET))
 	{
 		JK_FREE(pval);
 		JK_DELETE(moly_zset_type, newZSet);
@@ -541,4 +544,24 @@ bool DataSpace::ZSetAdd(char* key, unsigned int score, unsigned int vallen, char
 	}
 	return true;
 		
+}
+
+bool DataSpace::ZSetRange(KVPair* kvPair, int& icount, char* key, unsigned int start, unsigned int stop)
+{
+	moly_zset_type* pZSet = (moly_zset_type*)m_normalDict.GetElement(key, evt_ZSET);
+	if (NULL == pZSet || pZSet->GetSize()<1   )
+	{
+		return false;
+	}
+
+	JK_SkipList<char, true>::iterator itr = pZSet->GetHead()->m_pRight;
+	JK_SkipListNode* pTempNode = NULL;
+	icount = 0;
+	for (; *itr != pZSet->GetTail() && icount < pZSet->GetSize();  ++itr, ++icount )
+	{
+		pTempNode = *itr;
+		kvPair[icount].score = pTempNode->m_iKey;
+		memcpy_s(kvPair[icount].value, MAX_KEY_LEN, pTempNode->m_pValue, MAX_KEY_LEN);
+	}
+	return false;
 }
