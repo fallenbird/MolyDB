@@ -143,7 +143,7 @@ int ServerPro(int nConctID, char* pMsg, int nLen)
 			break;
 		}
 		printf("\n");
-		for (int i = 0; i < ackmsg->m_iKeysCnt; ++i)
+		for (unsigned int i = 0; i < ackmsg->m_iKeysCnt; ++i)
 		{
 			printf(" %d ) \"%s\" \n", ackmsg->m_szPairs[i].score, ackmsg->m_szPairs[i].value );
 		}

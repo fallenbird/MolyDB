@@ -5,6 +5,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "JK_MemMgr.h"
+#pragma warning(disable:26495)
+
 
 /* 标记节点，类似于链表中的表头节点
 * 该值必须小于所有最小堆中的元素，设其值为-1

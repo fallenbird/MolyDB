@@ -2,6 +2,8 @@
 #define __NETPROTOCOL_PX7G7U4_H__
 
 #include "Define.h"
+#pragma warning(disable:26495)
+
 
 /*   包结构命名规则 Jake.Sun
 1) 请求(Request)			_SYN
